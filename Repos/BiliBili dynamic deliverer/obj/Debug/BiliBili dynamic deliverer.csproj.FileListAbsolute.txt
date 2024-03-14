@@ -1,0 +1,10 @@
+C:\Users\13975\CPP\repos\BiliBili dynamic deliverer\bin\Debug\BiliBili dynamic deliverer.exe.config
+C:\Users\13975\CPP\repos\BiliBili dynamic deliverer\bin\Debug\BiliBili dynamic deliverer.exe
+C:\Users\13975\CPP\repos\BiliBili dynamic deliverer\bin\Debug\BiliBili dynamic deliverer.pdb
+C:\Users\13975\CPP\repos\BiliBili dynamic deliverer\obj\Debug\BiliBili dynamic deliverer.csproj.AssemblyReference.cache
+C:\Users\13975\CPP\repos\BiliBili dynamic deliverer\obj\Debug\BiliBili_dynamic_deliverer.Form1.resources
+C:\Users\13975\CPP\repos\BiliBili dynamic deliverer\obj\Debug\BiliBili_dynamic_deliverer.Properties.Resources.resources
+C:\Users\13975\CPP\repos\BiliBili dynamic deliverer\obj\Debug\BiliBili dynamic deliverer.csproj.GenerateResource.cache
+C:\Users\13975\CPP\repos\BiliBili dynamic deliverer\obj\Debug\BiliBili dynamic deliverer.csproj.CoreCompileInputs.cache
+C:\Users\13975\CPP\repos\BiliBili dynamic deliverer\obj\Debug\BiliBili dynamic deliverer.exe
+C:\Users\13975\CPP\repos\BiliBili dynamic deliverer\obj\Debug\BiliBili dynamic deliverer.pdb
