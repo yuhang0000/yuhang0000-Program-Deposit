@@ -1,0 +1,10 @@
+C:\Users\13975\CPP\repos\Auto exit\bin\Release\Auto exit.exe.config
+C:\Users\13975\CPP\repos\Auto exit\bin\Release\Auto exit.exe
+C:\Users\13975\CPP\repos\Auto exit\bin\Release\Auto exit.pdb
+C:\Users\13975\CPP\repos\Auto exit\obj\Release\Auto exit.csproj.AssemblyReference.cache
+C:\Users\13975\CPP\repos\Auto exit\obj\Release\Auto_exit.Form1.resources
+C:\Users\13975\CPP\repos\Auto exit\obj\Release\Auto_exit.Properties.Resources.resources
+C:\Users\13975\CPP\repos\Auto exit\obj\Release\Auto exit.csproj.GenerateResource.cache
+C:\Users\13975\CPP\repos\Auto exit\obj\Release\Auto exit.csproj.CoreCompileInputs.cache
+C:\Users\13975\CPP\repos\Auto exit\obj\Release\Auto exit.exe
+C:\Users\13975\CPP\repos\Auto exit\obj\Release\Auto exit.pdb
