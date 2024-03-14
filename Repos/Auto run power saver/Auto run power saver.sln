@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.8.34511.84
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Auto run power saver", "Auto run power saver.csproj", "{5A1DCBB4-3139-43F7-BBB3-D352FA710830}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{5A1DCBB4-3139-43F7-BBB3-D352FA710830}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5A1DCBB4-3139-43F7-BBB3-D352FA710830}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5A1DCBB4-3139-43F7-BBB3-D352FA710830}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5A1DCBB4-3139-43F7-BBB3-D352FA710830}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {4E3947EA-A34E-4BF0-9AAD-42B2CF992228}
+	EndGlobalSection
+EndGlobal

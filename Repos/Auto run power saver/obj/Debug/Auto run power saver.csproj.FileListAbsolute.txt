@@ -1,0 +1,10 @@
+C:\Users\13975\CPP\repos\Auto run power saver\bin\Debug\Auto run power saver.exe.config
+C:\Users\13975\CPP\repos\Auto run power saver\bin\Debug\Auto run power saver.exe
+C:\Users\13975\CPP\repos\Auto run power saver\bin\Debug\Auto run power saver.pdb
+C:\Users\13975\CPP\repos\Auto run power saver\obj\Debug\Auto run power saver.csproj.AssemblyReference.cache
+C:\Users\13975\CPP\repos\Auto run power saver\obj\Debug\Auto_run_power_saver.Form1.resources
+C:\Users\13975\CPP\repos\Auto run power saver\obj\Debug\Auto_run_power_saver.Properties.Resources.resources
+C:\Users\13975\CPP\repos\Auto run power saver\obj\Debug\Auto run power saver.csproj.GenerateResource.cache
+C:\Users\13975\CPP\repos\Auto run power saver\obj\Debug\Auto run power saver.csproj.CoreCompileInputs.cache
+C:\Users\13975\CPP\repos\Auto run power saver\obj\Debug\Auto run power saver.exe
+C:\Users\13975\CPP\repos\Auto run power saver\obj\Debug\Auto run power saver.pdb

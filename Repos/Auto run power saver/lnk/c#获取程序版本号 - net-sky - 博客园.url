@@ -1,0 +1,2 @@
+[InternetShortcut]
+URL=https://www.cnblogs.com/net-sky/p/10215889.html#:~:text=c%23%E8%8E%B7%E5%8F%96%E7%A8%8B%E5%BA%8F%E7%89%88%E6%9C%AC%E5%8F%B7%20Content.Text%20%3D%20%22%E7%A8%8B%E5%BA%8F%E9%9B%86%E7%89%88%E6%9C%AC%EF%BC%9A%22%20%2B%20System.Reflection.Assembly.GetExecutingAssembly%20%28%29.GetName,%28%29.Version.ToString%20%28%29%20%2B%22n%22%3B%20%E8%AF%BB%E5%8F%96%E7%9A%84%E6%98%AFAssemblyInfo.cs%E6%96%87%E4%BB%B6%E7%9A%84%20%5Bassembly%3A%20AssemblyVersion%20%28%221.0.1.11%22%29%5D%E3%80%82
