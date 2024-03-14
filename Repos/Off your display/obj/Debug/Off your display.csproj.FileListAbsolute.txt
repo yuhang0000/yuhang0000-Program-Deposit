@@ -1,0 +1,10 @@
+C:\Users\13975\CPP\repos\Off your display\bin\Debug\Off your display.exe.config
+C:\Users\13975\CPP\repos\Off your display\bin\Debug\Off your display.exe
+C:\Users\13975\CPP\repos\Off your display\bin\Debug\Off your display.pdb
+C:\Users\13975\CPP\repos\Off your display\obj\Debug\Off your display.csproj.AssemblyReference.cache
+C:\Users\13975\CPP\repos\Off your display\obj\Debug\Off_your_display.Properties.Resources.resources
+C:\Users\13975\CPP\repos\Off your display\obj\Debug\Off your display.csproj.GenerateResource.cache
+C:\Users\13975\CPP\repos\Off your display\obj\Debug\Off your display.csproj.CoreCompileInputs.cache
+C:\Users\13975\CPP\repos\Off your display\obj\Debug\Off your display.exe
+C:\Users\13975\CPP\repos\Off your display\obj\Debug\Off your display.pdb
+C:\Users\13975\CPP\repos\OFF your display\obj\Debug\Off_your_display.Form1.resources

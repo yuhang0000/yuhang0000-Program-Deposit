@@ -1,0 +1,10 @@
+C:\Users\13975\CPP\repos\Off your display\bin\Release\Off your display.exe.config
+C:\Users\13975\CPP\repos\Off your display\bin\Release\Off your display.exe
+C:\Users\13975\CPP\repos\Off your display\bin\Release\Off your display.pdb
+C:\Users\13975\CPP\repos\Off your display\obj\Release\Off your display.csproj.AssemblyReference.cache
+C:\Users\13975\CPP\repos\Off your display\obj\Release\Off_your_display.Form1.resources
+C:\Users\13975\CPP\repos\Off your display\obj\Release\Off_your_display.Properties.Resources.resources
+C:\Users\13975\CPP\repos\Off your display\obj\Release\Off your display.csproj.GenerateResource.cache
+C:\Users\13975\CPP\repos\Off your display\obj\Release\Off your display.csproj.CoreCompileInputs.cache
+C:\Users\13975\CPP\repos\Off your display\obj\Release\Off your display.exe
+C:\Users\13975\CPP\repos\Off your display\obj\Release\Off your display.pdb
