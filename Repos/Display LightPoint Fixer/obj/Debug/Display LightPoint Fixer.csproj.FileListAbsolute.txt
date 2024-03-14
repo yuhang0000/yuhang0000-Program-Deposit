@@ -1,0 +1,10 @@
+C:\Users\13975\CPP\repos\Display LightPoint Fixer\bin\Debug\Display LightPoint Fixer.exe.config
+C:\Users\13975\CPP\repos\Display LightPoint Fixer\bin\Debug\Display LightPoint Fixer.exe
+C:\Users\13975\CPP\repos\Display LightPoint Fixer\bin\Debug\Display LightPoint Fixer.pdb
+C:\Users\13975\CPP\repos\Display LightPoint Fixer\obj\Debug\Display LightPoint Fixer.csproj.AssemblyReference.cache
+C:\Users\13975\CPP\repos\Display LightPoint Fixer\obj\Debug\Display_LightPoint_Fixer.Properties.Resources.resources
+C:\Users\13975\CPP\repos\Display LightPoint Fixer\obj\Debug\Display LightPoint Fixer.csproj.GenerateResource.cache
+C:\Users\13975\CPP\repos\Display LightPoint Fixer\obj\Debug\Display LightPoint Fixer.csproj.CoreCompileInputs.cache
+C:\Users\13975\CPP\repos\Display LightPoint Fixer\obj\Debug\Display LightPoint Fixer.exe
+C:\Users\13975\CPP\repos\Display LightPoint Fixer\obj\Debug\Display LightPoint Fixer.pdb
+C:\Users\13975\CPP\repos\Display LightPoint Fixer\obj\Debug\Display_LightPoint_Fixer.win1.resources
