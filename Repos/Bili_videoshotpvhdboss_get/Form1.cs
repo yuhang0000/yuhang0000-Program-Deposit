@@ -24,7 +24,7 @@ namespace Bili_videoshotpvhdboss_get
         //哇塞，变量名可以用中文欸，太好了！
         public static class 全局变量
         {
-            public static String Buildtime = "2024-4-2";
+            public static String Buildtime = "2024-4-4";
             public static String 代码串;
             public static String 初始代码串;
             public static int 位1;
@@ -58,6 +58,9 @@ namespace Bili_videoshotpvhdboss_get
         {
             //我太懒了，版本号自己打印
             label6.Text = "v"+System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString();
+            //创建文件夹
+            System.IO.Directory.CreateDirectory(System.IO.Path.Combine(@".\Done\", ""));
+            System.IO.Directory.CreateDirectory(System.IO.Path.Combine(@".\Logs\", ""));
         }
 
         //开始运行
@@ -185,6 +188,7 @@ namespace Bili_videoshotpvhdboss_get
                 this.button2.Enabled = true;
                 this.button3.Enabled = false;
                 this.toolStripStatusLabel1.Text = "成功";
+                System.IO.File.WriteAllLines(@".\Done\"+ DateTime.Now.ToString("yyyy-MM-dd") +"   "+ DateTime.Now.Hour.ToString() +"-"+ DateTime.Now.Minute.ToString() +"-"+ DateTime.Now.Second.ToString() +".txt", toolStripStatusLabel3.Text.Split());
 
                 SystemSounds.Beep.Play();
                 if (MessageBox.Show(this.toolStripStatusLabel3.Text, "成功    q(≧▽≦q)",MessageBoxButtons.OKCancel) == DialogResult.OK)
@@ -283,7 +287,7 @@ namespace Bili_videoshotpvhdboss_get
         {
             if (checkBox1.Checked == true)
             {
-                System.IO.File.WriteAllLines(@".\Logs\"+全局变量.当前时间和日期+".txt", toolStripStatusLabel3.Text.Split());
+                System.IO.File.WriteAllLines(@".\Logs\"+ 全局变量.当前时间和日期 +".txt", toolStripStatusLabel3.Text.Split());
             }
         }
 
