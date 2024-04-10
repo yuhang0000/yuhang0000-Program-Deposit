@@ -120,6 +120,7 @@
             this.toolStripStatusLabel3.Name = "toolStripStatusLabel3";
             this.toolStripStatusLabel3.Size = new System.Drawing.Size(349, 24);
             this.toolStripStatusLabel3.Text = "https://bimp.hdslb.com/videoshotpvhdboss/...";
+            this.toolStripStatusLabel3.Click += new System.EventHandler(this.toolStripStatusLabel3_Click);
             // 
             // textBox2
             // 

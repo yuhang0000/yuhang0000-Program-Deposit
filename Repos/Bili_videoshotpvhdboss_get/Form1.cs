@@ -24,7 +24,7 @@ namespace Bili_videoshotpvhdboss_get
         //哇塞，变量名可以用中文欸，太好了！
         public static class 全局变量
         {
-            public static String Buildtime = "2024-4-4";
+            public static String Buildtime = "2024-4-10";
             public static String 代码串;
             public static String 初始代码串;
             public static int 位1;
@@ -66,6 +66,34 @@ namespace Bili_videoshotpvhdboss_get
         //开始运行
         private void button1_Click(object sender, EventArgs e)
         {
+            if (int.Parse(this.toolStripStatusLabel4.Text) != 0 && this.toolStripStatusLabel2.Text != "成功 (200)")
+            {
+                //先暂停
+                //this.timer1.Enabled = false;
+                this.toolStripStatusLabel1.Text = "暂停";
+                全局变量.Timer1的状态 = false;
+                timer1.Stop();
+                timer2.Stop();
+                //this.button2.Enabled = true;
+                //this.button3.Enabled = false;
+
+                SystemSounds.Beep.Play();
+                if (MessageBox.Show("上一批的任务还没有完成捏，是否重新运行新任务？", "提示    (´･ω･`)?", MessageBoxButtons.OKCancel, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) == DialogResult.Cancel)
+                {
+                    //如果处于激活状态下，继续运行
+                    if (this.button3.Enabled == true)
+                    {
+                        //this.timer1.Enabled = true;
+                        this.toolStripStatusLabel1.Text = "进行中...";
+                        全局变量.Timer1的状态 = true;
+                        timer1.Start();
+                        timer2.Start();
+                        this.button3.Enabled = true;
+                        this.button2.Enabled = false;
+                    }
+                    return;
+                }
+            }
             全局变量.初始代码串 = textBox2.Text+textBox5.Text+"_"+textBox3.Text+textBox7.Text;
             //Console.WriteLine(全局变量.初始代码串);
             this.toolStripStatusLabel1.Text = "进行中";
@@ -191,7 +219,7 @@ namespace Bili_videoshotpvhdboss_get
                 System.IO.File.WriteAllLines(@".\Done\"+ DateTime.Now.ToString("yyyy-MM-dd") +"   "+ DateTime.Now.Hour.ToString() +"-"+ DateTime.Now.Minute.ToString() +"-"+ DateTime.Now.Second.ToString() +".txt", toolStripStatusLabel3.Text.Split());
 
                 SystemSounds.Beep.Play();
-                if (MessageBox.Show(this.toolStripStatusLabel3.Text, "成功    q(≧▽≦q)",MessageBoxButtons.OKCancel) == DialogResult.OK)
+                if (MessageBox.Show(this.toolStripStatusLabel3.Text, "成功    q(≧▽≦q)",MessageBoxButtons.OK) == DialogResult.OK)
                 {
                     //复制到剪切板
                     Clipboard.SetDataObject(this.toolStripStatusLabel3.Text);
@@ -295,6 +323,14 @@ namespace Bili_videoshotpvhdboss_get
         private void label6_Click(object sender, EventArgs e)
         {
             MessageBox.Show("Bili_videoshotpvhdboss_get\nBy：yuhang0000\nBuild Time：" + 全局变量.Buildtime + "\n版本号：" + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString() , "关于");
+        }
+
+        private void toolStripStatusLabel3_Click(object sender, EventArgs e)
+        {
+            if (this.toolStripStatusLabel3.Text != "https://bimp.hdslb.com/videoshotpvhdboss/...")
+            { 
+                Clipboard.SetDataObject(this.toolStripStatusLabel3.Text);
+            }
         }
     }
 }
