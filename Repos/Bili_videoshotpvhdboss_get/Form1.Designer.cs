@@ -309,7 +309,6 @@
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.DoubleBuffered = true;
-            this.MaximizeBox = false;
             this.MinimumSize = new System.Drawing.Size(1127, 497);
             this.Name = "Form1";
             this.Text = "Bili Videoshotpvhdboss Get";

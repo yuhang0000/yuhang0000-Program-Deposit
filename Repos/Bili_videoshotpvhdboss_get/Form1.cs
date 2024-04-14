@@ -73,7 +73,7 @@ namespace Bili_videoshotpvhdboss_get
                 //this.timer1.Enabled = false;
                 this.toolStripStatusLabel1.Text = "暂停";
                 全局变量.网络循环操作的状态 = false;
-                timer1.Stop();
+                //timer1.Stop();
                 timer2.Stop();
                 //this.button2.Enabled = true;
                 //this.button3.Enabled = false;
@@ -87,7 +87,8 @@ namespace Bili_videoshotpvhdboss_get
                         //this.timer1.Enabled = true;
                         this.toolStripStatusLabel1.Text = "进行中...";
                         全局变量.网络循环操作的状态 = true;
-                        timer1.Start();
+                        //timer1.Start();
+                        HTTPGET();
                         timer2.Start();
                         this.button3.Enabled = true;
                         this.button2.Enabled = false;
