@@ -76,6 +76,7 @@
             this.textBox1.ScrollBars = System.Windows.Forms.ScrollBars.Both;
             this.textBox1.Size = new System.Drawing.Size(620, 411);
             this.textBox1.TabIndex = 1;
+            this.textBox1.TabStop = false;
             this.textBox1.Text = "就绪。";
             this.textBox1.WordWrap = false;
             // 
@@ -127,7 +128,7 @@
             this.textBox2.Location = new System.Drawing.Point(61, 9);
             this.textBox2.Name = "textBox2";
             this.textBox2.Size = new System.Drawing.Size(410, 25);
-            this.textBox2.TabIndex = 3;
+            this.textBox2.TabIndex = 8;
             this.textBox2.Text = "http://bimp.hdslb.com/videoshotpvhdboss/";
             // 
             // label2
@@ -144,7 +145,7 @@
             this.textBox3.Location = new System.Drawing.Point(61, 71);
             this.textBox3.Name = "textBox3";
             this.textBox3.Size = new System.Drawing.Size(180, 25);
-            this.textBox3.TabIndex = 3;
+            this.textBox3.TabIndex = 2;
             this.textBox3.Text = "000000";
             // 
             // label3
@@ -161,7 +162,7 @@
             this.textBox4.Location = new System.Drawing.Point(291, 71);
             this.textBox4.Name = "textBox4";
             this.textBox4.Size = new System.Drawing.Size(180, 25);
-            this.textBox4.TabIndex = 3;
+            this.textBox4.TabIndex = 9;
             this.textBox4.Text = "zzzzzz";
             // 
             // label4
@@ -178,7 +179,7 @@
             this.textBox5.Location = new System.Drawing.Point(61, 40);
             this.textBox5.Name = "textBox5";
             this.textBox5.Size = new System.Drawing.Size(410, 25);
-            this.textBox5.TabIndex = 3;
+            this.textBox5.TabIndex = 1;
             this.textBox5.Text = "2333";
             // 
             // label5
@@ -193,10 +194,14 @@
             // textBox6
             // 
             this.textBox6.Location = new System.Drawing.Point(61, 130);
+            this.textBox6.MaxLength = 5;
             this.textBox6.Name = "textBox6";
             this.textBox6.Size = new System.Drawing.Size(83, 25);
             this.textBox6.TabIndex = 3;
             this.textBox6.Text = "10";
+            this.textBox6.TextChanged += new System.EventHandler(this.textBox6_TextChanged);
+            this.textBox6.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBox6_KeyPress);
+            this.textBox6.Leave += new System.EventHandler(this.textBox6_Leave);
             // 
             // button1
             // 
@@ -204,7 +209,7 @@
             this.button1.Location = new System.Drawing.Point(374, 133);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(97, 23);
-            this.button1.TabIndex = 4;
+            this.button1.TabIndex = 7;
             this.button1.Text = "干它！！！";
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
@@ -227,7 +232,7 @@
             this.checkBox1.Location = new System.Drawing.Point(150, 133);
             this.checkBox1.Name = "checkBox1";
             this.checkBox1.Size = new System.Drawing.Size(89, 19);
-            this.checkBox1.TabIndex = 5;
+            this.checkBox1.TabIndex = 4;
             this.checkBox1.Text = "输出日志";
             this.checkBox1.UseVisualStyleBackColor = true;
             // 
@@ -245,13 +250,12 @@
             this.textBox7.Location = new System.Drawing.Point(61, 102);
             this.textBox7.Name = "textBox7";
             this.textBox7.Size = new System.Drawing.Size(410, 25);
-            this.textBox7.TabIndex = 3;
+            this.textBox7.TabIndex = 10;
             this.textBox7.Text = "-0001.jpg";
             // 
             // timer1
             // 
             this.timer1.Interval = 10;
-            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
             // button2
             // 
@@ -270,7 +274,7 @@
             this.button3.Location = new System.Drawing.Point(262, 133);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(50, 23);
-            this.button3.TabIndex = 6;
+            this.button3.TabIndex = 5;
             this.button3.Text = "暂停";
             this.button3.UseVisualStyleBackColor = true;
             this.button3.Click += new System.EventHandler(this.button3_Click);
@@ -306,11 +310,11 @@
             this.Controls.Add(this.label1);
             this.DoubleBuffered = true;
             this.MaximizeBox = false;
-            this.MaximumSize = new System.Drawing.Size(1127, 497);
             this.MinimumSize = new System.Drawing.Size(1127, 497);
             this.Name = "Form1";
             this.Text = "Bili Videoshotpvhdboss Get";
             this.Load += new System.EventHandler(this.Form1_Load);
+            this.Resize += new System.EventHandler(this.Form1_Resize);
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();
             this.ResumeLayout(false);

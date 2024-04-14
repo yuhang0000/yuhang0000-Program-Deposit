@@ -24,7 +24,7 @@ namespace Bili_videoshotpvhdboss_get
         //哇塞，变量名可以用中文欸，太好了！
         public static class 全局变量
         {
-            public static String Buildtime = "2024-4-10";
+            public static String Buildtime = "2024-4-14";
             public static String 代码串;
             public static String 初始代码串;
             public static int 位1;
@@ -47,8 +47,9 @@ namespace Bili_videoshotpvhdboss_get
             public static String 前缀;
             public static String 获取状态;
             public static String 当前时间和日期;
-            public static bool Timer1的状态;
+            public static bool 网络循环操作的状态;
             public static int 计数;
+            public static string 纯数字数列 = "0123456789";
             public static string 递增列表 = "0123456789abcdefghijklmnopqrstuvwxyz";
             public static String[] 这是递增列表 = { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"};
         }
@@ -71,7 +72,7 @@ namespace Bili_videoshotpvhdboss_get
                 //先暂停
                 //this.timer1.Enabled = false;
                 this.toolStripStatusLabel1.Text = "暂停";
-                全局变量.Timer1的状态 = false;
+                全局变量.网络循环操作的状态 = false;
                 timer1.Stop();
                 timer2.Stop();
                 //this.button2.Enabled = true;
@@ -85,7 +86,7 @@ namespace Bili_videoshotpvhdboss_get
                     {
                         //this.timer1.Enabled = true;
                         this.toolStripStatusLabel1.Text = "进行中...";
-                        全局变量.Timer1的状态 = true;
+                        全局变量.网络循环操作的状态 = true;
                         timer1.Start();
                         timer2.Start();
                         this.button3.Enabled = true;
@@ -111,7 +112,7 @@ namespace Bili_videoshotpvhdboss_get
             //Console.WriteLine(全局变量.当前时间和日期);
 
             //设置循环时间
-            this.timer1.Interval = int.Parse(textBox6.Text);
+            //this.timer1.Interval = int.Parse(textBox6.Text);
 
             //截取字符
             全局变量.位6 = 全局变量.递增列表.IndexOf(textBox3.Text.Substring(0, 1));
@@ -164,11 +165,14 @@ namespace Bili_videoshotpvhdboss_get
             this.toolStripStatusLabel2.Text = 全局变量.获取状态 +  " (" + ((int)输出.StatusCode).ToString() + ")";
             */
 
-            this.timer1.Enabled = true;
+            //this.timer1.Enabled = true;
             this.timer2.Enabled = true;
             this.button3.Enabled = true;
             this.button2.Enabled = false;
-            全局变量.Timer1的状态 = true;
+            全局变量.网络循环操作的状态 = true;
+            HTTPGET();
+            //把焦点给button3
+            SelectNextControl(ActiveControl, false, true, true, true);
         }
 
         
@@ -185,9 +189,10 @@ namespace Bili_videoshotpvhdboss_get
             }
         }
 
-
-        //循环器
-        private async void timer1_Tick(object sender, EventArgs e)
+        //这个坑爹Timer我是不会再用了。
+        //private void timer1_Tick(object sender, EventArgs e)
+        //循环网络操作
+        private async void HTTPGET()
         {
             //计数
             全局变量.计数 = 全局变量.计数 + 1;
@@ -201,7 +206,7 @@ namespace Bili_videoshotpvhdboss_get
 
 
             //网络爬取
-            timer1.Stop();
+            //timer1.Stop();
             var client = new HttpClient();
             //var 输出 = await client.GetAsync(全局变量.初始代码串);
             var 输出 = await client.GetAsync(this.toolStripStatusLabel3.Text);
@@ -228,9 +233,46 @@ namespace Bili_videoshotpvhdboss_get
             else if (((int)输出.StatusCode).ToString() == "404")
             {
                 全局变量.获取状态 = "失败";
-                if (全局变量.Timer1的状态 != false)
+                if (全局变量.网络循环操作的状态 != false)
                 {
-                    timer1.Start();
+                    //timer1.Start();
+                    if(textBox6.Text != "")
+                    {
+                    await Task.Delay(int.Parse(textBox6.Text));
+                    }
+                    /*
+                    else if (int.Parse(textBox6.Text) >= 10000)
+                    {
+                        await Task.Delay(9999);
+                    }
+                    */
+                    else
+                    {
+                        await Task.Delay(1);
+                    }
+                    HTTPGET();
+                }
+            }
+            else
+            {
+                if (全局变量.网络循环操作的状态 != false)
+                {
+                    if (textBox6.Text != "")
+                    {
+                        await Task.Delay(int.Parse(textBox6.Text));
+                    }
+                    /* 
+                    else if (int.Parse(textBox6.Text) >= 10000)
+                    {
+                        await Task.Delay(9999);
+                    }
+                    */
+                    else
+                    {
+                        await Task.Delay(1);
+                    }
+                    HTTPGET();
+                    return;
                 }
             }
             this.toolStripStatusLabel2.Text = 全局变量.获取状态 +  " (" + ((int)输出.StatusCode).ToString() + ")";
@@ -275,8 +317,8 @@ namespace Bili_videoshotpvhdboss_get
                 全局变量.位6 = 0;
 
                 //this.timer1.Enabled = false;
-                全局变量.Timer1的状态 = false;
-                timer1.Stop();
+                全局变量.网络循环操作的状态 = false;
+                //timer1.Stop();
                 timer2.Stop();
                 this.button2.Enabled = false;
                 this.button3.Enabled = false;
@@ -292,19 +334,22 @@ namespace Bili_videoshotpvhdboss_get
         {
             //this.timer1.Enabled = true;
             this.toolStripStatusLabel1.Text = "进行中...";
-            全局变量.Timer1的状态 = true;
-            timer1.Start(); 
+            全局变量.网络循环操作的状态 = true;
+            //timer1.Start(); 
+            HTTPGET();
             timer2.Start();
             this.button3.Enabled = true;
             this.button2.Enabled = false;
+            //把焦点给button3，妈耶，怎么这么麻烦。。。
+            SelectNextControl(ActiveControl, false, true, true, true);
         }
         //暂停
         private void button3_Click(object sender, EventArgs e)
         {
             //this.timer1.Enabled = false;
             this.toolStripStatusLabel1.Text = "暂停";
-            全局变量.Timer1的状态 = false;
-            timer1.Stop();  
+            全局变量.网络循环操作的状态 = false;
+            //timer1.Stop();  
             timer2.Stop();
             this.button2.Enabled = true;
             this.button3.Enabled = false;
@@ -325,12 +370,60 @@ namespace Bili_videoshotpvhdboss_get
             MessageBox.Show("Bili_videoshotpvhdboss_get\nBy：yuhang0000\nBuild Time：" + 全局变量.Buildtime + "\n版本号：" + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString() , "关于");
         }
 
+        //复制状态栏链接
         private void toolStripStatusLabel3_Click(object sender, EventArgs e)
         {
             if (this.toolStripStatusLabel3.Text != "https://bimp.hdslb.com/videoshotpvhdboss/...")
             { 
                 Clipboard.SetDataObject(this.toolStripStatusLabel3.Text);
             }
+        }
+
+        //离开textBox6的焦点
+        private void textBox6_Leave(object sender, EventArgs e)
+        {
+            if(this.textBox6.Text == "")
+            {
+                this.textBox6.Text = "1";
+            }
+        }
+
+        //进行textBox6文本操作
+        private void textBox6_TextChanged(object sender, EventArgs e)
+        {
+            if (textBox6.Text == "")
+            {
+                SystemSounds.Beep.Play();
+            }
+        }
+        //进行textBox6文本操作too
+        private void textBox6_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (!(Char.IsNumber(e.KeyChar)) && e.KeyChar != (char)8)
+            {
+                e.Handled = true;
+            }
+            else
+            { 
+                if(textBox6.Text.Length > 3 && e.KeyChar != (char)8)
+                {
+                    e.Handled = true;
+                    SystemSounds.Beep.Play();
+                    this.textBox6.Text = "9999";
+                }
+                else
+                {
+                    e.Handled = false;
+                }
+            }
+        }
+
+        //窗口调整大小自适应
+        private void Form1_Resize(object sender, EventArgs e)
+        {
+            this.textBox1.Width = this.Width - 507;
+            this.textBox1.Height = this.Height - 86;
+            this.label6.Top = this.Height - 101;
         }
     }
 }
