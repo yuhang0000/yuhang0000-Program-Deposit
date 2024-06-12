@@ -415,7 +415,17 @@ namespace Bili_videoshotpvhdboss_get
         {
             if (checkBox1.Checked == true)
             {
-                System.IO.File.WriteAllLines(@".\Logs\"+ 全局变量.当前时间和日期 +".txt", toolStripStatusLabel3.Text.Split());
+                string 旧文本;
+                if (System.IO.File.Exists(@".\Logs\"+ 全局变量.当前时间和日期 +".txt") == true)
+                {
+                    旧文本 = System.IO.File.ReadAllText(@".\Logs\"+ 全局变量.当前时间和日期 +".txt");
+                }
+                else
+                {
+                    旧文本 = "";
+                }
+                string[] 新文本 = { (旧文本 + DateTime.Now.ToString() + "\t|\t" + toolStripStatusLabel4.Text + "\t|\t" + toolStripStatusLabel3.Text) };
+                System.IO.File.WriteAllLines(@".\Logs\"+ 全局变量.当前时间和日期 +".txt", 新文本);
             }
         }
 
