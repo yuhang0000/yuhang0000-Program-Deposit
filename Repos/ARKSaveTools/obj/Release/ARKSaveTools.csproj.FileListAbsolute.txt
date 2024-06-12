@@ -1,0 +1,10 @@
+C:\Users\13975\CPP\repos\ARKSaveTools\bin\Release\ARKSaveTools.exe.config
+C:\Users\13975\CPP\repos\ARKSaveTools\bin\Release\ARKSaveTools.exe
+C:\Users\13975\CPP\repos\ARKSaveTools\bin\Release\ARKSaveTools.pdb
+C:\Users\13975\CPP\repos\ARKSaveTools\obj\Release\ARKSaveTools.csproj.AssemblyReference.cache
+C:\Users\13975\CPP\repos\ARKSaveTools\obj\Release\ARKSaveTools.Form1.resources
+C:\Users\13975\CPP\repos\ARKSaveTools\obj\Release\ARKSaveTools.Properties.Resources.resources
+C:\Users\13975\CPP\repos\ARKSaveTools\obj\Release\ARKSaveTools.csproj.GenerateResource.cache
+C:\Users\13975\CPP\repos\ARKSaveTools\obj\Release\ARKSaveTools.csproj.CoreCompileInputs.cache
+C:\Users\13975\CPP\repos\ARKSaveTools\obj\Release\ARKSaveTools.exe
+C:\Users\13975\CPP\repos\ARKSaveTools\obj\Release\ARKSaveTools.pdb
