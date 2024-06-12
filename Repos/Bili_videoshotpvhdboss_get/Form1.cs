@@ -24,7 +24,7 @@ namespace Bili_videoshotpvhdboss_get
         //哇塞，变量名可以用中文欸，太好了！
         public static class 全局变量
         {
-            public static String Buildtime = "2024-6-12";
+            public static String Buildtime = "2024-6-13";
             public static String 代码串;
             public static String 初始代码串;
             public static int 位1;
@@ -51,6 +51,7 @@ namespace Bili_videoshotpvhdboss_get
             public static bool 错误弹窗的状态;
             public static int 错误计数 = 0;
             public static int 计数;
+            public static String[] 这是配置文档诶;
             public static string 纯数字数列 = "0123456789";
             public static string 递增列表 = "0123456789abcdefghijklmnopqrstuvwxyz";
             public static String[] 这是递增列表 = { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"};
@@ -64,6 +65,35 @@ namespace Bili_videoshotpvhdboss_get
             //创建文件夹
             System.IO.Directory.CreateDirectory(System.IO.Path.Combine(@".\Done\", ""));
             System.IO.Directory.CreateDirectory(System.IO.Path.Combine(@".\Logs\", ""));
+            //检查配置文件在不在喽
+            if (System.IO.File.Exists(@".\Setting.ini") == false)
+            {
+                string[] 这是配置文档诶 = { textBox2.Text, textBox5.Text, textBox3.Text, textBox4.Text, textBox7.Text, textBox6.Text, "" };
+                System.IO.File.WriteAllLines(@".\Setting.ini", 这是配置文档诶);
+            }
+            else 
+            {
+                try //我爱死 try 和 catch 这两个方法啦，爱用🤍
+                { 
+                    全局变量.这是配置文档诶 = System.IO.File.ReadAllLines(@".\Setting.ini");
+                    this.textBox2.Text = 全局变量.这是配置文档诶[0];
+                    this.textBox5.Text = 全局变量.这是配置文档诶[1];
+                    this.textBox3.Text = 全局变量.这是配置文档诶[2];
+                    this.textBox4.Text = 全局变量.这是配置文档诶[3];
+                    this.textBox7.Text = 全局变量.这是配置文档诶[4];
+                    this.textBox6.Text = 全局变量.这是配置文档诶[5];
+                    if(全局变量.这是配置文档诶[6] != "")
+                    {
+                        this.textBox3.Text = 全局变量.这是配置文档诶[6];
+                    }
+                }
+                catch(Exception)
+                {
+                    System.Media.SystemSounds.Beep.Play();
+                    toolStripStatusLabel3.Text = "配置文档好像坏欸。";
+                    textBox1.Text = "就绪。\r\n额，配置文档好像坏欸。";
+                }
+            }
         }
 
         //开始运行
@@ -98,6 +128,12 @@ namespace Bili_videoshotpvhdboss_get
                     return;
                 }
             }
+            if(this.textBox5.Text == "")
+            {
+                System.Media.SystemSounds.Hand.Play();
+                MessageBox.Show("数值部分不能为空诶。", "错误    (  OдO)!!!");
+                return;
+            }
             全局变量.初始代码串 = textBox2.Text+textBox5.Text+"_"+textBox3.Text+textBox7.Text;
             //Console.WriteLine(全局变量.初始代码串);
             this.toolStripStatusLabel1.Text = "进行中";
@@ -118,18 +154,46 @@ namespace Bili_videoshotpvhdboss_get
             //this.timer1.Interval = int.Parse(textBox6.Text);
 
             //截取字符
+            try
+            { 
             全局变量.位6 = 全局变量.递增列表.IndexOf(textBox3.Text.Substring(0, 1));
             全局变量.位5 = 全局变量.递增列表.IndexOf(textBox3.Text.Substring(1, 1));
             全局变量.位4 = 全局变量.递增列表.IndexOf(textBox3.Text.Substring(2, 1));
             全局变量.位3 = 全局变量.递增列表.IndexOf(textBox3.Text.Substring(3, 1));
             全局变量.位2 = 全局变量.递增列表.IndexOf(textBox3.Text.Substring(4, 1));
             全局变量.位1 = 全局变量.递增列表.IndexOf(textBox3.Text.Substring(5, 1));
-            //全局变量.终位1 = int.Parse(textBox4.Text.Substring(0, 1));
-            //全局变量.终位2 = int.Parse(textBox4.Text.Substring(1, 1));
-            //全局变量.终位3 = int.Parse(textBox4.Text.Substring(2, 1));
-            //全局变量.终位4 = int.Parse(textBox4.Text.Substring(3, 1));
-            //全局变量.终位5 = int.Parse(textBox4.Text.Substring(4, 1));
-            //全局变量.终位6 = int.Parse(textBox4.Text.Substring(5, 1));
+            }
+            catch (Exception)
+            {
+                System.Media.SystemSounds.Hand.Play();
+                this.toolStripStatusLabel4.Text = "0";
+                this.toolStripStatusLabel3.Text = "起始字段输入有误。";
+                this.toolStripStatusLabel2.Text = "错误 (000)";
+                this.toolStripStatusLabel1.Text = "已终止";
+                this.textBox1.Text = "已终止\r\n起始字段输入有误吼，是六位数欸。\r\n又或者在里面输入了奇怪的东西?";
+                return;
+            }
+            /*
+            try 
+            {
+                全局变量.终位1 = int.Parse(textBox4.Text.Substring(0, 1));
+                全局变量.终位2 = int.Parse(textBox4.Text.Substring(1, 1));
+                全局变量.终位3 = int.Parse(textBox4.Text.Substring(2, 1));
+                全局变量.终位4 = int.Parse(textBox4.Text.Substring(3, 1));
+                全局变量.终位5 = int.Parse(textBox4.Text.Substring(4, 1));
+                全局变量.终位6 = int.Parse(textBox4.Text.Substring(5, 1));
+            }
+            catch (Exception)
+            {
+                System.Media.SystemSounds.Hand.Play();
+                this.toolStripStatusLabel4.Text = "0";
+                this.toolStripStatusLabel3.Text = "终止字段输入有误。";
+                this.toolStripStatusLabel2.Text = "错误 (000)";
+                this.toolStripStatusLabel1.Text = "已终止";
+                this.textBox1.Text = "已终止\r\n终止字段输入有误吼，是六位数欸。\r\n又或者在里面输入了奇怪的东西?";
+                return;
+            }
+            */
 
 
             //Console.WriteLine(全局变量.递增列表.IndexOf("o"));
@@ -179,7 +243,6 @@ namespace Bili_videoshotpvhdboss_get
         }
 
         
-        
 
         //这个坑爹Timer我是不会再用了。
         //private void timer1_Tick(object sender, EventArgs e)
@@ -194,8 +257,20 @@ namespace Bili_videoshotpvhdboss_get
             //this.toolStripStatusLabel3.Text = 全局变量.代码串;
 
             //打印到状态栏
+            try
+            { 
             this.toolStripStatusLabel3.Text = 全局变量.前缀 + 全局变量.数值 +"_"+ 全局变量.这是递增列表[全局变量.位6].ToString() + 全局变量.这是递增列表[全局变量.位5].ToString() + 全局变量.这是递增列表[全局变量.位4].ToString() + 全局变量.这是递增列表[全局变量.位3].ToString() + 全局变量.这是递增列表[全局变量.位2].ToString() + 全局变量.这是递增列表[全局变量.位1].ToString() + 全局变量.后缀;
-
+            }
+            catch (Exception)
+            {
+                System.Media.SystemSounds.Hand.Play();
+                this.toolStripStatusLabel4.Text = "0";
+                this.toolStripStatusLabel3.Text = "起始字段输入有误。";
+                this.toolStripStatusLabel2.Text = "错误 (000)";
+                this.toolStripStatusLabel1.Text = "已终止";
+                this.textBox1.Text = "已终止\r\n起始字段输入有误吼，是六位数欸。\r\n又或者在里面输入了奇怪的东西?";
+                return;
+            }
 
             //网络爬取
             //timer1.Stop();
@@ -491,5 +566,12 @@ namespace Bili_videoshotpvhdboss_get
             this.label6.Top = this.Height - 101;
         }
 
+        //程序关闭后要干嘛勒?当然是要保存配置文档啦!
+        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            string 上一次的进度在哪 = 全局变量.这是递增列表[全局变量.位6].ToString() + 全局变量.这是递增列表[全局变量.位5].ToString() + 全局变量.这是递增列表[全局变量.位4].ToString() + 全局变量.这是递增列表[全局变量.位3].ToString() + 全局变量.这是递增列表[全局变量.位2].ToString() + "0";
+            string[] 这是配置文档诶 = { textBox2.Text, textBox5.Text, textBox3.Text, textBox4.Text, textBox7.Text, textBox6.Text, 上一次的进度在哪 };
+            System.IO.File.WriteAllLines(@".\Setting.ini", 这是配置文档诶);
+        }
     }
 }

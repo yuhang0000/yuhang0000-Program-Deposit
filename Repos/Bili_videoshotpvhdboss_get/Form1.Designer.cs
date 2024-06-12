@@ -143,6 +143,7 @@
             // textBox3
             // 
             this.textBox3.Location = new System.Drawing.Point(61, 71);
+            this.textBox3.MaxLength = 6;
             this.textBox3.Name = "textBox3";
             this.textBox3.Size = new System.Drawing.Size(180, 25);
             this.textBox3.TabIndex = 2;
@@ -160,6 +161,7 @@
             // textBox4
             // 
             this.textBox4.Location = new System.Drawing.Point(291, 71);
+            this.textBox4.MaxLength = 6;
             this.textBox4.Name = "textBox4";
             this.textBox4.Size = new System.Drawing.Size(180, 25);
             this.textBox4.TabIndex = 9;
@@ -312,6 +314,7 @@
             this.MinimumSize = new System.Drawing.Size(1127, 497);
             this.Name = "Form1";
             this.Text = "Bili Videoshotpvhdboss Get";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
             this.Load += new System.EventHandler(this.Form1_Load);
             this.Resize += new System.EventHandler(this.Form1_Resize);
             this.statusStrip1.ResumeLayout(false);
