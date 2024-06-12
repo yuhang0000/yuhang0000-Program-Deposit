@@ -46,3 +46,4 @@ C:\Users\13975\CPP\repos\Bili_videoshotpvhdboss_get\obj\Release\Bili_videoshotpv
 C:\Users\13975\CPP\repos\Bili_videoshotpvhdboss_get\obj\Release\Bili_videoshotpvhdboss_get.csproj.CopyComplete
 C:\Users\13975\CPP\repos\Bili_videoshotpvhdboss_get\obj\Release\Bili_videoshotpvhdboss_get.exe
 C:\Users\13975\CPP\repos\Bili_videoshotpvhdboss_get\obj\Release\Bili_videoshotpvhdboss_get.pdb
+C:\Users\13975\CPP\repos\Bili_videoshotpvhdboss_get\obj\Release\Bili_videoshotpvhdboss_get.报错.resources

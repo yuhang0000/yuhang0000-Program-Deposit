@@ -46,3 +46,4 @@ C:\Users\13975\CPP\repos\Bili_videoshotpvhdboss_get\bin\Debug\System.Threading.T
 C:\Users\13975\CPP\repos\Bili_videoshotpvhdboss_get\bin\Debug\System.ValueTuple.xml
 C:\Users\13975\CPP\repos\Bili_videoshotpvhdboss_get\obj\Debug\Bili_videoshotpvhdboss_get.csproj.App.config
 C:\Users\13975\CPP\repos\Bili_videoshotpvhdboss_get\obj\Debug\Bili_videoshotpvhdboss_get.csproj.CopyComplete
+C:\Users\13975\CPP\repos\Bili_videoshotpvhdboss_get\obj\Debug\Bili_videoshotpvhdboss_get.报错.resources

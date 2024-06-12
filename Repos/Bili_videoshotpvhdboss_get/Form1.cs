@@ -24,7 +24,7 @@ namespace Bili_videoshotpvhdboss_get
         //哇塞，变量名可以用中文欸，太好了！
         public static class 全局变量
         {
-            public static String Buildtime = "2024-4-14";
+            public static String Buildtime = "2024-6-12";
             public static String 代码串;
             public static String 初始代码串;
             public static int 位1;
@@ -48,6 +48,8 @@ namespace Bili_videoshotpvhdboss_get
             public static String 获取状态;
             public static String 当前时间和日期;
             public static bool 网络循环操作的状态;
+            public static bool 错误弹窗的状态;
+            public static int 错误计数 = 0;
             public static int 计数;
             public static string 纯数字数列 = "0123456789";
             public static string 递增列表 = "0123456789abcdefghijklmnopqrstuvwxyz";
@@ -179,17 +181,6 @@ namespace Bili_videoshotpvhdboss_get
         
         
 
-        class test
-        {
-            private static readonly HttpClient client = new HttpClient();
-            static async Task Main(string[] args)
-            {
-                //发送Get请求
-                var responseString = await client.GetStringAsync("https://bimp.hdslb.com/videoshotpvhdboss/1482069818_vifmja-0001.jpg");
-                Console.WriteLine(responseString);
-            }
-        }
-
         //这个坑爹Timer我是不会再用了。
         //private void timer1_Tick(object sender, EventArgs e)
         //循环网络操作
@@ -210,6 +201,8 @@ namespace Bili_videoshotpvhdboss_get
             //timer1.Stop();
             var client = new HttpClient();
             //var 输出 = await client.GetAsync(全局变量.初始代码串);
+            try //Try 是个好东西
+            { 
             var 输出 = await client.GetAsync(this.toolStripStatusLabel3.Text);
             //Console.WriteLine(输出);
             this.textBox1.Text = 输出.ToString();
@@ -328,6 +321,67 @@ namespace Bili_videoshotpvhdboss_get
                 MessageBox.Show("我尽力了QwQ", "失败    ╥﹏╥...");
             }
             
+            //Try 报错哩就放在这儿弹个窗口
+            }
+            catch (Exception 错了)
+            {
+                //内存回收
+                client.Dispose();
+                client = null;
+                GC.Collect();
+
+
+                string[] 错了呀 = 错了.ToString().Split(new[] { Environment.NewLine }, StringSplitOptions.None);
+                string 报错时间 = DateTime.Now.ToString();
+
+                if (全局变量.错误弹窗的状态 == false)
+                {
+                    全局变量.错误弹窗的状态 = true;
+                    报错 报错 = new 报错();
+                    报错.Show();
+
+                    if (错了呀.Length > 0)
+                    {
+                        Bili_videoshotpvhdboss_get.报错.列表更新(Bili_videoshotpvhdboss_get.报错.让我看看.listView1, 报错时间, 错了呀[0]);
+                    }
+                    else
+                    {
+                        Bili_videoshotpvhdboss_get.报错.列表更新(Bili_videoshotpvhdboss_get.报错.让我看看.listView1, 报错时间, "异常错误");
+                    }
+                }
+                else
+                {
+                    if (错了呀.Length > 0)
+                    {
+                        Bili_videoshotpvhdboss_get.报错.列表更新(Bili_videoshotpvhdboss_get.报错.让我看看.listView1, 报错时间, 错了呀[0]);
+                    }
+                    else
+                    {
+                        Bili_videoshotpvhdboss_get.报错.列表更新(Bili_videoshotpvhdboss_get.报错.让我看看.listView1, 报错时间, "异常错误");
+                    }
+                }
+
+                //报错了就重试喽...
+                if (全局变量.网络循环操作的状态 != false)
+                {
+                    if (textBox6.Text != "")
+                    {
+                        await Task.Delay(int.Parse(textBox6.Text));
+                    }
+                    /* 
+                    else if (int.Parse(textBox6.Text) >= 10000)
+                    {
+                        await Task.Delay(9999);
+                    }
+                    */
+                    else
+                    {
+                        await Task.Delay(1);
+                    }
+                    HTTPGET();
+                    return;
+                }
+            }
         }
 
         //继续
@@ -426,5 +480,6 @@ namespace Bili_videoshotpvhdboss_get
             this.textBox1.Height = this.Height - 86;
             this.label6.Top = this.Height - 101;
         }
+
     }
 }
