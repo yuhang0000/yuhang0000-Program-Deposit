@@ -45,6 +45,10 @@ namespace Bili_videoshotpvhdboss_get
                 错误 = 错误.Replace("System.Threading.Tasks.TaskCanceledException: ", "");
                 错误 = 错误 + "---> 大概是连接超时?";
             }
+            if (错误.Contains("System.InvalidOperationException: ") == true)
+            {
+                错误 = 错误.Replace("System.InvalidOperationException: ", "");
+            }
             if (错误.Contains("System.Net.Sockets.SocketException: ") == true)
             {
                 错误 = 错误.Replace("System.Net.Sockets.SocketException: ", "");
