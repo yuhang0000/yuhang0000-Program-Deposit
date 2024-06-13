@@ -7,7 +7,7 @@ yuhang0000-Program-Deposit
 每個專案所引用的代碼或庫寫在專案所屬的資料夾的`.. /lnk/`資料夾裡。
 
 ### 編譯：
-該項目的源代碼，基於 ".NET Framework 4.8.2" 編寫，請確保有安裝 "[.NET Framework 4.8 運行時](https://dotnet.microsoft.com/download/dotnet-framework/net48)" 。  
+該項目的源代碼，基於 ".NET Framework 4.8.2" 編寫，請確保有預裝 "[.NET Framework 4.8 運行時](https://dotnet.microsoft.com/download/dotnet-framework/net48)" 。  
 瀏覽與編輯請使用 [Visual Studio 2022](https://visualstudio.microsoft.com/) 打開。  
 Visual Studio 需要裝備 WinForm 窗體應用組件和 .NET 基本組件庫。  
 
