@@ -606,7 +606,25 @@ namespace Bili_videoshotpvhdboss_get
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
             string 版本 = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString();
-            string 上一次的进度在哪 = 全局变量.这是递增列表[全局变量.位6].ToString() + 全局变量.这是递增列表[全局变量.位5].ToString() + 全局变量.这是递增列表[全局变量.位4].ToString() + 全局变量.这是递增列表[全局变量.位3].ToString() + 全局变量.这是递增列表[全局变量.位2].ToString() + "0";
+            string 上一次的进度在哪;
+            try
+            {
+                上一次的进度在哪 = 全局变量.这是递增列表[全局变量.位6].ToString() + 全局变量.这是递增列表[全局变量.位5].ToString() + 全局变量.这是递增列表[全局变量.位4].ToString() + 全局变量.这是递增列表[全局变量.位3].ToString() + 全局变量.这是递增列表[全局变量.位2].ToString() + "0";
+                int 位6 = 全局变量.递增列表.IndexOf(textBox3.Text.Substring(0, 1));
+                int 位5 = 全局变量.递增列表.IndexOf(textBox3.Text.Substring(1, 1));
+                int 位4 = 全局变量.递增列表.IndexOf(textBox3.Text.Substring(2, 1));
+                int 位3 = 全局变量.递增列表.IndexOf(textBox3.Text.Substring(3, 1));
+                int 位2 = 全局变量.递增列表.IndexOf(textBox3.Text.Substring(4, 1));
+                int 位1 = 全局变量.递增列表.IndexOf(textBox3.Text.Substring(5, 1));
+                if (位1 > 全局变量.位1 && 位2 > 全局变量.位2 && 位3 > 全局变量.位3 && 位4 > 全局变量.位4 && 位5 > 全局变量.位5 && 位6 > 全局变量.位6)
+                {
+                    上一次的进度在哪 = "";
+                }
+            }
+            catch (Exception) 
+            {
+                上一次的进度在哪 = "";
+            }
             string[] 这是配置文档诶 = {"版本=" + 版本, "编辑=" + textBox2.Text, "数值=" + textBox5.Text, "起始=" + textBox3.Text, "终止=" + textBox4.Text, "末尾=" + textBox7.Text, "周期=" + textBox6.Text, "上一次的进度=" + 上一次的进度在哪, "", "[By:yuhang0000]" };
             System.IO.File.WriteAllLines(@".\Setting.ini", 这是配置文档诶);
         }
