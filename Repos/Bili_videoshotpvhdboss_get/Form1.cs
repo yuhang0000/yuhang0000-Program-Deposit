@@ -182,6 +182,8 @@ namespace Bili_videoshotpvhdboss_get
                 全局变量.终位3 = 全局变量.递增列表.IndexOf(textBox4.Text.Substring(3, 1));
                 全局变量.终位2 = 全局变量.递增列表.IndexOf(textBox4.Text.Substring(4, 1));
                 全局变量.终位1 = 全局变量.递增列表.IndexOf(textBox4.Text.Substring(5, 1));
+                string 零食来看看你能不能用_终止 = 全局变量.这是递增列表[全局变量.终位6].ToString() + 全局变量.这是递增列表[全局变量.终位5].ToString() + 全局变量.这是递增列表[全局变量.终位4].ToString() + 全局变量.这是递增列表[全局变量.终位3].ToString() + 全局变量.这是递增列表[全局变量.终位2].ToString() + 全局变量.这是递增列表[全局变量.终位1].ToString();
+                零食来看看你能不能用_终止 = null; //仅仅只是零食来检查能不能用，稍后就给释放掉。
             }
             catch (Exception)
             {
