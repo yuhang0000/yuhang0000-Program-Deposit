@@ -24,7 +24,7 @@ namespace Bili_videoshotpvhdboss_get
         //哇塞，变量名可以用中文欸，太好了！
         public static class 全局变量
         {
-            public static String Buildtime = "2024-6-13";
+            public static String Buildtime = "2024-6-14";
             public static String 代码串;
             public static String 初始代码串;
             public static int 位1;
@@ -194,6 +194,16 @@ namespace Bili_videoshotpvhdboss_get
                 return;
             }
 
+            if (全局变量.终位1 <= 全局变量.位1 && 全局变量.终位2 <= 全局变量.位2 && 全局变量.终位3 <= 全局变量.位3 && 全局变量.终位4 <= 全局变量.位4 && 全局变量.终位5 <= 全局变量.位5 && 全局变量.终位6 <= 全局变量.位6)
+            {
+                System.Media.SystemSounds.Hand.Play();
+                this.toolStripStatusLabel4.Text = "0";
+                this.toolStripStatusLabel3.Text = "起始字段大于终止字段。";
+                this.toolStripStatusLabel2.Text = "错误 (000)";
+                this.toolStripStatusLabel1.Text = "已终止";
+                this.textBox1.Text = "已终止\r\n起始字段大于终止字段。";
+                return;
+            }
 
             //Console.WriteLine(全局变量.递增列表.IndexOf("o"));
 
@@ -616,7 +626,7 @@ namespace Bili_videoshotpvhdboss_get
                 int 位3 = 全局变量.递增列表.IndexOf(textBox3.Text.Substring(3, 1));
                 int 位2 = 全局变量.递增列表.IndexOf(textBox3.Text.Substring(4, 1));
                 int 位1 = 全局变量.递增列表.IndexOf(textBox3.Text.Substring(5, 1));
-                if (位1 > 全局变量.位1 && 位2 > 全局变量.位2 && 位3 > 全局变量.位3 && 位4 > 全局变量.位4 && 位5 > 全局变量.位5 && 位6 > 全局变量.位6)
+                if (位1 >= 全局变量.位1 && 位2 >= 全局变量.位2 && 位3 >= 全局变量.位3 && 位4 >= 全局变量.位4 && 位5 >= 全局变量.位5 && 位6 >= 全局变量.位6)
                 {
                     上一次的进度在哪 = "";
                 }
