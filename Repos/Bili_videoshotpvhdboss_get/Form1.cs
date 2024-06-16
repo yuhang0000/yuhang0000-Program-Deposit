@@ -24,7 +24,7 @@ namespace Bili_videoshotpvhdboss_get
         //哇塞，变量名可以用中文欸，太好了！
         public static class 全局变量
         {
-            public static String Buildtime = "2024-6-14";
+            public static String Buildtime = "2024-6-16";
             public static String 代码串;
             public static String 初始代码串;
             public static int 位1;
@@ -297,6 +297,7 @@ namespace Bili_videoshotpvhdboss_get
             if (((int)输出.StatusCode).ToString() == "200")
             {
                 全局变量.获取状态 = "成功";
+                this.toolStripStatusLabel2.Text = 全局变量.获取状态 +  " (" + ((int)输出.StatusCode).ToString() + ")";
 
                 this.button2.Enabled = true;
                 this.button3.Enabled = false;
@@ -313,6 +314,7 @@ namespace Bili_videoshotpvhdboss_get
             else if (((int)输出.StatusCode).ToString() == "404")
             {
                 全局变量.获取状态 = "失败";
+                this.toolStripStatusLabel2.Text = 全局变量.获取状态 +  " (" + ((int)输出.StatusCode).ToString() + ")";
                 if (全局变量.网络循环操作的状态 != false)
                 {
                     //timer1.Start();
@@ -330,7 +332,11 @@ namespace Bili_videoshotpvhdboss_get
                     {
                         await Task.Delay(1);
                     }
-                    HTTPGET();
+                    if (this.toolStripStatusLabel1.Text != "成功")
+                    {
+                        网络遍历();
+                        HTTPGET();
+                    }
                 }
             }
             else
@@ -351,6 +357,7 @@ namespace Bili_videoshotpvhdboss_get
                     {
                         await Task.Delay(1);
                     }
+                    全局变量.获取状态 = "失败";
                     this.toolStripStatusLabel2.Text = 全局变量.获取状态 +  " (" + ((int)输出.StatusCode).ToString() + ")";
                     string 报错时间 = DateTime.Now.ToString();
                     if (全局变量.错误弹窗的状态 == false)
@@ -364,85 +371,19 @@ namespace Bili_videoshotpvhdboss_get
                     {
                         Bili_videoshotpvhdboss_get.报错.列表更新(Bili_videoshotpvhdboss_get.报错.让我看看.listView1, 报错时间, "错误，无法访问该网页: " + ((int)输出.StatusCode).ToString() );
                     }
-                    HTTPGET();
+                    if (this.toolStripStatusLabel1.Text != "成功")
+                    {
+                        HTTPGET();
+                    }
                     return;
                 }
             }
-            this.toolStripStatusLabel2.Text = 全局变量.获取状态 +  " (" + ((int)输出.StatusCode).ToString() + ")";
             //内存回收
             client.Dispose();
             输出.Dispose();
             输出 = null;
             client = null;  
             GC.Collect();
-
-
-
-            //网址遍历
-            string 介素起始 = 全局变量.这是递增列表[全局变量.位6].ToString() + 全局变量.这是递增列表[全局变量.位5].ToString() + 全局变量.这是递增列表[全局变量.位4].ToString() + 全局变量.这是递增列表[全局变量.位3].ToString() + 全局变量.这是递增列表[全局变量.位2].ToString() + 全局变量.这是递增列表[全局变量.位1].ToString();
-            string 介素终止  = 全局变量.这是递增列表[全局变量.终位6].ToString() + 全局变量.这是递增列表[全局变量.终位5].ToString() + 全局变量.这是递增列表[全局变量.终位4].ToString() + 全局变量.这是递增列表[全局变量.终位3].ToString() + 全局变量.这是递增列表[全局变量.终位2].ToString() + 全局变量.这是递增列表[全局变量.终位1].ToString();
-            
-            if (介素起始 != 介素终止)
-            {
-                全局变量.位1 = 全局变量.位1 + 1;
-            }
-            if (全局变量.位1 > 35)
-            {
-                全局变量.位1 = 0;
-                if (介素起始 != 介素终止)
-                {
-                    全局变量.位2 = 全局变量.位2 + 1;
-                }
-            }
-            if (全局变量.位2 > 35)
-            {
-                全局变量.位2 = 0;
-                if (介素起始 != 介素终止)
-                {
-                    全局变量.位3 = 全局变量.位3 + 1;
-                }
-            }
-            if (全局变量.位3 > 35)
-            {
-                全局变量.位3 = 0;
-                if (介素起始 != 介素终止)
-                {
-                    全局变量.位4 = 全局变量.位4 + 1;
-                }
-            }
-            if (全局变量.位4 > 35)
-            {
-                全局变量.位4 = 0;
-                if (介素起始 != 介素终止)
-                {
-                    全局变量.位5 = 全局变量.位5 + 1;
-                }
-            }
-            if (全局变量.位5 > 35)
-            {
-                全局变量.位5 = 0;
-                if (介素起始 != 介素终止)
-                {
-                    全局变量.位6 = 全局变量.位6 + 1;
-                }
-            }
-            if (全局变量.位6 > 35 ||  介素起始 == 介素终止)
-            {
-                //全局变量.位6 = 0;
-
-                if(全局变量.网络循环操作的状态 != false)
-                {
-                    //this.timer1.Enabled = false;
-                    全局变量.网络循环操作的状态 = false;
-                    //timer1.Stop();
-                    timer2.Stop();
-                    this.button2.Enabled = false;
-                    this.button3.Enabled = false;
-                    this.toolStripStatusLabel1.Text = "失败";
-                    System.Media.SystemSounds.Hand.Play();
-                    MessageBox.Show("我尽力了QwQ", "失败    ╥﹏╥...");
-                }
-            }
             
             //Try 报错哩就放在这儿弹个窗口
             }
@@ -506,6 +447,76 @@ namespace Bili_videoshotpvhdboss_get
                 }
             }
         }
+
+        private void 网络遍历()
+        {
+            //网址遍历
+            string 介素起始 = 全局变量.这是递增列表[全局变量.位6].ToString() + 全局变量.这是递增列表[全局变量.位5].ToString() + 全局变量.这是递增列表[全局变量.位4].ToString() + 全局变量.这是递增列表[全局变量.位3].ToString() + 全局变量.这是递增列表[全局变量.位2].ToString() + 全局变量.这是递增列表[全局变量.位1].ToString();
+            string 介素终止 = 全局变量.这是递增列表[全局变量.终位6].ToString() + 全局变量.这是递增列表[全局变量.终位5].ToString() + 全局变量.这是递增列表[全局变量.终位4].ToString() + 全局变量.这是递增列表[全局变量.终位3].ToString() + 全局变量.这是递增列表[全局变量.终位2].ToString() + 全局变量.这是递增列表[全局变量.终位1].ToString();
+
+            if (介素起始 != 介素终止)
+            {
+                全局变量.位1 = 全局变量.位1 + 1;
+            }
+            if (全局变量.位1 > 35)
+            {
+                全局变量.位1 = 0;
+                if (介素起始 != 介素终止)
+                {
+                    全局变量.位2 = 全局变量.位2 + 1;
+                }
+            }
+            if (全局变量.位2 > 35)
+            {
+                全局变量.位2 = 0;
+                if (介素起始 != 介素终止)
+                {
+                    全局变量.位3 = 全局变量.位3 + 1;
+                }
+            }
+            if (全局变量.位3 > 35)
+            {
+                全局变量.位3 = 0;
+                if (介素起始 != 介素终止)
+                {
+                    全局变量.位4 = 全局变量.位4 + 1;
+                }
+            }
+            if (全局变量.位4 > 35)
+            {
+                全局变量.位4 = 0;
+                if (介素起始 != 介素终止)
+                {
+                    全局变量.位5 = 全局变量.位5 + 1;
+                }
+            }
+            if (全局变量.位5 > 35)
+            {
+                全局变量.位5 = 0;
+                if (介素起始 != 介素终止)
+                {
+                    全局变量.位6 = 全局变量.位6 + 1;
+                }
+            }
+            if (全局变量.位6 > 35 ||  介素起始 == 介素终止)
+            {
+                //全局变量.位6 = 0;
+
+                if (全局变量.网络循环操作的状态 != false)
+                {
+                    //this.timer1.Enabled = false;
+                    全局变量.网络循环操作的状态 = false;
+                    //timer1.Stop();
+                    timer2.Stop();
+                    this.button2.Enabled = false;
+                    this.button3.Enabled = false;
+                    this.toolStripStatusLabel1.Text = "失败";
+                    System.Media.SystemSounds.Hand.Play();
+                    MessageBox.Show("我尽力了QwQ", "失败    ╥﹏╥...");
+                }
+            }
+        }
+
 
         //继续
         private void button2_Click(object sender, EventArgs e)
