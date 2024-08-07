@@ -8,3 +8,6 @@ C:\Users\13975\CPP\repos\BiliBili dynamic deliverer\obj\Debug\BiliBili dynamic d
 C:\Users\13975\CPP\repos\BiliBili dynamic deliverer\obj\Debug\BiliBili dynamic deliverer.csproj.CoreCompileInputs.cache
 C:\Users\13975\CPP\repos\BiliBili dynamic deliverer\obj\Debug\BiliBili dynamic deliverer.exe
 C:\Users\13975\CPP\repos\BiliBili dynamic deliverer\obj\Debug\BiliBili dynamic deliverer.pdb
+C:\Users\13975\CPP\repos\BiliBili dynamic deliverer\obj\Debug\BiliBili_dynamic_deliverer.Setting.resources
+C:\Users\13975\CPP\repos\BiliBili dynamic deliverer\obj\Debug\BiliBili_dynamic_deliverer.output.resources
+C:\Users\13975\CPP\repos\BiliBili dynamic deliverer\obj\Debug\BiliBili_dynamic_deliverer.oops.resources

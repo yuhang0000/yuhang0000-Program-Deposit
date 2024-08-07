@@ -5,13 +5,13 @@ using System.Runtime.InteropServices;
 // 有关程序集的一般信息由以下
 // 控制。更改这些特性值可修改
 // 与程序集关联的信息。
-[assembly: AssemblyTitle("BiliBili动态拯救者")]
+[assembly: AssemblyTitle("BiliBili dynamic deliverer")]
 [assembly: AssemblyDescription("服务于B站动态归档操作")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("yuhang0000")]
 [assembly: AssemblyProduct("BiliBili dynamic deliverer")]
-[assembly: AssemblyCopyright("Copyright ©  2024 yuhang0000")]
-[assembly: AssemblyTrademark("")]
+[assembly: AssemblyCopyright("Copyright © 2024 yuhang0000")]
+[assembly: AssemblyTrademark("By:yuhang0000")]
 [assembly: AssemblyCulture("")]
 
 // 将 ComVisible 设置为 false 会使此程序集中的类型
@@ -32,5 +32,5 @@ using System.Runtime.InteropServices;
 //可以指定所有这些值，也可以使用“生成号”和“修订号”的默认值
 //通过使用 "*"，如下所示:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("0.0.1.1")]
-[assembly: AssemblyFileVersion("0.0.1.0313")]
+[assembly: AssemblyVersion("0.0.1.2")]
+[assembly: AssemblyFileVersion("0.0.1.0727")]
