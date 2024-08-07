@@ -24,7 +24,7 @@ namespace Bili_videoshotpvhdboss_get
         //哇塞，变量名可以用中文欸，太好了！
         public static class 全局变量
         {
-            public static String Buildtime = "2024-6-16";
+            public static DateTime 编译时间 = System.IO.File.GetLastWriteTime(typeof(全局变量).Assembly.Location);
             public static String 代码串;
             public static String 初始代码串;
             public static int 位1;
@@ -63,6 +63,7 @@ namespace Bili_videoshotpvhdboss_get
             //我太懒了，版本号自己打印
             string 版本 = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString();
             label6.Text = "v"+ 版本;
+            this.Text = "Bili Videoshotpvhdboss Get " + label6.Text;
             //创建文件夹
             System.IO.Directory.CreateDirectory(System.IO.Path.Combine(@".\Done\", ""));
             System.IO.Directory.CreateDirectory(System.IO.Path.Combine(@".\Logs\", ""));
@@ -566,7 +567,7 @@ namespace Bili_videoshotpvhdboss_get
         //关于
         private void label6_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("Bili_videoshotpvhdboss_get\nBy：yuhang0000\nBuild Time：" + 全局变量.Buildtime + "\n版本号：" + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString() , "关于");
+            MessageBox.Show("Bili_videoshotpvhdboss_get\nBy：yuhang0000\nBuild Time：" + 全局变量.编译时间 + "\n版本号：" + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString() , "关于");
         }
 
         //复制状态栏链接
