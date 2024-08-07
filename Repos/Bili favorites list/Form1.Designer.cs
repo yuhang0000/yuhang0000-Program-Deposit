@@ -111,7 +111,7 @@
             this.textBox3.Name = "textBox3";
             this.textBox3.Size = new System.Drawing.Size(234, 25);
             this.textBox3.TabIndex = 0;
-            this.textBox3.Text = "2191476989";
+            this.textBox3.Text = "0";
             // 
             // label3
             // 
