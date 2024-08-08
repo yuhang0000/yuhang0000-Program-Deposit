@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using Newtonsoft.Json;
 using System.Diagnostics;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 
 namespace Bili_favorites_list
@@ -36,6 +37,7 @@ namespace Bili_favorites_list
             public static bool 运行状态 = false;
             public static String 版本 = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString();
             public static DateTime 编译时间 = System.IO.File.GetLastWriteTime(typeof(全局变量).Assembly.Location);
+            public static String[] 配置文档;
         }
 
         //开始
@@ -43,22 +45,39 @@ namespace Bili_favorites_list
         {
             全局变量.编辑 = this.textBox2.Text;
             全局变量.起始 = this.textBox3.Text;
+            全局变量.终止 = this.textBox4.Text;
+            try
+            {
+                if (long.Parse(this.textBox3.Text) > long.Parse(this.textBox4.Text))
+                {
+                    全局变量.起始 = this.textBox4.Text;
+                    全局变量.终止 = this.textBox3.Text;
+                    this.textBox4.Text = 全局变量.终止;
+                    this.textBox3.Text = 全局变量.起始;
+                }
+            }
+            catch
+            {
+                System.Media.SystemSounds.Hand.Play();
+                this.textBox1.Text = "输入数据有误诶。";
+                return;
+            }
             全局变量.后缀 = this.textBox5.Text;
             全局变量.ML = long.Parse(this.textBox3.Text);
-            全局变量.终止 = this.textBox4.Text;
             全局变量.内容 = "#####  " + DateTime.Now.ToString() + "  #####\r\n";
             全局变量.链接 = 全局变量.编辑 + 全局变量.起始 + 全局变量.后缀;
             this.toolStripStatusLabel1.Text = "进行中";
             全局变量.运行状态 = true;
             this.button1.Enabled = false;
             this.button2.Enabled = true;
+            //焦点转至 "暂停"
+            SelectNextControl(ActiveControl, false, true, true, true);
             HTTPGET();
         }
 
-        
         private void 写进Output(String ML, String UID, String name, String title, String intro, String ctime)
         {
-            全局变量.内容 = 全局变量.内容 + "\r\n#\tML" + ML + "\t" + UID + "\t"  + name + "\t"  + title + "\t"  + 
+            全局变量.内容 = 全局变量.内容 + "\r\n#  ML" + ML + "\t" + UID + "\t"  + name + "\t"  + title + "\t"  + 
                 intro + "\t"  + ctime;
         }
         
@@ -71,6 +90,7 @@ namespace Bili_favorites_list
 
         private async void HTTPGET()
         {
+            int ppp = 100000;
             if(全局变量.运行状态 == false)
             {
                 return;
@@ -131,6 +151,23 @@ namespace Bili_favorites_list
                         await Task.Delay(1);
                     }
                     全局变量.ML++;
+                    if (全局变量.ML - long.Parse(全局变量.起始) >= ppp)
+                    {
+                        this.textBox3.Text = 全局变量.ML.ToString();
+                        输出内容(true,true);
+                        全局变量.起始 = this.textBox3.Text;
+                        全局变量.内容 = "#####  " + DateTime.Now.ToString() + "  #####\r\n";
+                    }
+                    else if (全局变量.ML >= long.Parse(全局变量.终止))
+                    {
+                        this.textBox3.Text = 全局变量.ML.ToString();
+                        输出内容(true);
+                        this.button1.Enabled = true;
+                        全局变量.起始 = this.textBox3.Text;
+                        全局变量.终止 = (long.Parse(this.textBox3.Text) + ppp).ToString();
+                        全局变量.内容 = "";
+                        this.textBox4.Text = 全局变量.终止;
+                    }
                     全局变量.链接 = 全局变量.编辑 + 全局变量.ML + 全局变量.后缀;
 
                     //内存回收
@@ -169,6 +206,23 @@ namespace Bili_favorites_list
                     await Task.Delay(1);
                 }
                 全局变量.ML++;
+                if (全局变量.ML - long.Parse(全局变量.起始) >= ppp)
+                {
+                    this.textBox3.Text = 全局变量.ML.ToString();
+                    输出内容(true, true);
+                    全局变量.起始 = this.textBox3.Text;
+                    全局变量.内容 = "#####  " + DateTime.Now.ToString() + "  #####\r\n";
+                }
+                else if (全局变量.ML >= long.Parse(全局变量.终止))
+                {
+                    this.textBox3.Text = 全局变量.ML.ToString();
+                    输出内容(true);
+                    this.button1.Enabled = true;
+                    全局变量.起始 = this.textBox3.Text;
+                    全局变量.终止 = (long.Parse(this.textBox3.Text) + ppp).ToString();
+                    全局变量.内容 = "";
+                    this.textBox4.Text = 全局变量.终止;
+                }
                 全局变量.链接 = 全局变量.编辑 + 全局变量.ML + 全局变量.后缀;
                 HTTPGET();
             }
@@ -248,6 +302,7 @@ namespace Bili_favorites_list
             this.button2.Enabled = false;
             this.button3.Enabled = true;
             全局变量.运行状态 = false;
+            SelectNextControl(ActiveControl, false, true, true, true);
             toolStripStatusLabel1.Text = "暂停";
         }
 
@@ -257,6 +312,7 @@ namespace Bili_favorites_list
             this.button3.Enabled = false;
             this.button2.Enabled = true;
             全局变量.运行状态 = true;
+            SelectNextControl(ActiveControl, false, true, true, true);
             toolStripStatusLabel1.Text = "进行中";
             HTTPGET();
         }
@@ -264,10 +320,38 @@ namespace Bili_favorites_list
         //打开就运行
         private void Form1_Load(object sender, EventArgs e)
         {
-            System.IO.Directory.CreateDirectory(Application.StartupPath + @"\输出\");
             this.label6.Text = "v" + 全局变量.版本;
             Output output = new Output();
             output.Show();
+            //检查配置文件在不在喽
+            if (System.IO.File.Exists(@".\Setting.ini") == false)
+            {
+                String[] 配置文档 = { "版本=" + 全局变量.版本, "编辑=" + textBox2.Text, "起始=" + textBox3.Text,
+                    "终止=" + textBox4.Text, "后缀=" + textBox5.Text, "延时=" + textBox6.Text, "", "[By:yuhang0000]" };
+                System.IO.File.WriteAllLines(@".\Setting.ini", 配置文档);
+                全局变量.配置文档 = 配置文档;
+                this.textBox1.Text = "就绪。";
+            }
+            else
+            {
+                try //我爱死 try 和 catch 这两个方法啦，爱用🤍
+                {
+                    全局变量.配置文档 = System.IO.File.ReadAllLines(@".\Setting.ini");
+                    this.textBox2.Text = 全局变量.配置文档[1].Replace("编辑=", "");
+                    this.textBox3.Text = 全局变量.配置文档[2].Replace("起始=", "");
+                    this.textBox4.Text = 全局变量.配置文档[3].Replace("终止=", "");
+                    this.textBox5.Text = 全局变量.配置文档[4].Replace("后缀=", "");
+                    this.textBox6.Text = 全局变量.配置文档[5].Replace("延时=", "");
+                    this.textBox1.Text = "就绪。";
+                }
+                catch (Exception)
+                {
+                    System.Media.SystemSounds.Beep.Play();
+                    toolStripStatusLabel3.Text = "配置文档好像坏欸。";
+                    textBox1.Text = "就绪。\r\n额，配置文档好像坏欸。";
+                }
+            }
+            全局变量.ML = long.Parse(this.textBox3.Text);
         }
 
         //复制状态栏链接
@@ -285,29 +369,51 @@ namespace Bili_favorites_list
             输出内容();
         }
 
-        private void 输出内容(bool close = false)
+        private void 保存配置文档()
+        {
+            String[] 配置文档 = { "版本=" + 全局变量.版本, "编辑=" + textBox2.Text, "起始=" + 全局变量.ML,
+                    "终止=" + textBox4.Text, "后缀=" + textBox5.Text, "延时=" + textBox6.Text, "", "[By:yuhang0000]" };
+            System.IO.File.WriteAllLines(@".\Setting.ini", 配置文档);
+        }
+
+        private void 输出内容(bool close = false, bool bizui = false)
         {
             Console.WriteLine(全局变量.内容);
             if (全局变量.内容 == "" && close == false)
             {
                 System.Media.SystemSounds.Hand.Play();
-                MessageBox.Show("保存失败，内容是空滴。","失败哩  ╥﹏╥...");
+                MessageBox.Show("保存失败，内容是空滴。", "失败哩  ╥﹏╥...");
                 return;
             }
             else if (全局变量.内容 == "" && close == true)
             {
+                保存配置文档();
                 return;
             }
-            else if (close == true)
+            else if (close == true && bizui == false)
             {
                 this.button2.Enabled = false;
                 this.button3.Enabled = false;
                 全局变量.运行状态 = false;
-                toolStripStatusLabel1.Text = "暂停";
+                toolStripStatusLabel1.Text = "暂停"; 保存配置文档();
             }
-            String date = DateTime.Now.ToString("yyyy-MM-dd") +"   "+ DateTime.Now.Hour.ToString() +"-"+
-            DateTime.Now.Minute.ToString() +"-"+ DateTime.Now.Second.ToString();
-            String path = Application.StartupPath + @"\输出\" + date + ".txt";
+            else if (close == true && bizui == true)
+            {
+                保存配置文档();
+            }
+            System.IO.Directory.CreateDirectory(Application.StartupPath + @"\Output\");
+            //String date = DateTime.Now.ToString("yyyy-MM-dd") +"   "+ DateTime.Now.Hour.ToString() +"-"+
+            //DateTime.Now.Minute.ToString() +"-"+ DateTime.Now.Second.ToString();
+            String num;
+            if (全局变量.起始 == (全局变量.ML - 1).ToString())
+            {
+                num = (全局变量.ML - 1).ToString();
+            }
+            else
+            {
+                num = 全局变量.起始 + " - " +(全局变量.ML - 1).ToString();
+            }
+            String path = Application.StartupPath + @"\Output\" + num + ".txt";
             try
             {
                 System.IO.File.WriteAllText(path, 全局变量.内容);
@@ -318,18 +424,21 @@ namespace Bili_favorites_list
                 MessageBox.Show("保存失败，无法写入文件，在:\r\n" + path, "失败哩  ╥﹏╥...");
                 return;
             }
-            System.Media.SystemSounds.Beep.Play();
-            if (MessageBox.Show("数据保存在: \r\n" + path,"成功!!!", MessageBoxButtons.OKCancel) == DialogResult.OK)
-            {
-                try
+            if (bizui == false)
+            { 
+                System.Media.SystemSounds.Beep.Play();
+                if (MessageBox.Show("数据保存在: \r\n" + path, "成功!!!", MessageBoxButtons.OKCancel) == DialogResult.OK)
                 {
-                    Process.Start("notepad", path);
-                }
-                catch (Exception ex)
-                {
-                    System.Media.SystemSounds.Hand.Play();
-                    MessageBox.Show(ex.Message.ToString() + "\r\n" + "notepad \"" + 
+                    try
+                    {
+                        Process.Start("notepad", path);
+                    }
+                    catch (Exception ex)
+                    {
+                        System.Media.SystemSounds.Hand.Play();
+                        MessageBox.Show(ex.Message.ToString() + "\r\n" + "notepad \"" +
                         path + "\"", "错误    Σ(っ °Д °;)っ");
+                    }
                 }
             }
         }

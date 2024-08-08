@@ -13,3 +13,18 @@ C:\Users\13975\CPP\repos\Bili favorites list\bin\Debug\Newtonsoft.Json.xml
 C:\Users\13975\CPP\repos\Bili favorites list\obj\Debug\Bili favorites list.csproj.CopyComplete
 C:\Users\13975\CPP\repos\Bili favorites list\obj\Debug\Bili_favorites_list.报错.resources
 C:\Users\13975\CPP\repos\Bili favorites list\obj\Debug\Bili_favorites_list.Output.resources
+C:\Users\13975\CShare\repos\Bili favorites list\obj\Debug\Bili favorites list.csproj.AssemblyReference.cache
+C:\Users\13975\CShare\repos\Bili favorites list\obj\Debug\Bili_favorites_list.Form1.resources
+C:\Users\13975\CShare\repos\Bili favorites list\obj\Debug\Bili_favorites_list.Output.resources
+C:\Users\13975\CShare\repos\Bili favorites list\obj\Debug\Bili_favorites_list.Properties.Resources.resources
+C:\Users\13975\CShare\repos\Bili favorites list\obj\Debug\Bili_favorites_list.报错.resources
+C:\Users\13975\CShare\repos\Bili favorites list\obj\Debug\Bili favorites list.csproj.GenerateResource.cache
+C:\Users\13975\CShare\repos\Bili favorites list\obj\Debug\Bili favorites list.csproj.CoreCompileInputs.cache
+C:\Users\13975\CShare\repos\Bili favorites list\obj\Debug\Bili favorites list.exe
+C:\Users\13975\CShare\repos\Bili favorites list\obj\Debug\Bili favorites list.pdb
+C:\Users\13975\CShare\repos\Bili favorites list\bin\Debug\Bili favorites list.exe.config
+C:\Users\13975\CShare\repos\Bili favorites list\bin\Debug\Bili favorites list.exe
+C:\Users\13975\CShare\repos\Bili favorites list\bin\Debug\Bili favorites list.pdb
+C:\Users\13975\CShare\repos\Bili favorites list\bin\Debug\Newtonsoft.Json.dll
+C:\Users\13975\CShare\repos\Bili favorites list\bin\Debug\Newtonsoft.Json.xml
+C:\Users\13975\CShare\repos\Bili favorites list\obj\Debug\Bili favorites list.csproj.CopyComplete

@@ -62,7 +62,7 @@
             this.groupBox1.Location = new System.Drawing.Point(299, 0);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(816, 423);
-            this.groupBox1.TabIndex = 0;
+            this.groupBox1.TabIndex = 99999999;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "输出";
             // 
@@ -77,7 +77,7 @@
             this.textBox1.ReadOnly = true;
             this.textBox1.ScrollBars = System.Windows.Forms.ScrollBars.Both;
             this.textBox1.Size = new System.Drawing.Size(810, 399);
-            this.textBox1.TabIndex = 9999999;
+            this.textBox1.TabIndex = 99999999;
             // 
             // label1
             // 
@@ -93,7 +93,7 @@
             this.textBox2.Location = new System.Drawing.Point(59, 6);
             this.textBox2.Name = "textBox2";
             this.textBox2.Size = new System.Drawing.Size(234, 25);
-            this.textBox2.TabIndex = 3;
+            this.textBox2.TabIndex = 6;
             this.textBox2.Text = "https://api.bilibili.com/x/v3/fav/resource/list?media_id=";
             // 
             // label2
@@ -127,8 +127,8 @@
             this.textBox4.Location = new System.Drawing.Point(59, 68);
             this.textBox4.Name = "textBox4";
             this.textBox4.Size = new System.Drawing.Size(234, 25);
-            this.textBox4.TabIndex = 1;
-            this.textBox4.Text = "18446744073709551614";
+            this.textBox4.TabIndex = 7;
+            this.textBox4.Text = "9223372036854775807";
             // 
             // label4
             // 
@@ -144,7 +144,7 @@
             this.textBox5.Location = new System.Drawing.Point(59, 99);
             this.textBox5.Name = "textBox5";
             this.textBox5.Size = new System.Drawing.Size(234, 25);
-            this.textBox5.TabIndex = 3;
+            this.textBox5.TabIndex = 8;
             this.textBox5.Text = "&pn=1&ps=20";
             // 
             // statusStrip1
@@ -227,9 +227,10 @@
             // textBox6
             // 
             this.textBox6.Location = new System.Drawing.Point(59, 130);
+            this.textBox6.MaxLength = 4;
             this.textBox6.Name = "textBox6";
             this.textBox6.Size = new System.Drawing.Size(234, 25);
-            this.textBox6.TabIndex = 3;
+            this.textBox6.TabIndex = 9;
             this.textBox6.Text = "10";
             // 
             // button2
@@ -238,7 +239,7 @@
             this.button2.Location = new System.Drawing.Point(137, 160);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(75, 23);
-            this.button2.TabIndex = 4;
+            this.button2.TabIndex = 3;
             this.button2.Text = "暂停";
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click);
