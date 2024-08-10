@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Xml.Linq;
+using static Bili_favorites_list.Form1;
 
 namespace Bili_favorites_list
 {
@@ -29,8 +30,12 @@ namespace Bili_favorites_list
             this.WindowState = FormWindowState.Minimized;
         }
 
-        public static void 列表更新(ListView listView, String ML, String UID, String name, String title, String intro,String ctime)
+        public static void 列表更新(ListView listView, String ML, String UID, String name, String title, String num, String intro,String ctime)
         {
+            if (全局变量.运行状态 != true)
+            {
+                return;
+            }
             //更新列表数据
             listView.BeginUpdate();
             ListViewItem 列表 = new ListViewItem();
@@ -38,6 +43,7 @@ namespace Bili_favorites_list
             列表.SubItems.Add(UID);
             列表.SubItems.Add(name);
             列表.SubItems.Add(title);
+            列表.SubItems.Add(num);
             列表.SubItems.Add(intro);
             列表.SubItems.Add(ctime);
             listView.Items.Add(列表);
@@ -48,7 +54,7 @@ namespace Bili_favorites_list
 
         private void button1_Click(object sender, EventArgs e)
         {
-            列表更新(this.listView1,"0000","UID000","介素昵称","介素标题","介素简介",DateTime.Now.ToString());
+            列表更新(this.listView1,"0000","UID000","介素昵称","介素标题","0","介素简介",DateTime.Now.ToString());
         }
 
         //窗口自适应

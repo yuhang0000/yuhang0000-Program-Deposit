@@ -32,10 +32,11 @@
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.button1 = new System.Windows.Forms.Button();
             this.columnHeader4 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader5 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader6 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.button1 = new System.Windows.Forms.Button();
+            this.columnHeader7 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.SuspendLayout();
             // 
             // listView1
@@ -46,7 +47,8 @@
             this.columnHeader3,
             this.columnHeader4,
             this.columnHeader5,
-            this.columnHeader6});
+            this.columnHeader6,
+            this.columnHeader7});
             this.listView1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.listView1.FullRowSelect = true;
             this.listView1.GridLines = true;
@@ -73,6 +75,20 @@
             this.columnHeader3.Text = "昵称";
             this.columnHeader3.Width = 180;
             // 
+            // columnHeader4
+            // 
+            this.columnHeader4.Text = "标题";
+            this.columnHeader4.Width = 160;
+            // 
+            // columnHeader5
+            // 
+            this.columnHeader5.Text = "收藏数";
+            // 
+            // columnHeader6
+            // 
+            this.columnHeader6.Text = "简介";
+            this.columnHeader6.Width = 740;
+            // 
             // button1
             // 
             this.button1.Location = new System.Drawing.Point(12, 334);
@@ -84,20 +100,10 @@
             this.button1.Visible = false;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
-            // columnHeader4
+            // columnHeader7
             // 
-            this.columnHeader4.Text = "标题";
-            this.columnHeader4.Width = 160;
-            // 
-            // columnHeader5
-            // 
-            this.columnHeader5.Text = "简介";
-            this.columnHeader5.Width = 800;
-            // 
-            // columnHeader6
-            // 
-            this.columnHeader6.Text = "创建时间";
-            this.columnHeader6.Width = 160;
+            this.columnHeader7.Text = "创建时间";
+            this.columnHeader7.Width = 160;
             // 
             // Output
             // 
@@ -126,5 +132,6 @@
         private System.Windows.Forms.ColumnHeader columnHeader4;
         private System.Windows.Forms.ColumnHeader columnHeader5;
         private System.Windows.Forms.ColumnHeader columnHeader6;
+        private System.Windows.Forms.ColumnHeader columnHeader7;
     }
 }
