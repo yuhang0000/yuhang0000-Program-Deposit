@@ -1,0 +1,11 @@
+C:\Users\13975\CSharp\repos\Auto Touch\bin\Debug\Auto Touch.exe.config
+C:\Users\13975\CSharp\repos\Auto Touch\bin\Debug\Auto Touch.exe
+C:\Users\13975\CSharp\repos\Auto Touch\bin\Debug\Auto Touch.pdb
+C:\Users\13975\CSharp\repos\Auto Touch\obj\Debug\Auto Touch.csproj.AssemblyReference.cache
+C:\Users\13975\CSharp\repos\Auto Touch\obj\Debug\Auto_Touch.Form1.resources
+C:\Users\13975\CSharp\repos\Auto Touch\obj\Debug\Auto_Touch.Properties.Resources.resources
+C:\Users\13975\CSharp\repos\Auto Touch\obj\Debug\Auto Touch.csproj.GenerateResource.cache
+C:\Users\13975\CSharp\repos\Auto Touch\obj\Debug\Auto Touch.csproj.CoreCompileInputs.cache
+C:\Users\13975\CSharp\repos\Auto Touch\obj\Debug\Auto Touch.exe
+C:\Users\13975\CSharp\repos\Auto Touch\obj\Debug\Auto Touch.pdb
+C:\Users\13975\CSharp\repos\Auto Touch\obj\Debug\Auto_Touch.捕捉.resources
