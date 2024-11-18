@@ -1,3 +1,16 @@
+v0.1.7.0
+仅仅只是在 报错.cs , 56 行 上加入了这些
+```
+if (错误.Contains("System.IO.IOException: ") == true)
+{
+    错误 = 错误.Replace("System.IO.IOException: ", "");
+}
+if (错误.Contains("System.Security.Authentication.AuthenticationException: ") == true)
+{
+    错误 = 错误.Replace("System.Security.Authentication.AuthenticationException: ", "");
+}
+```
+
 v0.1.4.0
 改進了抓取成功之後的代碼。
 
