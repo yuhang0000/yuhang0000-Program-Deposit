@@ -1,5 +1,5 @@
 v0.1.7.0
-仅仅只是在 报错.cs , 56 行 上加入了这些
+僅僅只是在 报错.cs , 56 行 上加入了這些: 
 ```
 if (错误.Contains("System.IO.IOException: ") == true)
 {
