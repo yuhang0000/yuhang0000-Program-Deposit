@@ -53,6 +53,14 @@ namespace Bili_favorites_list
             {
                 错误 = 错误.Replace("System.Net.Sockets.SocketException: ", "");
             }
+            if (错误.Contains("System.IO.IOException: ") == true)
+            {
+                错误 = 错误.Replace("System.IO.IOException: ", "");
+            }
+            if (错误.Contains("System.Security.Authentication.AuthenticationException: ") == true)
+            {
+                错误 = 错误.Replace("System.Security.Authentication.AuthenticationException: ", "");
+            }
 
             //更新列表数据
             listView.BeginUpdate();

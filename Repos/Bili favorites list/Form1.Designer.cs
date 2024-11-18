@@ -54,6 +54,7 @@
             this.label6 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
             this.textBox7 = new System.Windows.Forms.TextBox();
+            this.button5 = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -299,11 +300,22 @@
             this.textBox7.Text = "100000";
             this.textBox7.TextChanged += new System.EventHandler(this.textBox7_TextChanged);
             // 
+            // button5
+            // 
+            this.button5.Location = new System.Drawing.Point(137, 222);
+            this.button5.Name = "button5";
+            this.button5.Size = new System.Drawing.Size(75, 23);
+            this.button5.TabIndex = 100000000;
+            this.button5.Text = "文件合并";
+            this.button5.UseVisualStyleBackColor = true;
+            this.button5.Click += new System.EventHandler(this.button5_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1112, 448);
+            this.Controls.Add(this.button5);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.button4);
             this.Controls.Add(this.button3);
@@ -366,6 +378,7 @@
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.TextBox textBox7;
+        private System.Windows.Forms.Button button5;
     }
 }
 

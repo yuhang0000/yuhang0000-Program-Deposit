@@ -12,6 +12,7 @@ using System.Windows.Forms;
 using Newtonsoft.Json;
 using System.Diagnostics;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
+using System.IO;
 
 
 namespace Bili_favorites_list
@@ -619,6 +620,36 @@ namespace Bili_favorites_list
             {
                 System.Media.SystemSounds.Beep.Play();
                 textBox7.Text = "10";
+            }
+        }
+
+        //合并文件
+        private void button5_Click(object sender, EventArgs e)
+        {
+            string path = Application.StartupPath + @"\Output\";
+            if (Directory.Exists(path) == false)
+            {
+                path = Application.StartupPath;
+            }
+            FolderBrowserDialog dialog = new FolderBrowserDialog();
+            dialog.SelectedPath = path;
+            dialog.Description = "选择文件夹所在位置: ";
+
+            if (dialog.ShowDialog() == DialogResult.OK)
+            {
+                path = dialog.SelectedPath;
+                Console.WriteLine(path);
+                DirectoryInfo dir = new DirectoryInfo(path);
+                if (Directory.Exists(path) == false)
+                {
+                    MessageBox.Show("找不到该路径:\r\n " + path, "错误    Σ(っ °Д °;)っ");
+                    return;
+                }
+                FileSystemInfo[] fsinfos = dir.GetFileSystemInfos();
+                foreach (FileSystemInfo fsinfo in fsinfos)
+                {
+                    Console.WriteLine(fsinfo.FullName);
+                }
             }
         }
     }
