@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.label1 = new System.Windows.Forms.Label();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.button1 = new System.Windows.Forms.Button();
@@ -37,7 +38,17 @@
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripStatusLabel2 = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripStatusLabel3 = new System.Windows.Forms.ToolStripStatusLabel();
+            this.toolStripStatusLabel4 = new System.Windows.Forms.ToolStripStatusLabel();
+            this.toolStripStatusLabel5 = new System.Windows.Forms.ToolStripStatusLabel();
             this.button4 = new System.Windows.Forms.Button();
+            this.button5 = new System.Windows.Forms.Button();
+            this.label2 = new System.Windows.Forms.Label();
+            this.textBox2 = new System.Windows.Forms.TextBox();
+            this.comboBox1 = new System.Windows.Forms.ComboBox();
+            this.button6 = new System.Windows.Forms.Button();
+            this.button7 = new System.Windows.Forms.Button();
+            this.button8 = new System.Windows.Forms.Button();
+            this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -54,7 +65,7 @@
             // 
             this.textBox1.Location = new System.Drawing.Point(59, 10);
             this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(218, 25);
+            this.textBox1.Size = new System.Drawing.Size(173, 25);
             this.textBox1.TabIndex = 2;
             this.textBox1.Text = "(0,0)";
             this.textBox1.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
@@ -95,12 +106,14 @@
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripStatusLabel1,
             this.toolStripStatusLabel2,
-            this.toolStripStatusLabel3});
+            this.toolStripStatusLabel3,
+            this.toolStripStatusLabel4,
+            this.toolStripStatusLabel5});
             this.statusStrip1.Location = new System.Drawing.Point(0, 82);
             this.statusStrip1.Name = "statusStrip1";
             this.statusStrip1.Size = new System.Drawing.Size(294, 30);
             this.statusStrip1.SizingGrip = false;
-            this.statusStrip1.TabIndex = 3;
+            this.statusStrip1.TabIndex = 0;
             this.statusStrip1.Text = "statusStrip1";
             this.statusStrip1.Click += new System.EventHandler(this.statusStrip1_Click);
             // 
@@ -124,6 +137,22 @@
             this.toolStripStatusLabel3.Size = new System.Drawing.Size(84, 24);
             this.toolStripStatusLabel3.Text = "2024-9-28";
             // 
+            // toolStripStatusLabel4
+            // 
+            this.toolStripStatusLabel4.BorderSides = System.Windows.Forms.ToolStripStatusLabelBorderSides.Left;
+            this.toolStripStatusLabel4.Name = "toolStripStatusLabel4";
+            this.toolStripStatusLabel4.Size = new System.Drawing.Size(19, 24);
+            this.toolStripStatusLabel4.Text = "-";
+            this.toolStripStatusLabel4.Visible = false;
+            // 
+            // toolStripStatusLabel5
+            // 
+            this.toolStripStatusLabel5.BorderSides = System.Windows.Forms.ToolStripStatusLabelBorderSides.Left;
+            this.toolStripStatusLabel5.Name = "toolStripStatusLabel5";
+            this.toolStripStatusLabel5.Size = new System.Drawing.Size(43, 24);
+            this.toolStripStatusLabel5.Text = "0ms";
+            this.toolStripStatusLabel5.Visible = false;
+            // 
             // button4
             // 
             this.button4.DialogResult = System.Windows.Forms.DialogResult.Cancel;
@@ -131,9 +160,86 @@
             this.button4.Name = "button4";
             this.button4.Size = new System.Drawing.Size(0, 0);
             this.button4.TabIndex = 4;
+            this.button4.TabStop = false;
             this.button4.Text = "退出";
             this.button4.UseVisualStyleBackColor = true;
             this.button4.Click += new System.EventHandler(this.button4_Click);
+            // 
+            // button5
+            // 
+            this.button5.Location = new System.Drawing.Point(238, 10);
+            this.button5.Name = "button5";
+            this.button5.Size = new System.Drawing.Size(39, 25);
+            this.button5.TabIndex = 9;
+            this.button5.Text = "...";
+            this.button5.UseVisualStyleBackColor = true;
+            this.button5.Click += new System.EventHandler(this.button5_Click);
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(290, 13);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(37, 15);
+            this.label2.TabIndex = 0;
+            this.label2.Text = "延时";
+            // 
+            // textBox2
+            // 
+            this.textBox2.Enabled = false;
+            this.textBox2.Location = new System.Drawing.Point(333, 10);
+            this.textBox2.MaxLength = 9;
+            this.textBox2.Name = "textBox2";
+            this.textBox2.Size = new System.Drawing.Size(83, 25);
+            this.textBox2.TabIndex = 4;
+            this.textBox2.Text = "0";
+            this.textBox2.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBox2_KeyPress);
+            // 
+            // comboBox1
+            // 
+            this.comboBox1.Enabled = false;
+            this.comboBox1.FormattingEnabled = true;
+            this.comboBox1.Items.AddRange(new object[] {
+            "新建"});
+            this.comboBox1.Location = new System.Drawing.Point(422, 11);
+            this.comboBox1.Name = "comboBox1";
+            this.comboBox1.Size = new System.Drawing.Size(132, 23);
+            this.comboBox1.TabIndex = 5;
+            this.comboBox1.Text = "新建";
+            // 
+            // button6
+            // 
+            this.button6.Enabled = false;
+            this.button6.Location = new System.Drawing.Point(293, 41);
+            this.button6.Name = "button6";
+            this.button6.Size = new System.Drawing.Size(83, 36);
+            this.button6.TabIndex = 6;
+            this.button6.Text = "保存";
+            this.button6.UseVisualStyleBackColor = true;
+            // 
+            // button7
+            // 
+            this.button7.Enabled = false;
+            this.button7.Location = new System.Drawing.Point(382, 41);
+            this.button7.Name = "button7";
+            this.button7.Size = new System.Drawing.Size(83, 36);
+            this.button7.TabIndex = 7;
+            this.button7.Text = "删除";
+            this.button7.UseVisualStyleBackColor = true;
+            // 
+            // button8
+            // 
+            this.button8.Enabled = false;
+            this.button8.Location = new System.Drawing.Point(471, 41);
+            this.button8.Name = "button8";
+            this.button8.Size = new System.Drawing.Size(83, 36);
+            this.button8.TabIndex = 8;
+            this.button8.Text = "重命名";
+            this.button8.UseVisualStyleBackColor = true;
+            // 
+            // timer1
+            // 
+            this.timer1.Interval = 10;
             // 
             // Form1
             // 
@@ -141,15 +247,23 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.button4;
             this.ClientSize = new System.Drawing.Size(294, 112);
+            this.Controls.Add(this.button8);
+            this.Controls.Add(this.button7);
+            this.Controls.Add(this.button6);
+            this.Controls.Add(this.comboBox1);
+            this.Controls.Add(this.button5);
             this.Controls.Add(this.button4);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.button3);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.button1);
+            this.Controls.Add(this.textBox2);
+            this.Controls.Add(this.label2);
             this.Controls.Add(this.textBox1);
             this.Controls.Add(this.label1);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MaximizeBox = false;
-            this.MaximumSize = new System.Drawing.Size(312, 159);
+            this.MaximumSize = new System.Drawing.Size(588, 159);
             this.MinimumSize = new System.Drawing.Size(312, 159);
             this.Name = "Form1";
             this.Opacity = 0.85D;
@@ -177,6 +291,16 @@
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel3;
         public System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.Button button4;
+        private System.Windows.Forms.Button button5;
+        private System.Windows.Forms.Label label2;
+        public System.Windows.Forms.TextBox textBox2;
+        private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel4;
+        private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel5;
+        private System.Windows.Forms.ComboBox comboBox1;
+        private System.Windows.Forms.Button button6;
+        private System.Windows.Forms.Button button7;
+        private System.Windows.Forms.Button button8;
+        private System.Windows.Forms.Timer timer1;
     }
 }
 

@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("yuhang0000")]
 [assembly: AssemblyProduct("Auto Touch")]
-[assembly: AssemblyCopyright("Copyright ©  2024 By: yuhang0000")]
+[assembly: AssemblyCopyright("Copyright ©  2024 yuhang0000")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -32,5 +32,5 @@ using System.Runtime.InteropServices;
 //可以指定所有这些值，也可以使用“生成号”和“修订号”的默认值
 //通过使用 "*"，如下所示:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.0.1.1")]
-[assembly: AssemblyFileVersion("1.0.1.0928")]
+[assembly: AssemblyVersion("1.0.3.1")]
+[assembly: AssemblyFileVersion("1.0.3.1126")]
