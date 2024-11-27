@@ -105,15 +105,35 @@ namespace Auto_Touch
             public static int YYY = 0;
             public static int 状态 = 1;
             public static String[] ini;
+            //public static String[] proj = { };
+            public static bool 闪 = false;
+            public static int comboboxindex = 0;
         }
 
         //读取配置文档
-        public static void readini()
+        public void readini()
         {
             if (File.Exists(@"./Auto Touch.ini") == true)
             {
-                全局变量.ini = File.ReadAllLines(@"./Auto Touch.ini");
-                Console.WriteLine(全局变量.ini[0]);
+                try
+                {
+                    全局变量.ini = File.ReadAllLines(@"./Auto Touch.ini");
+                    //Console.WriteLine(全局变量.ini[0]);
+                    this.textBox1.Text = 全局变量.ini[全局变量.ini.Length - 1].Split(';')[1];
+                    foreach (String inis in 全局变量.ini)
+                    {
+                        string[] ini = inis.Split(';');
+                        //全局变量.proj.Append(ini[0]);
+                        this.comboBox1.Items.Add(ini[0]);
+                        //this.comboBox1.SelectedIndex = 1;
+                        //this.textBox1.Text = ini[1];
+                        //this.textBox2.Text = ini[2];
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("读取失败: " + ex.Message);
+                }
             }
         }
 
@@ -135,15 +155,16 @@ namespace Auto_Touch
         {
             toolStripStatusLabel1.Text = "v"+全局变量.版本;
             toolStripStatusLabel3.Text = 全局变量.编译时间.ToShortDateString().ToString();
+            this.Width = 312;
             readini();
         }
 
         async public void run(int time = 0)
         {
             time = (int)timeGetTime() + time;
-            while(time > (int)timeGetTime()) {
+            while (time > (int)timeGetTime()) {
                 //time = time - 1000;
-                if(全局变量.状态 == 2)
+                if (全局变量.状态 == 2)
                 {
                     this.toolStripStatusLabel5.Text = (time - (int)timeGetTime()).ToString() + "ms";
                     await Task.Delay(10);
@@ -152,14 +173,15 @@ namespace Auto_Touch
                 {
                     Thread.Sleep(10);
                 }
-                if(全局变量.状态 == 0)
+                if (全局变量.状态 == 0)
                 {
                     try
                     {
                         this.button3.Enabled = true;
+                        this.button3.Focus();
                         this.textBox1.Enabled = true;
-                        SelectNextControl(ActiveControl, false, true, true, true);
-                        SelectNextControl(ActiveControl, false, true, true, true);
+                        //SelectNextControl(ActiveControl, false, true, true, true);
+                        //SelectNextControl(ActiveControl, false, true, true, true);
                         this.button2.Enabled = true;
                         this.button3.Text = "开始";
                     }
@@ -169,10 +191,10 @@ namespace Auto_Touch
             }
             System.Drawing.Point mp = new System.Drawing.Point();
             GetCursorPos(out mp);
-            int XX = mp.X; 
+            int XX = mp.X;
             int YY = mp.Y;
             SetCursorPos(全局变量.XXX, 全局变量.YYY);
-            mouse_event(0x0002 | 0x0004, 0,0,0,0);
+            mouse_event(0x0002 | 0x0004, 0, 0, 0, 0);
             SetCursorPos(XX, YY);
             System.Environment.Exit(0);
         }
@@ -180,12 +202,13 @@ namespace Auto_Touch
         //捕捉光标位置
         private void button2_Click(object sender, EventArgs e)
         {
+            this.button3.Focus();
             this.WindowState = FormWindowState.Minimized;
             捕捉 pos = new 捕捉();
             pos.Show();
             pos.Activate();
             pos.Focus();
-            SelectNextControl(ActiveControl, true, true, true, true);
+            //SelectNextControl(ActiveControl, true, true, true, true);
         }
 
         //关鱼
@@ -237,14 +260,14 @@ namespace Auto_Touch
         private void textBox1_TextChanged(object sender, EventArgs e)
         {
             int aaa = textBox1.SelectionStart;
-            if(textBox1.Text.IndexOf(" ") > 0)
+            if (textBox1.Text.IndexOf(" ") > 0)
             {
                 aaa--;
             }
-            textBox1.Text = textBox1.Text.Replace(" ","");
+            textBox1.Text = textBox1.Text.Replace(" ", "");
             textBox1.Text = textBox1.Text.Replace("（", "(");
-            textBox1.Text = textBox1.Text.Replace("）",")");
-            textBox1.Text = textBox1.Text.Replace("，",",");
+            textBox1.Text = textBox1.Text.Replace("）", ")");
+            textBox1.Text = textBox1.Text.Replace("，", ",");
             textBox1.SelectionStart = aaa;
         }
 
@@ -257,7 +280,7 @@ namespace Auto_Touch
         //高级选项
         private void button5_Click(object sender, EventArgs e)
         {
-            if(this.Width < 444)
+            if (this.Width < 444)
             {
                 this.Width = 588;
                 this.toolStripStatusLabel4.Visible = true;
@@ -265,8 +288,12 @@ namespace Auto_Touch
                 this.comboBox1.Enabled = true;
                 this.textBox2.Enabled = true;
                 this.button6.Enabled = true;
-                this.button7.Enabled = true;
-                this.button8.Enabled = true;
+                if(this.comboBox1.SelectedIndex != 0)
+                {
+                    this.button7.Enabled = true;
+                }
+                //this.button8.Enabled = true;
+                this.button4.TabStop = true;
             }
             else
             {
@@ -277,7 +304,8 @@ namespace Auto_Touch
                 this.textBox2.Enabled = false;
                 this.button6.Enabled = false;
                 this.button7.Enabled = false;
-                this.button8.Enabled = false;
+                //this.button8.Enabled = false;
+                this.button4.TabStop = false;
             }
         }
 
@@ -285,11 +313,204 @@ namespace Auto_Touch
         private void textBox2_KeyPress(object sender, KeyPressEventArgs e)
         {
             //我的天呐，不能用双引号
-            if(e.KeyChar != '\b' && Char.IsDigit(e.KeyChar) == false)
+            if (e.KeyChar != '\b' && Char.IsDigit(e.KeyChar) == false)
             {
                 e.Handled = true;
                 SystemSounds.Beep.Play();
             }
+        }
+
+        //重命名
+        public void rename(String text = null, String t1 = null , String t2 = null)
+        {
+            if(text == "新建" || text == "" || text == " " || this.textBox1.Text == "" || 
+                this.textBox1.Text == " " || this.textBox2.Text == "" || this.textBox2.Text == " ")
+            {
+                return;
+            }
+            //if (this.comboBox1.SelectedIndex >= 0 && 全局变量.comboboxindex > 0)
+            if (全局变量.comboboxindex > 0)
+            {
+                String[] ini = 全局变量.ini[全局变量.comboboxindex - 1].Split(';');
+                this.comboBox1.Items[全局变量.comboboxindex] = this.comboBox1.Text;
+                ini[0] = this.comboBox1.Text;
+                ini[1] = this.textBox1.Text;
+                ini[2] = this.textBox2.Text;
+                if(t1 != null)
+                {
+                    ini[1] = t1;
+                }
+                if(t2 != null)
+                {
+                    ini[2] = t2;
+                }
+                if (text == null)
+                {
+                    this.comboBox1.SelectedIndex = 全局变量.comboboxindex;
+                    this.comboBox1.Text = ini[0];
+                }
+                全局变量.ini[全局变量.comboboxindex - 1] = String.Join(";", ini);
+            }
+        }
+
+        //选择框被更改
+        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            //Console.WriteLine(comboBox1.Text);
+            全局变量.comboboxindex = comboBox1.SelectedIndex;
+            if (comboBox1.SelectedIndex <= 0)
+            {
+                this.button6.Text = "保存";
+                this.button7.Enabled = false;
+                return;
+            }
+            else
+            {
+                this.button7.Enabled = true;
+                this.button6.Text = "新建";
+                String[] ini = 全局变量.ini[this.comboBox1.SelectedIndex - 1].Split(';');
+                this.comboBox1.Text = ini[0];
+                this.textBox1.Text = ini[1];
+                this.textBox2.Text = ini[2];
+                //rename();
+            }
+        }
+
+        async public void 闪烁(Control aaa)
+        {
+            SystemSounds.Beep.Play();
+            int top = aaa.Top;
+            aaa.Focus();
+            //SelectNextControl(ActiveControl, false, true, true, true);
+            if (全局变量.闪 == false)
+            {
+                全局变量.闪 = true;
+                aaa.Top = 65536;
+                await Task.Delay(100);
+                aaa.Top = top;
+                await Task.Delay(100);
+                aaa.Top = 65536;
+                await Task.Delay(100);
+                aaa.Top = top;
+                await Task.Delay(100);
+                aaa.Top = 65536;
+                await Task.Delay(100);
+                aaa.Top = top;
+                await Task.Delay(100);
+                aaa.Top = 65536;
+                await Task.Delay(100);
+                aaa.Top = top;
+                await Task.Delay(100);
+                aaa.Top = 65536;
+                await Task.Delay(100);
+                aaa.Top = top;
+                await Task.Delay(100);
+                全局变量.闪 = false;
+            }
+        }
+
+        //保存 & 新建
+        private void button6_Click(object sender, EventArgs e)
+        {
+            if (this.button6.Text == "新建")
+            {
+                String t1 = this.textBox1.Text;
+                String t2 = this.textBox2.Text;
+                rename(null,t1,t2);
+            }
+            else
+            {
+                if(this.comboBox1.Text == "新建" || this.comboBox1.Text == "" || this.comboBox1.Text == " ")
+                {
+                    闪烁(this.comboBox1);
+                    return;
+                }
+                if(this.textBox1.Text == "" || this.textBox1.Text == " ")
+                {
+                    闪烁(this.textBox1); 
+                    return;
+                }
+                if(this.textBox2.Text == "" || this.textBox2.Text == " ")
+                {
+                    闪烁(this.textBox2); 
+                    return;
+                }
+                Array.Resize(ref 全局变量.ini,全局变量.ini.Length + 1);
+                全局变量.ini[全局变量.ini.Length - 1] = this.comboBox1.Text + ";" + this.textBox1.Text + ";" + 
+                    this.textBox2.Text;
+                this.comboBox1.Items.Add(this.comboBox1.Text);
+                this.comboBox1.SelectedIndex = 全局变量.ini.Length;
+            }
+        }
+
+        //不要在文本框输入 ";"
+        private void comboBox1_TextUpdate(object sender, EventArgs e)
+        {
+            if(this.comboBox1.Text.IndexOf(";") != -1)
+            {
+                int aaa = this.comboBox1.SelectionStart;
+                SystemSounds.Beep.Play();
+                this.comboBox1.Text = this.comboBox1.Text.Replace(";","") ;
+                this.comboBox1.SelectionStart = aaa - 1;
+            }
+        }
+
+        //关闭前先保存
+        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            try
+            {
+                rename();
+                File.WriteAllLines(@"./Auto Touch.ini", 全局变量.ini);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("保存失败哩: \r\n" + ex.Message, "(＃°Д°) !!!  失败");
+            }
+        }
+
+        //删除
+        private void button7_Click(object sender, EventArgs e)
+        {
+            if (this.comboBox1.SelectedIndex == 0)
+            {
+                return;
+            }
+            if(MessageBox.Show("欸，要删除 " + 全局变量.ini[this.comboBox1.SelectedIndex - 1].Split(';')[0] +
+                " 吗? ", "删除",MessageBoxButtons.OKCancel,MessageBoxIcon.Question,MessageBoxDefaultButton.Button2)
+                == DialogResult.OK){
+                int index = 全局变量.comboboxindex;
+                if(index == 1)
+                {
+                    this.button2.Focus();
+                }
+                this.comboBox1.SelectedIndex = 全局变量.comboboxindex - 1;
+                this.comboBox1.Items.RemoveAt(index);
+                string[] ini = { };
+                Array.Resize(ref ini, 全局变量.ini.Length - 1);
+                int a = 0;
+                while(a < 全局变量.ini.Length)
+                {
+                    if(a != (index - 1))
+                    {
+                        ini[a] = 全局变量.ini[a];
+                    }
+                    a++;
+                }
+                全局变量.ini = ini;
+            }
+        }
+
+        //失去焦点来重命名
+        private void comboBox1_Leave(object sender, EventArgs e)
+        {
+            rename(null, this.textBox1.Text, this.textBox2.Text);
+        }
+
+        //改变选项来重命名
+        private void comboBox1_SelectionChangeCommitted(object sender, EventArgs e)
+        {
+            rename(this.comboBox1.Text);
         }
     }
 }

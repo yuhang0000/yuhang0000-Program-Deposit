@@ -111,7 +111,7 @@
             this.toolStripStatusLabel5});
             this.statusStrip1.Location = new System.Drawing.Point(0, 82);
             this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(294, 30);
+            this.statusStrip1.Size = new System.Drawing.Size(570, 30);
             this.statusStrip1.SizingGrip = false;
             this.statusStrip1.TabIndex = 0;
             this.statusStrip1.Text = "statusStrip1";
@@ -156,10 +156,10 @@
             // button4
             // 
             this.button4.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.button4.Location = new System.Drawing.Point(-128, -128);
+            this.button4.Location = new System.Drawing.Point(471, 41);
             this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(0, 0);
-            this.button4.TabIndex = 4;
+            this.button4.Size = new System.Drawing.Size(83, 36);
+            this.button4.TabIndex = 8;
             this.button4.TabStop = false;
             this.button4.Text = "退出";
             this.button4.UseVisualStyleBackColor = true;
@@ -206,6 +206,10 @@
             this.comboBox1.Size = new System.Drawing.Size(132, 23);
             this.comboBox1.TabIndex = 5;
             this.comboBox1.Text = "新建";
+            this.comboBox1.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged);
+            this.comboBox1.SelectionChangeCommitted += new System.EventHandler(this.comboBox1_SelectionChangeCommitted);
+            this.comboBox1.TextUpdate += new System.EventHandler(this.comboBox1_TextUpdate);
+            this.comboBox1.Leave += new System.EventHandler(this.comboBox1_Leave);
             // 
             // button6
             // 
@@ -216,6 +220,7 @@
             this.button6.TabIndex = 6;
             this.button6.Text = "保存";
             this.button6.UseVisualStyleBackColor = true;
+            this.button6.Click += new System.EventHandler(this.button6_Click);
             // 
             // button7
             // 
@@ -226,6 +231,7 @@
             this.button7.TabIndex = 7;
             this.button7.Text = "删除";
             this.button7.UseVisualStyleBackColor = true;
+            this.button7.Click += new System.EventHandler(this.button7_Click);
             // 
             // button8
             // 
@@ -236,6 +242,7 @@
             this.button8.TabIndex = 8;
             this.button8.Text = "重命名";
             this.button8.UseVisualStyleBackColor = true;
+            this.button8.Visible = false;
             // 
             // timer1
             // 
@@ -246,13 +253,13 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.button4;
-            this.ClientSize = new System.Drawing.Size(294, 112);
+            this.ClientSize = new System.Drawing.Size(570, 112);
+            this.Controls.Add(this.button4);
             this.Controls.Add(this.button8);
             this.Controls.Add(this.button7);
             this.Controls.Add(this.button6);
             this.Controls.Add(this.comboBox1);
             this.Controls.Add(this.button5);
-            this.Controls.Add(this.button4);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.button3);
             this.Controls.Add(this.button2);
@@ -271,6 +278,7 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Auto Touch";
             this.TopMost = true;
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
             this.Load += new System.EventHandler(this.Form1_Load);
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();
