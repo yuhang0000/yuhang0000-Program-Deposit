@@ -111,7 +111,7 @@
             this.toolStripStatusLabel5});
             this.statusStrip1.Location = new System.Drawing.Point(0, 82);
             this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(570, 30);
+            this.statusStrip1.Size = new System.Drawing.Size(294, 30);
             this.statusStrip1.SizingGrip = false;
             this.statusStrip1.TabIndex = 0;
             this.statusStrip1.Text = "statusStrip1";
@@ -253,7 +253,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.button4;
-            this.ClientSize = new System.Drawing.Size(570, 112);
+            this.ClientSize = new System.Drawing.Size(294, 112);
             this.Controls.Add(this.button4);
             this.Controls.Add(this.button8);
             this.Controls.Add(this.button7);

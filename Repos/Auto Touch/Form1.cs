@@ -104,7 +104,7 @@ namespace Auto_Touch
             public static int XXX = 0;
             public static int YYY = 0;
             public static int 状态 = 1;
-            public static String[] ini;
+            public static String[] ini = new String[0];
             //public static String[] proj = { };
             public static bool 闪 = false;
             public static int comboboxindex = 0;
@@ -132,6 +132,7 @@ namespace Auto_Touch
                 }
                 catch (Exception ex)
                 {
+                    全局变量.ini = new String[0];
                     Console.WriteLine("读取失败: " + ex.Message);
                 }
             }
@@ -240,12 +241,25 @@ namespace Auto_Touch
                     全局变量.XXX = int.Parse(xy.Substring(0, xy.IndexOf(",")));
                     全局变量.YYY = int.Parse(xy.Substring(xy.IndexOf(",") + 1));
                     Console.WriteLine(全局变量.XXX + "," + 全局变量.YYY);
-                    run(int.Parse(this.textBox2.Text));
+                    //给定时间用这个
+                    if (this.textBox2.Text.IndexOf(":") > -1)
+                    {
+
+                    }
+                    //倒计时用这个
+                    else
+                    {
+                        run(int.Parse(this.textBox2.Text));
+                    }
                 }
                 catch
                 {
                     SystemSounds.Hand.Play();
                     MessageBox.Show("输入有误: \r\n" + textBox1.Text, "Oops!");
+                    全局变量.状态 = 0;
+                    this.button2.Enabled = true;
+                    this.textBox1.Enabled = true;
+                    this.button3.Text = "开始";
                 }
             }
             else
@@ -309,11 +323,11 @@ namespace Auto_Touch
             }
         }
 
-        //时间，仅允许数字
+        //时间，仅允许数字，和 ":"
         private void textBox2_KeyPress(object sender, KeyPressEventArgs e)
         {
             //我的天呐，不能用双引号
-            if (e.KeyChar != '\b' && Char.IsDigit(e.KeyChar) == false)
+            if (e.KeyChar != '\b' && e.KeyChar != ':' && Char.IsDigit(e.KeyChar) == false)
             {
                 e.Handled = true;
                 SystemSounds.Beep.Play();
@@ -321,7 +335,7 @@ namespace Auto_Touch
         }
 
         //重命名
-        public void rename(String text = null, String t1 = null , String t2 = null)
+        public void rename(String text = null)
         {
             if(text == "新建" || text == "" || text == " " || this.textBox1.Text == "" || 
                 this.textBox1.Text == " " || this.textBox2.Text == "" || this.textBox2.Text == " ")
@@ -332,24 +346,16 @@ namespace Auto_Touch
             if (全局变量.comboboxindex > 0)
             {
                 String[] ini = 全局变量.ini[全局变量.comboboxindex - 1].Split(';');
-                this.comboBox1.Items[全局变量.comboboxindex] = this.comboBox1.Text;
                 ini[0] = this.comboBox1.Text;
                 ini[1] = this.textBox1.Text;
                 ini[2] = this.textBox2.Text;
-                if(t1 != null)
-                {
-                    ini[1] = t1;
-                }
-                if(t2 != null)
-                {
-                    ini[2] = t2;
-                }
+                全局变量.ini[全局变量.comboboxindex - 1] = String.Join(";", ini);
+                this.comboBox1.Items[全局变量.comboboxindex] = this.comboBox1.Text;
                 if (text == null)
                 {
                     this.comboBox1.SelectedIndex = 全局变量.comboboxindex;
                     this.comboBox1.Text = ini[0];
                 }
-                全局变量.ini[全局变量.comboboxindex - 1] = String.Join(";", ini);
             }
         }
 
@@ -414,9 +420,10 @@ namespace Auto_Touch
         {
             if (this.button6.Text == "新建")
             {
-                String t1 = this.textBox1.Text;
-                String t2 = this.textBox2.Text;
-                rename(null,t1,t2);
+                rename();
+                this.comboBox1.Focus();
+                this.comboBox1.SelectedIndex = 0;
+                this.comboBox1.SelectAll();
             }
             else
             {
@@ -489,11 +496,13 @@ namespace Auto_Touch
                 string[] ini = { };
                 Array.Resize(ref ini, 全局变量.ini.Length - 1);
                 int a = 0;
+                int b = 0;
                 while(a < 全局变量.ini.Length)
                 {
                     if(a != (index - 1))
                     {
-                        ini[a] = 全局变量.ini[a];
+                        ini[b] = 全局变量.ini[a];
+                        b++;
                     }
                     a++;
                 }
@@ -504,7 +513,7 @@ namespace Auto_Touch
         //失去焦点来重命名
         private void comboBox1_Leave(object sender, EventArgs e)
         {
-            rename(null, this.textBox1.Text, this.textBox2.Text);
+            rename();
         }
 
         //改变选项来重命名
