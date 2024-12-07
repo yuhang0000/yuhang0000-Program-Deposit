@@ -69,7 +69,7 @@ namespace Auto_Touch
                             time = int.Parse(args[2]);
                         }
                         //Console.WriteLine(args.ToString());
-                        run(time);
+                        run(time * 1000);
                     }
                     System.Environment.Exit(0);
                 }
@@ -83,6 +83,7 @@ namespace Auto_Touch
             {
                 //help() ;
             }
+
             InitializeComponent();
             让我看看 = this;
         }
@@ -163,6 +164,7 @@ namespace Auto_Touch
         async public void run(int time = 0)
         {
             time = (int)timeGetTime() + time;
+            //TODO
             while (time > (int)timeGetTime()) {
                 //time = time - 1000;
                 if (全局变量.状态 == 2)
@@ -197,7 +199,8 @@ namespace Auto_Touch
             SetCursorPos(全局变量.XXX, 全局变量.YYY);
             mouse_event(0x0002 | 0x0004, 0, 0, 0, 0);
             SetCursorPos(XX, YY);
-            System.Environment.Exit(0);
+            this.Close();
+            //System.Environment.Exit(0);
         }
 
         //捕捉光标位置
@@ -234,6 +237,26 @@ namespace Auto_Touch
                 this.textBox1.Enabled = false;
                 全局变量.状态 = 2;
                 String xy = textBox1.Text;
+
+                //报错放这里
+                void oops(String text = "", Control control = null)
+                {
+                    if(text != "")
+                    {
+                        text = ", " + text;
+                    }
+                    if(control == null)
+                    {
+                        control = this.textBox1;
+                    }
+                    SystemSounds.Hand.Play();
+                    MessageBox.Show("输入有误" + text + ": \r\n" + control.Text, "Oops!");
+                    全局变量.状态 = 0;
+                    this.button2.Enabled = true;
+                    this.textBox1.Enabled = true;
+                    this.button3.Text = "开始";
+                }
+
                 try
                 {
                     xy = xy.Substring(0, xy.Length - 1);
@@ -244,22 +267,81 @@ namespace Auto_Touch
                     //给定时间用这个
                     if (this.textBox2.Text.IndexOf(":") > -1)
                     {
-
+                        String[] times;
+                        int time = 0;
+                        try
+                        {
+                            times = this.textBox2.Text.Split(':');
+                            //有没有按下 Ctrl
+                            if (Control.ModifierKeys == Keys.Control)   //这是到哪时截至
+                            {
+                                SystemSounds.Beep.Play();   //不知道, 先 Beep 一下提示你按下了 ctrl
+                                DateTime now = DateTime.Now;
+                                if (times.Length == 2)
+                                {
+                                    Array.Resize(ref times, times.Length + 1);
+                                    /*times[2] = times[1];
+                                    times[1] = times[0];
+                                    times[0] = now.Hour.ToString();*/
+                                    times[2] = "0";
+                                }
+                                else if(times.Length > 3)
+                                {
+                                    oops("这不是正确的时间格式", this.textBox2);
+                                    return;
+                                }
+                                DateTime totime = new DateTime(now.Year, now.Month, now.Day,
+                                    int.Parse(times[0]),int.Parse(times[1]),int.Parse(times[2]));
+                                //好麻烦，时间戳单独一个方法
+                                TimeSpan aaa = totime - now;
+                                Console.WriteLine(now);
+                                Console.WriteLine(totime);
+                                time = (int)aaa.TotalMilliseconds;
+                                if (aaa.TotalMilliseconds < 0)   //时间晚了就多加一天
+                                {
+                                    time = (int)aaa.TotalMilliseconds + 3600 * 24 * 1000;
+                                }
+                            }
+                            else    //这是倒计时
+                            {
+                                if (times.Length == 2)
+                                {
+                                    time = ((int.Parse(times[0]) * 3600) + (int.Parse(times[1]) * 60)) * 1000;
+                                    //time = ((int.Parse(times[0]) * 60) + int.Parse(times[1])) * 1000;
+                                }
+                                else if (times.Length == 3)
+                                {
+                                    time = ((int.Parse(times[0]) * 3600) + (int.Parse(times[1]) * 60) + int.Parse(times[2])) * 1000;
+                                }
+                                else if (times.Length > 3)
+                                {
+                                    oops("这不是正确的时间格式", this.textBox2);
+                                    return;
+                                }
+                                if (time < 0)
+                                {
+                                    oops("你数值调太大了", this.textBox2);
+                                    return;
+                                }
+                            }
+                            run(time);
+                        }
+                        catch
+                        {
+                            oops("这不是正确的时间格式",this.textBox2);
+                            return;
+                        }
                     }
                     //倒计时用这个
                     else
                     {
-                        run(int.Parse(this.textBox2.Text));
+                        run(int.Parse(this.textBox2.Text) * 1000);
                     }
                 }
                 catch
                 {
-                    SystemSounds.Hand.Play();
-                    MessageBox.Show("输入有误: \r\n" + textBox1.Text, "Oops!");
-                    全局变量.状态 = 0;
-                    this.button2.Enabled = true;
-                    this.textBox1.Enabled = true;
-                    this.button3.Text = "开始";
+                    oops();
+                    return;
                 }
             }
             else
@@ -299,27 +381,31 @@ namespace Auto_Touch
                 this.Width = 588;
                 this.toolStripStatusLabel4.Visible = true;
                 this.toolStripStatusLabel5.Visible = true;
-                this.comboBox1.Enabled = true;
-                this.textBox2.Enabled = true;
-                this.button6.Enabled = true;
+                this.comboBox1.Visible = true;
+                this.textBox2.Visible = true;
+                this.label2.Visible = true;
+                this.button6.Visible = true;
+                this.button7.Visible = true;
+                this.button4.Visible = true;
                 if(this.comboBox1.SelectedIndex != 0)
                 {
                     this.button7.Enabled = true;
                 }
                 //this.button8.Enabled = true;
-                this.button4.TabStop = true;
             }
             else
             {
                 this.Width = 312;
                 this.toolStripStatusLabel4.Visible = false;
                 this.toolStripStatusLabel5.Visible = false;
-                this.comboBox1.Enabled = false;
-                this.textBox2.Enabled = false;
-                this.button6.Enabled = false;
+                this.comboBox1.Visible = false;
+                this.textBox2.Visible = false;
+                this.label2.Visible = false;
+                this.button6.Visible = false;
+                this.button7.Visible = false;
+                this.button4.Visible = false;
                 this.button7.Enabled = false;
                 //this.button8.Enabled = false;
-                this.button4.TabStop = false;
             }
         }
 
@@ -327,10 +413,37 @@ namespace Auto_Touch
         private void textBox2_KeyPress(object sender, KeyPressEventArgs e)
         {
             //我的天呐，不能用双引号
-            if (e.KeyChar != '\b' && e.KeyChar != ':' && Char.IsDigit(e.KeyChar) == false)
+            if (e.KeyChar != '\b' && e.KeyChar != ':' && e.KeyChar != ';' && e.KeyChar != '-' && e.KeyChar != ' ' 
+                && Char.IsDigit(e.KeyChar) == false)
             {
                 e.Handled = true;
                 SystemSounds.Beep.Play();
+            }
+        }
+        private void textBox2_TextChanged(object sender, EventArgs e)
+        {
+            int start = this.textBox2.SelectionStart;
+            if(this.textBox2.Text.IndexOf(" ") != -1)
+            {
+                this.textBox2.Text = this.textBox2.Text.Replace(" ", ":");
+            }
+            if(this.textBox2.Text.IndexOf(";") != -1)
+            {
+                this.textBox2.Text = this.textBox2.Text.Replace(";", ":");
+            }
+            if(this.textBox2.Text.IndexOf("-") != -1)
+            {
+                this.textBox2.Text = this.textBox2.Text.Replace("-", ":");
+            }
+            this.textBox2.SelectionStart = start;
+            if(this.textBox2.Text.IndexOf(":") == -1 && this.textBox2.Text != "")   //检测是否超过最大值
+            {
+                if(int.Parse(this.textBox2.Text) > 2147482)
+                {
+                    this.textBox2.Text = "2147482";
+                    SystemSounds.Beep.Play();
+                    this.textBox2.SelectionStart = this.textBox2.Text.Length;
+                }
             }
         }
 
@@ -420,7 +533,8 @@ namespace Auto_Touch
         {
             if (this.button6.Text == "新建")
             {
-                rename();
+                //创建的时候，不想要保存当前的选项，可以把 rename() 给嘎了
+                //rename();
                 this.comboBox1.Focus();
                 this.comboBox1.SelectedIndex = 0;
                 this.comboBox1.SelectAll();
@@ -520,6 +634,21 @@ namespace Auto_Touch
         private void comboBox1_SelectionChangeCommitted(object sender, EventArgs e)
         {
             rename(this.comboBox1.Text);
+        }
+
+        //Exit * 2
+        private void button8_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+
+        //获得焦点就全选
+        private void textBox2_Click(object sender, EventArgs e)
+        {
+            if(this.textBox2.Text == "0")
+            {
+                this.textBox2.SelectAll();
+            }
         }
     }
 }

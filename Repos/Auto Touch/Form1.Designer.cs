@@ -155,14 +155,13 @@
             // 
             // button4
             // 
-            this.button4.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.button4.Location = new System.Drawing.Point(471, 41);
             this.button4.Name = "button4";
             this.button4.Size = new System.Drawing.Size(83, 36);
-            this.button4.TabIndex = 8;
-            this.button4.TabStop = false;
+            this.button4.TabIndex = 9;
             this.button4.Text = "退出";
             this.button4.UseVisualStyleBackColor = true;
+            this.button4.Visible = false;
             this.button4.Click += new System.EventHandler(this.button4_Click);
             // 
             // button5
@@ -170,7 +169,7 @@
             this.button5.Location = new System.Drawing.Point(238, 10);
             this.button5.Name = "button5";
             this.button5.Size = new System.Drawing.Size(39, 25);
-            this.button5.TabIndex = 9;
+            this.button5.TabIndex = 4;
             this.button5.Text = "...";
             this.button5.UseVisualStyleBackColor = true;
             this.button5.Click += new System.EventHandler(this.button5_Click);
@@ -183,29 +182,33 @@
             this.label2.Size = new System.Drawing.Size(37, 15);
             this.label2.TabIndex = 0;
             this.label2.Text = "延时";
+            this.label2.Visible = false;
             // 
             // textBox2
             // 
-            this.textBox2.Enabled = false;
             this.textBox2.Location = new System.Drawing.Point(333, 10);
             this.textBox2.MaxLength = 9;
             this.textBox2.Name = "textBox2";
             this.textBox2.Size = new System.Drawing.Size(83, 25);
-            this.textBox2.TabIndex = 4;
+            this.textBox2.TabIndex = 5;
             this.textBox2.Text = "0";
+            this.textBox2.Visible = false;
+            this.textBox2.Click += new System.EventHandler(this.textBox2_Click);
+            this.textBox2.TextChanged += new System.EventHandler(this.textBox2_TextChanged);
+            this.textBox2.Enter += new System.EventHandler(this.textBox2_Click);
             this.textBox2.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBox2_KeyPress);
             // 
             // comboBox1
             // 
-            this.comboBox1.Enabled = false;
             this.comboBox1.FormattingEnabled = true;
             this.comboBox1.Items.AddRange(new object[] {
             "新建"});
             this.comboBox1.Location = new System.Drawing.Point(422, 11);
             this.comboBox1.Name = "comboBox1";
             this.comboBox1.Size = new System.Drawing.Size(132, 23);
-            this.comboBox1.TabIndex = 5;
+            this.comboBox1.TabIndex = 6;
             this.comboBox1.Text = "新建";
+            this.comboBox1.Visible = false;
             this.comboBox1.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged);
             this.comboBox1.SelectionChangeCommitted += new System.EventHandler(this.comboBox1_SelectionChangeCommitted);
             this.comboBox1.TextUpdate += new System.EventHandler(this.comboBox1_TextUpdate);
@@ -213,13 +216,13 @@
             // 
             // button6
             // 
-            this.button6.Enabled = false;
             this.button6.Location = new System.Drawing.Point(293, 41);
             this.button6.Name = "button6";
             this.button6.Size = new System.Drawing.Size(83, 36);
-            this.button6.TabIndex = 6;
+            this.button6.TabIndex = 7;
             this.button6.Text = "保存";
             this.button6.UseVisualStyleBackColor = true;
+            this.button6.Visible = false;
             this.button6.Click += new System.EventHandler(this.button6_Click);
             // 
             // button7
@@ -228,21 +231,23 @@
             this.button7.Location = new System.Drawing.Point(382, 41);
             this.button7.Name = "button7";
             this.button7.Size = new System.Drawing.Size(83, 36);
-            this.button7.TabIndex = 7;
+            this.button7.TabIndex = 8;
             this.button7.Text = "删除";
             this.button7.UseVisualStyleBackColor = true;
+            this.button7.Visible = false;
             this.button7.Click += new System.EventHandler(this.button7_Click);
             // 
             // button8
             // 
-            this.button8.Enabled = false;
-            this.button8.Location = new System.Drawing.Point(471, 41);
+            this.button8.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.button8.Location = new System.Drawing.Point(-128, 41);
             this.button8.Name = "button8";
             this.button8.Size = new System.Drawing.Size(83, 36);
             this.button8.TabIndex = 8;
-            this.button8.Text = "重命名";
+            this.button8.TabStop = false;
+            this.button8.Text = "我想退出去 o(≧口≦)o";
             this.button8.UseVisualStyleBackColor = true;
-            this.button8.Visible = false;
+            this.button8.Click += new System.EventHandler(this.button8_Click);
             // 
             // timer1
             // 
@@ -252,7 +257,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.CancelButton = this.button4;
+            this.CancelButton = this.button8;
             this.ClientSize = new System.Drawing.Size(294, 112);
             this.Controls.Add(this.button4);
             this.Controls.Add(this.button8);
