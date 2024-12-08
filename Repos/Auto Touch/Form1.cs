@@ -243,13 +243,20 @@ namespace Auto_Touch
                 float dpiX = graphics.DpiX;
                 全局变量.dpi = (dpiX / 120);
             }
-            MessageBox.Show(全局变量.dpi.ToString());
-            MessageBox.Show(this.MaximumSize.ToString() + "\r\n" + this.MinimumSize.ToString());
-            /*this.MaximumSize = new Size( (int)( (float)this.MaximumSize.Width * 全局变量.dpi),
+            //MessageBox.Show(全局变量.dpi.ToString());
+            //MessageBox.Show(this.MaximumSize.ToString() + "\r\n" + this.MinimumSize.ToString());
+            /*Size max = new Size( (int)( (float)this.MaximumSize.Width * 全局变量.dpi),
                 (int)((float)this.MaximumSize.Height * 全局变量.dpi) );
-            this.MinimumSize = new Size( (int)( (float)this.MinimumSize.Width * 全局变量.dpi),
-                (int)((float)this.MinimumSize.Height * 全局变量.dpi) );
-            MessageBox.Show(this.MaximumSize.ToString() + "\r\n" + this.MinimumSize.ToString());*/
+            Size min = new Size( (int)( (float)this.MinimumSize.Width * 全局变量.dpi),
+                (int)((float)this.MinimumSize.Height * 全局变量.dpi) ); */
+            Size max = new Size( (int)( 588 * 全局变量.dpi),
+                (int)( 159 * 全局变量.dpi) );
+            Size min = new Size( (int)( 312 * 全局变量.dpi),
+                (int)( 159 * 全局变量.dpi) );
+            this.MaximumSize = max;
+            this.MinimumSize = min;
+            this.Size = min;
+            //MessageBox.Show(this.MaximumSize.ToString() + "\r\n" + this.MinimumSize.ToString());
         }
 
         async public void run(int time = 0)
