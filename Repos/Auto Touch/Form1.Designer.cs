@@ -49,6 +49,7 @@
             this.button7 = new System.Windows.Forms.Button();
             this.button8 = new System.Windows.Forms.Button();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -97,6 +98,7 @@
             this.button3.Size = new System.Drawing.Size(83, 36);
             this.button3.TabIndex = 1;
             this.button3.Text = "开始";
+            this.toolTip1.SetToolTip(this.button3, "按住 Ctrl 以指定的时间运行。");
             this.button3.UseVisualStyleBackColor = true;
             this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
@@ -192,6 +194,7 @@
             this.textBox2.Size = new System.Drawing.Size(83, 25);
             this.textBox2.TabIndex = 5;
             this.textBox2.Text = "0";
+            this.toolTip1.SetToolTip(this.textBox2, "单位: 秒, 也可以键入 HH:MM:SS 格式。");
             this.textBox2.Visible = false;
             this.textBox2.Click += new System.EventHandler(this.textBox2_Click);
             this.textBox2.TextChanged += new System.EventHandler(this.textBox2_TextChanged);
@@ -255,8 +258,8 @@
             // 
             // Form1
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoScaleDimensions = new System.Drawing.SizeF(120F, 120F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.CancelButton = this.button8;
             this.ClientSize = new System.Drawing.Size(294, 112);
             this.Controls.Add(this.button4);
@@ -314,6 +317,7 @@
         private System.Windows.Forms.Button button7;
         private System.Windows.Forms.Button button8;
         private System.Windows.Forms.Timer timer1;
+        private System.Windows.Forms.ToolTip toolTip1;
     }
 }
 

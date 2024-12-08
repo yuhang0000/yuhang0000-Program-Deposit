@@ -51,6 +51,59 @@ namespace Auto_Touch
 
                 try
                 {
+                    if (args[0] == "-p" || args[0] == "-P" || args[0] == "profile" || args[0] == "profiles" || 
+                        args[0] == "/p" || args[0] == "/P")
+                    {
+                        readini(false);
+                        String xy;
+                        String[] ini = { };
+                        String[] xys = { };
+                        if (全局变量.ini.Length < 1)
+                        {
+                            MessageBox.Show("当前配置文档为空! ","Oops! ");
+                            System.Environment.Exit(0);
+                        }
+                        if (args.Length < 2)
+                        {
+                            ini = 全局变量.ini[全局变量.ini.Length].Split(';');
+                            
+                        }
+                        else
+                        {
+                            foreach(String temp in 全局变量.ini)
+                            {
+                                ini = temp.Split(';');
+                                if (ini[0] == args[1])
+                                {
+                                    break;
+                                }
+                            }
+                            if (ini[0] != args[1])
+                            {
+                                MessageBox.Show("找不到该项目: " +  args[1],"Oops! ");
+                                System.Environment.Exit(0);
+                            }
+                        }
+                        
+                        xy = ini[1];
+                        if(xy.IndexOf("(") != -1)
+                        {
+                            xy = xy.Replace("(", "");
+                        }
+                        if(xy.IndexOf(")") != -1)
+                        {
+                            xy = xy.Replace(")", "");
+                        }
+                        if(xy.IndexOf(" ") != -1)
+                        {
+                            xy = xy.Replace(" ", "");
+                        }
+                        xys = xy.Split(',');
+                        Array.Resize(ref args, 3);
+                        args[0] = xys[0];
+                        args[1] = xys[1];
+                        args[2] = ini[2];
+                    }
                     if (args[0] == "ver" || args[0] == "version")
                     {
                         about();
@@ -63,13 +116,27 @@ namespace Auto_Touch
                     {
                         全局变量.XXX = int.Parse(args[0]);
                         全局变量.YYY = int.Parse(args[1]);
-                        int time = 0;
-                        if (args.Length > 2)
+                        String time = "0";
+                        if (args.Length > 2)    //带了时间
                         {
-                            time = int.Parse(args[2]);
+                            time = args[2];
+                            if (time.IndexOf(":")  != -1)
+                            {
+                                if (HHMMSS(time) == "err") 
+                                {
+                                    help();
+                                };
+                            }
+                            else
+                            {
+                                run(int.Parse(time) * 1000);
+                            }
                         }
                         //Console.WriteLine(args.ToString());
-                        run(time * 1000);
+                        else
+                        {
+                            run(0);
+                        }
                     }
                     System.Environment.Exit(0);
                 }
@@ -109,23 +176,31 @@ namespace Auto_Touch
             //public static String[] proj = { };
             public static bool 闪 = false;
             public static int comboboxindex = 0;
+            public static float dpi = 1;
         }
 
         //读取配置文档
-        public void readini()
+        public void readini(bool ui = true)
         {
-            if (File.Exists(@"./Auto Touch.ini") == true)
+            //if (File.Exists(@"./Auto Touch.ini") == true) //通过命令行运行, 没指定工作路径, 是打不开的
+            if (File.Exists(Application.StartupPath + @"/Auto Touch.ini") == true)
             {
                 try
                 {
-                    全局变量.ini = File.ReadAllLines(@"./Auto Touch.ini");
+                    //全局变量.ini = File.ReadAllLines(@"./Auto Touch.ini");
+                    全局变量.ini = File.ReadAllLines(Application.StartupPath + @"/Auto Touch.ini");
                     //Console.WriteLine(全局变量.ini[0]);
-                    this.textBox1.Text = 全局变量.ini[全局变量.ini.Length - 1].Split(';')[1];
+                    if (ui == true)
+                    {
+                        this.textBox1.Text = 全局变量.ini[全局变量.ini.Length - 1].Split(';')[1];
+                    }
                     foreach (String inis in 全局变量.ini)
                     {
                         string[] ini = inis.Split(';');
                         //全局变量.proj.Append(ini[0]);
-                        this.comboBox1.Items.Add(ini[0]);
+                        if(ui == true){
+                            this.comboBox1.Items.Add(ini[0]);
+                        }
                         //this.comboBox1.SelectedIndex = 1;
                         //this.textBox1.Text = ini[1];
                         //this.textBox2.Text = ini[2];
@@ -142,8 +217,11 @@ namespace Auto_Touch
         public void help()
         {
             MessageBox.Show("Auto Touch.exe : \r\n\r\n\thelp\t\t获取帮助。\r\n\tver\t\t检查版本信息。\r\n\t" +
-                "X[int] Y[int]\t点击 (X,Y) 坐标位置。\r\n\tTime[int]\t\t延时运行, 单位 ms 。\r\n\r\n示例: " +
-                "\tAuto Touch.exe 1920 1080 1000\r\n\t( 等待1秒后, 点击 (1920,1080) 所处位置。)", "帮助: ");
+                "X[int] Y[int]\t点击 (X,Y) 坐标位置。\r\n\tTime[int]\t\t延时运行, 单位: 秒。\r\n\tTime[String]" +
+                "\t延时运行, 单位: HH:MM:SS。\r\n\tprofile [String]\t以指定预设项目运行。\r\n\r\n示例: " +
+                "\tAuto Touch.exe 1920 1080 60\r\n\t( 等待1分钟后, 点击 (1920,1080) 所处位置。)\r\n\n" +
+                "\tAuto Touch.exe 1920 1080 10:00:00\r\n\t( 等待10小时后, 点击 (1920,1080) 所处位置。)\r\n\n" +
+                "\tAuto Touch.exe profile #1\r\n\t( 读取 \"#1\" 预设项目并运行。)", "帮助: ");
         }
 
         public void about()
@@ -159,12 +237,30 @@ namespace Auto_Touch
             toolStripStatusLabel3.Text = 全局变量.编译时间.ToShortDateString().ToString();
             this.Width = 312;
             readini();
+            //获取 dpi
+            using (Graphics graphics = Graphics.FromHwnd(IntPtr.Zero))
+            {
+                float dpiX = graphics.DpiX;
+                全局变量.dpi = (dpiX / 120);
+            }
+            MessageBox.Show(全局变量.dpi.ToString());
+            MessageBox.Show(this.MaximumSize.ToString() + "\r\n" + this.MinimumSize.ToString());
+            /*this.MaximumSize = new Size( (int)( (float)this.MaximumSize.Width * 全局变量.dpi),
+                (int)((float)this.MaximumSize.Height * 全局变量.dpi) );
+            this.MinimumSize = new Size( (int)( (float)this.MinimumSize.Width * 全局变量.dpi),
+                (int)((float)this.MinimumSize.Height * 全局变量.dpi) );
+            MessageBox.Show(this.MaximumSize.ToString() + "\r\n" + this.MinimumSize.ToString());*/
         }
 
         async public void run(int time = 0)
         {
             time = (int)timeGetTime() + time;
-            //TODO
+            //如果 time 為负数
+            if(time < 0)
+            {
+                oops("你数值调太大了", this.textBox2);
+                return;
+            }
             while (time > (int)timeGetTime()) {
                 //time = time - 1000;
                 if (全局变量.状态 == 2)
@@ -227,6 +323,106 @@ namespace Auto_Touch
             help();
         }
 
+        //报错放这里
+        public void oops(String text = "", object control = null)
+        {
+            SystemSounds.Hand.Play();
+            if (text != "")
+            {
+                text = ", " + text;
+            }
+            if (control is Control)
+            {
+                Control con = control as Control;
+                if(con == null)
+                {
+                    con = this.textBox1;
+                }
+                MessageBox.Show("输入有误" + text + ": \r\n" + con.Text, "Oops!");
+            }
+            else
+            {
+                MessageBox.Show("输入有误" + text + ": \r\n" + control, "Oops!");
+            }
+            if (全局变量.状态 == 2)
+            {
+                this.button2.Enabled = true;
+                this.textBox1.Enabled = true;
+                this.button3.Text = "开始";
+            }
+            全局变量.状态 = 0;
+        }
+
+        //是 HH:MM:SS 格式用介个
+        public string HHMMSS(String posttime = "0")
+        {
+            String[] times;
+            int time = 0;
+            try
+            {
+                times = posttime.Split(':');
+                //有没有按下 Ctrl
+                if (Control.ModifierKeys == Keys.Control)   //这是到哪时截至
+                {
+                    SystemSounds.Beep.Play();   //不知道, 先 Beep 一下提示你按下了 ctrl
+                    DateTime now = DateTime.Now;
+                    if (times.Length == 2)
+                    {
+                        Array.Resize(ref times, times.Length + 1);
+                        /*times[2] = times[1];
+                        times[1] = times[0];
+                        times[0] = now.Hour.ToString();*/
+                        times[2] = "0";
+                    }
+                    else if (times.Length > 3)
+                    {
+                        oops("这不是正确的时间格式", posttime);
+                        return "err";
+                    }
+                    DateTime totime = new DateTime(now.Year, now.Month, now.Day,
+                        int.Parse(times[0]), int.Parse(times[1]), int.Parse(times[2]));
+                    //好麻烦，时间戳单独一个方法
+                    TimeSpan aaa = totime - now;
+                    Console.WriteLine(now);
+                    Console.WriteLine(totime);
+                    time = (int)aaa.TotalMilliseconds;
+                    if (aaa.TotalMilliseconds < 0)   //时间晚了就多加一天
+                    {
+                        time = (int)aaa.TotalMilliseconds + 3600 * 24 * 1000;
+                    }
+                }
+                else    //这是倒计时
+                {
+                    if (times.Length == 2)
+                    {
+                        time = ((int.Parse(times[0]) * 3600) + (int.Parse(times[1]) * 60)) * 1000;
+                        //time = ((int.Parse(times[0]) * 60) + int.Parse(times[1])) * 1000;
+                    }
+                    else if (times.Length == 3)
+                    {
+                        time = ((int.Parse(times[0]) * 3600) + (int.Parse(times[1]) * 60) + int.Parse(times[2])) * 1000;
+                    }
+                    else if (times.Length > 3)
+                    {
+                        oops("这不是正确的时间格式", posttime);
+                        return "err";
+                    }
+                    if (time < 0)
+                    {
+                        oops("你数值调太大了", posttime);
+                        return "err";
+                    }
+                }
+                run(time);
+            }
+            catch
+            {
+                oops("这不是正确的时间格式", posttime);
+                return "err";
+            }
+            return "ok";
+        }
+
         //开始运行
         private void button3_Click(object sender, EventArgs e)
         {
@@ -238,25 +434,6 @@ namespace Auto_Touch
                 全局变量.状态 = 2;
                 String xy = textBox1.Text;
 
-                //报错放这里
-                void oops(String text = "", Control control = null)
-                {
-                    if(text != "")
-                    {
-                        text = ", " + text;
-                    }
-                    if(control == null)
-                    {
-                        control = this.textBox1;
-                    }
-                    SystemSounds.Hand.Play();
-                    MessageBox.Show("输入有误" + text + ": \r\n" + control.Text, "Oops!");
-                    全局变量.状态 = 0;
-                    this.button2.Enabled = true;
-                    this.textBox1.Enabled = true;
-                    this.button3.Text = "开始";
-                }
-
                 try
                 {
                     xy = xy.Substring(0, xy.Length - 1);
@@ -264,71 +441,15 @@ namespace Auto_Touch
                     全局变量.XXX = int.Parse(xy.Substring(0, xy.IndexOf(",")));
                     全局变量.YYY = int.Parse(xy.Substring(xy.IndexOf(",") + 1));
                     Console.WriteLine(全局变量.XXX + "," + 全局变量.YYY);
+                    if(this.textBox2.Text == "")    //时间不能为空的
+                    {
+                        this.textBox2.Text = "0";
+                    }
                     //给定时间用这个
                     if (this.textBox2.Text.IndexOf(":") > -1)
                     {
-                        String[] times;
-                        int time = 0;
-                        try
+                        if(HHMMSS(this.textBox2.Text) == "err")
                         {
-                            times = this.textBox2.Text.Split(':');
-                            //有没有按下 Ctrl
-                            if (Control.ModifierKeys == Keys.Control)   //这是到哪时截至
-                            {
-                                SystemSounds.Beep.Play();   //不知道, 先 Beep 一下提示你按下了 ctrl
-                                DateTime now = DateTime.Now;
-                                if (times.Length == 2)
-                                {
-                                    Array.Resize(ref times, times.Length + 1);
-                                    /*times[2] = times[1];
-                                    times[1] = times[0];
-                                    times[0] = now.Hour.ToString();*/
-                                    times[2] = "0";
-                                }
-                                else if(times.Length > 3)
-                                {
-                                    oops("这不是正确的时间格式", this.textBox2);
-                                    return;
-                                }
-                                DateTime totime = new DateTime(now.Year, now.Month, now.Day,
-                                    int.Parse(times[0]),int.Parse(times[1]),int.Parse(times[2]));
-                                //好麻烦，时间戳单独一个方法
-                                TimeSpan aaa = totime - now;
-                                Console.WriteLine(now);
-                                Console.WriteLine(totime);
-                                time = (int)aaa.TotalMilliseconds;
-                                if (aaa.TotalMilliseconds < 0)   //时间晚了就多加一天
-                                {
-                                    time = (int)aaa.TotalMilliseconds + 3600 * 24 * 1000;
-                                }
-                            }
-                            else    //这是倒计时
-                            {
-                                if (times.Length == 2)
-                                {
-                                    time = ((int.Parse(times[0]) * 3600) + (int.Parse(times[1]) * 60)) * 1000;
-                                    //time = ((int.Parse(times[0]) * 60) + int.Parse(times[1])) * 1000;
-                                }
-                                else if (times.Length == 3)
-                                {
-                                    time = ((int.Parse(times[0]) * 3600) + (int.Parse(times[1]) * 60) + int.Parse(times[2])) * 1000;
-                                }
-                                else if (times.Length > 3)
-                                {
-                                    oops("这不是正确的时间格式", this.textBox2);
-                                    return;
-                                }
-                                if (time < 0)
-                                {
-                                    oops("你数值调太大了", this.textBox2);
-                                    return;
-                                }
-                            }
-                            run(time);
-                        }
-                        catch
-                        {
-                            oops("这不是正确的时间格式",this.textBox2);
                             return;
                         }
                     }
@@ -340,7 +461,7 @@ namespace Auto_Touch
                 }
                 catch
                 {
-                    oops();
+                    oops("",this.textBox1);
                     return;
                 }
             }
@@ -376,9 +497,9 @@ namespace Auto_Touch
         //高级选项
         private void button5_Click(object sender, EventArgs e)
         {
-            if (this.Width < 444)
+            if (this.Width < 444 * 全局变量.dpi)
             {
-                this.Width = 588;
+                this.Width = (int)(588 * 全局变量.dpi);
                 this.toolStripStatusLabel4.Visible = true;
                 this.toolStripStatusLabel5.Visible = true;
                 this.comboBox1.Visible = true;
@@ -395,7 +516,7 @@ namespace Auto_Touch
             }
             else
             {
-                this.Width = 312;
+                this.Width = (int)(312 * 全局变量.dpi);
                 this.toolStripStatusLabel4.Visible = false;
                 this.toolStripStatusLabel5.Visible = false;
                 this.comboBox1.Visible = false;
@@ -436,15 +557,6 @@ namespace Auto_Touch
                 this.textBox2.Text = this.textBox2.Text.Replace("-", ":");
             }
             this.textBox2.SelectionStart = start;
-            if(this.textBox2.Text.IndexOf(":") == -1 && this.textBox2.Text != "")   //检测是否超过最大值
-            {
-                if(int.Parse(this.textBox2.Text) > 2147482)
-                {
-                    this.textBox2.Text = "2147482";
-                    SystemSounds.Beep.Play();
-                    this.textBox2.SelectionStart = this.textBox2.Text.Length;
-                }
-            }
         }
 
         //重命名
@@ -582,7 +694,8 @@ namespace Auto_Touch
             try
             {
                 rename();
-                File.WriteAllLines(@"./Auto Touch.ini", 全局变量.ini);
+                //File.WriteAllLines(@"./Auto Touch.ini", 全局变量.ini);
+                File.WriteAllLines(Application.StartupPath + @"/Auto Touch.ini", 全局变量.ini);
             }
             catch (Exception ex)
             {
