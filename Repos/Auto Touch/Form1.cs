@@ -707,6 +707,13 @@ namespace Auto_Touch
                 {
                     File.WriteAllLines(Application.StartupPath + @"/Auto Touch.ini", 全局变量.ini);
                 }
+                else   //这里忘记修了 o(≧口≦)o
+                {
+                    if(File.Exists(Application.StartupPath + @"/Auto Touch.ini") == true)
+                    {
+                        File.Delete(Application.StartupPath + @"/Auto Touch.ini");
+                    }
+                }
             }
             catch (Exception ex)
             {
