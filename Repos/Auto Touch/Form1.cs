@@ -221,7 +221,7 @@ namespace Auto_Touch
                 "\t延时运行, 单位: HH:MM:SS。\r\n\tprofile [String]\t以指定预设项目运行。\r\n\r\n示例: " +
                 "\tAuto Touch.exe 1920 1080 60\r\n\t( 等待1分钟后, 点击 (1920,1080) 所处位置。)\r\n\n" +
                 "\tAuto Touch.exe 1920 1080 10:00:00\r\n\t( 等待10小时后, 点击 (1920,1080) 所处位置。)\r\n\n" +
-                "\tAuto Touch.exe profile #1\r\n\t( 读取 \"#1\" 预设项目并运行。)", "帮助: ");
+                "\tAuto Touch.exe profile #1\r\n\t( 读取预设项目 \"#1\" 并运行。)", "帮助: ");
         }
 
         public void about()
@@ -233,9 +233,9 @@ namespace Auto_Touch
         //一打开就运行
         private void Form1_Load(object sender, EventArgs e)
         {
-            toolStripStatusLabel1.Text = "v"+全局变量.版本;
+            toolStripStatusLabel1.Text = " v"+全局变量.版本;
             toolStripStatusLabel3.Text = 全局变量.编译时间.ToShortDateString().ToString();
-            this.Width = 312;
+            this.Width = 311;
             readini();
             //获取 dpi
             using (Graphics graphics = Graphics.FromHwnd(IntPtr.Zero))
@@ -251,7 +251,7 @@ namespace Auto_Touch
                 (int)((float)this.MinimumSize.Height * 全局变量.dpi) ); */
             Size max = new Size( (int)( 588 * 全局变量.dpi),
                 (int)( (159 * 全局变量.dpi) + (1 - 全局变量.dpi) * 16 ) );
-            Size min = new Size( (int)( 312 * 全局变量.dpi),
+            Size min = new Size( (int)( 311 * 全局变量.dpi),
                 (int)( (159 * 全局变量.dpi) + (1 - 全局变量.dpi) * 16 ) );
             //MessageBox.Show(((1 - 全局变量.dpi) * 16).ToString());
             this.MaximumSize = max;
@@ -524,7 +524,7 @@ namespace Auto_Touch
             }
             else
             {
-                this.Width = (int)(312 * 全局变量.dpi);
+                this.Width = (int)(311 * 全局变量.dpi);
                 this.toolStripStatusLabel4.Visible = false;
                 this.toolStripStatusLabel5.Visible = false;
                 this.comboBox1.Visible = false;
@@ -703,7 +703,10 @@ namespace Auto_Touch
             {
                 rename();
                 //File.WriteAllLines(@"./Auto Touch.ini", 全局变量.ini);
-                File.WriteAllLines(Application.StartupPath + @"/Auto Touch.ini", 全局变量.ini);
+                if (全局变量.ini.Length > 0)
+                {
+                    File.WriteAllLines(Application.StartupPath + @"/Auto Touch.ini", 全局变量.ini);
+                }
             }
             catch (Exception ex)
             {

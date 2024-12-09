@@ -78,6 +78,7 @@
             this.button1.Size = new System.Drawing.Size(83, 36);
             this.button1.TabIndex = 3;
             this.button1.Text = "帮助";
+            this.toolTip1.SetToolTip(this.button1, "获取帮助。");
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
@@ -88,6 +89,7 @@
             this.button2.Size = new System.Drawing.Size(83, 36);
             this.button2.TabIndex = 0;
             this.button2.Text = "捕捉";
+            this.toolTip1.SetToolTip(this.button2, "捕捉当前光标位置, 按下 Esc 结束。");
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
@@ -98,7 +100,7 @@
             this.button3.Size = new System.Drawing.Size(83, 36);
             this.button3.TabIndex = 1;
             this.button3.Text = "开始";
-            this.toolTip1.SetToolTip(this.button3, "按住 Ctrl 以指定的时间运行。");
+            this.toolTip1.SetToolTip(this.button3, "要从指定的时间开始运行, 请按住 Ctrl 键。");
             this.button3.UseVisualStyleBackColor = true;
             this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
@@ -113,7 +115,7 @@
             this.toolStripStatusLabel5});
             this.statusStrip1.Location = new System.Drawing.Point(0, 82);
             this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(294, 30);
+            this.statusStrip1.Size = new System.Drawing.Size(293, 30);
             this.statusStrip1.SizingGrip = false;
             this.statusStrip1.TabIndex = 0;
             this.statusStrip1.Text = "statusStrip1";
@@ -184,6 +186,7 @@
             this.label2.Size = new System.Drawing.Size(37, 15);
             this.label2.TabIndex = 0;
             this.label2.Text = "延时";
+            this.toolTip1.SetToolTip(this.label2, "单位: 秒, 也可以键入 HH:MM:SS 格式。");
             this.label2.Visible = false;
             // 
             // textBox2
@@ -256,12 +259,18 @@
             // 
             this.timer1.Interval = 10;
             // 
+            // toolTip1
+            // 
+            this.toolTip1.AutoPopDelay = 5000;
+            this.toolTip1.InitialDelay = 1000;
+            this.toolTip1.ReshowDelay = 1000;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(120F, 120F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.CancelButton = this.button8;
-            this.ClientSize = new System.Drawing.Size(294, 112);
+            this.ClientSize = new System.Drawing.Size(293, 112);
             this.Controls.Add(this.button4);
             this.Controls.Add(this.button8);
             this.Controls.Add(this.button7);
@@ -279,7 +288,7 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MaximizeBox = false;
             this.MaximumSize = new System.Drawing.Size(588, 159);
-            this.MinimumSize = new System.Drawing.Size(312, 159);
+            this.MinimumSize = new System.Drawing.Size(311, 159);
             this.Name = "Form1";
             this.Opacity = 0.85D;
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
