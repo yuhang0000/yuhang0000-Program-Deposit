@@ -250,9 +250,10 @@ namespace Auto_Touch
             Size min = new Size( (int)( (float)this.MinimumSize.Width * 全局变量.dpi),
                 (int)((float)this.MinimumSize.Height * 全局变量.dpi) ); */
             Size max = new Size( (int)( 588 * 全局变量.dpi),
-                (int)( 159 * 全局变量.dpi) );
+                (int)( (159 * 全局变量.dpi) + (1 - 全局变量.dpi) * 16 ) );
             Size min = new Size( (int)( 312 * 全局变量.dpi),
-                (int)( 159 * 全局变量.dpi) );
+                (int)( (159 * 全局变量.dpi) + (1 - 全局变量.dpi) * 16 ) );
+            //MessageBox.Show(((1 - 全局变量.dpi) * 16).ToString());
             this.MaximumSize = max;
             this.MinimumSize = min;
             this.Size = min;
