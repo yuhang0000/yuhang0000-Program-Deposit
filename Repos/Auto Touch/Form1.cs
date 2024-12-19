@@ -770,7 +770,14 @@ namespace Auto_Touch
         //Exit * 2
         private void button8_Click(object sender, EventArgs e)
         {
-            this.Close();
+            if (this.button3.Text == "停止")
+            {
+                全局变量.状态 = 0;
+                this.button3.Enabled = false;
+            }
+            else {
+                this.Close();
+            }
         }
 
         //获得焦点就全选
