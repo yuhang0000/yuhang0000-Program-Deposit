@@ -1,0 +1,19 @@
+C:\Users\13975\CSharp\repos\Auto Click Messsge List on NTQQ\bin\Debug\Auto Click Messsge List on NTQQ.exe.config
+C:\Users\13975\CSharp\repos\Auto Click Messsge List on NTQQ\bin\Debug\Auto Click Messsge List on NTQQ.exe
+C:\Users\13975\CSharp\repos\Auto Click Messsge List on NTQQ\bin\Debug\Auto Click Messsge List on NTQQ.pdb
+C:\Users\13975\CSharp\repos\Auto Click Messsge List on NTQQ\obj\Debug\Auto Click Messsge List on NTQQ.csproj.AssemblyReference.cache
+C:\Users\13975\CSharp\repos\Auto Click Messsge List on NTQQ\obj\Debug\Auto_Click_Messsge_List_on_NTQQ.Form1.resources
+C:\Users\13975\CSharp\repos\Auto Click Messsge List on NTQQ\obj\Debug\Auto_Click_Messsge_List_on_NTQQ.Properties.Resources.resources
+C:\Users\13975\CSharp\repos\Auto Click Messsge List on NTQQ\obj\Debug\Auto Click Messsge List on NTQQ.csproj.GenerateResource.cache
+C:\Users\13975\CSharp\repos\Auto Click Messsge List on NTQQ\obj\Debug\Auto Click Messsge List on NTQQ.csproj.CoreCompileInputs.cache
+C:\Users\13975\CSharp\repos\Auto Click Messsge List on NTQQ\obj\Debug\Auto Click Messsge List on NTQQ.exe
+C:\Users\13975\CSharp\repos\Auto Click Messsge List on NTQQ\obj\Debug\Auto Click Messsge List on NTQQ.pdb
+C:\Users\13975\CSharp\repos\Auto Click Messsge List on NTQQ\bin\Debug\x86\leptonica-1.82.0.dll
+C:\Users\13975\CSharp\repos\Auto Click Messsge List on NTQQ\bin\Debug\x86\tesseract50.dll
+C:\Users\13975\CSharp\repos\Auto Click Messsge List on NTQQ\bin\Debug\x64\leptonica-1.82.0.dll
+C:\Users\13975\CSharp\repos\Auto Click Messsge List on NTQQ\bin\Debug\x64\tesseract50.dll
+C:\Users\13975\CSharp\repos\Auto Click Messsge List on NTQQ\bin\Debug\Tesseract.dll
+C:\Users\13975\CSharp\repos\Auto Click Messsge List on NTQQ\obj\Debug\Auto Click Messsge List on NTQQ.csproj.CopyComplete
+C:\Users\13975\CSharp\repos\Auto Click Messsge List on NTQQ\obj\Debug\Auto_Click_Messsge_List_on_NTQQ.img.resources
+C:\Users\13975\CSharp\repos\Auto Click Messsge List on NTQQ\obj\Debug\Auto_Click_Messsge_List_on_NTQQ.Form1_old.resources
+C:\Users\13975\CSharp\repos\Auto Click Messsge List on NTQQ\bin\Debug\Fleck.dll
