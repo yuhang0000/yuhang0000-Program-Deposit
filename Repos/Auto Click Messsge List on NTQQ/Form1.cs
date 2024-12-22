@@ -253,7 +253,7 @@ namespace Auto_Click_Messsge_List_on_NTQQ
                     }
                 }
                 else if (command[0] == "app" || command[0] == "App" || command[0] == "a" || command[0] == "A" ||
-                    command[0] == "Application" || command[0] == "application") //打开程序
+                    command[0] == "Application" || command[0] == "application" || command[0] == "exe" || command[0] == "Exe") //打开程序
                 {
                     try
                     {
