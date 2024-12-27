@@ -63,20 +63,27 @@ namespace Auto_Click_Messsge_List_on_NTQQ
                     {
                         while (stop != true)
                         {
-                            if (sss.senttext == "")
+                            try
                             {
-                                await SocketWrapper.Send(DateTime.Now.ToString());
-                                Console.WriteLine(DateTime.Now.ToString());
-                            }
-                            else
-                            {
-                                await SocketWrapper.Send(sss.senttext);
-                                Console.WriteLine(sss.senttext);
-                                textout("发送讯息: " + sss.senttext);
-                                if (textout(zzz: "get") == sss.senttext)
+                                if (sss.senttext == "")
                                 {
-                                    sss.senttext = "";
+                                    await SocketWrapper.Send(DateTime.Now.ToString());
+                                    Console.WriteLine(DateTime.Now.ToString());
                                 }
+                                else
+                                {
+                                    await SocketWrapper.Send(sss.senttext);
+                                    Console.WriteLine(sss.senttext);
+                                    textout("发送讯息: " + sss.senttext);
+                                    if (textout(zzz: "get") == sss.senttext)
+                                    {
+                                        sss.senttext = "";
+                                    }
+                                }
+                            }
+                            catch (Exception ex)
+                            {
+                                textout("出现异常: " + ex.Message);
                             }
                             await Task.Delay(1000);
                         }
@@ -291,6 +298,16 @@ namespace Auto_Click_Messsge_List_on_NTQQ
 
         public string textout(string text = "",string zzz = "set")
         {
+            //如果超出文本框上限，就把旧讯息给删掉
+            if(this.textBox2.Text.Length > 1073741823)
+            {
+                this.Invoke(new MethodInvoker(() =>
+                {
+                    String cut = "\n";
+                    int lll = this.textBox2.Text.Length - this.textBox2.Text.IndexOf(cut) - cut.Length;
+                    this.textBox2.Text = this.textBox2.Text.Substring(this.textBox2.Text.IndexOf(cut) + cut.Length, lll);
+                }));
+            }
             if (zzz == "set")
             {
                 this.Invoke(new MethodInvoker(() =>
