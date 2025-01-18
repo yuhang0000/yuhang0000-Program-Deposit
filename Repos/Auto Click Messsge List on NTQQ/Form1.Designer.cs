@@ -46,6 +46,7 @@
             this.button2 = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
+            this.timer2 = new System.Windows.Forms.Timer(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar3)).BeginInit();
@@ -109,7 +110,7 @@
             // 
             this.trackBar3.LargeChange = 1;
             this.trackBar3.Location = new System.Drawing.Point(12, 169);
-            this.trackBar3.Maximum = 102;
+            this.trackBar3.Maximum = 103;
             this.trackBar3.Name = "trackBar3";
             this.trackBar3.Size = new System.Drawing.Size(445, 56);
             this.trackBar3.TabIndex = 5;
@@ -167,6 +168,7 @@
             // 
             // timer1
             // 
+            this.timer1.Enabled = true;
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
             // textBox2
@@ -204,6 +206,11 @@
             this.toolTip1.AutoPopDelay = 5000;
             this.toolTip1.InitialDelay = 1000;
             this.toolTip1.ReshowDelay = 100;
+            // 
+            // timer2
+            // 
+            this.timer2.Interval = 500;
+            this.timer2.Tick += new System.EventHandler(this.timer2_Tick);
             // 
             // Form1
             // 
@@ -252,6 +259,7 @@
         private System.Windows.Forms.ToolTip toolTip1;
         private System.Windows.Forms.ToolStripMenuItem 帮助ToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem 测试ToolStripMenuItem;
+        private System.Windows.Forms.Timer timer2;
     }
 }
 

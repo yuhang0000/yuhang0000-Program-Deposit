@@ -24,11 +24,15 @@ namespace Auto_Click_Messsge_List_on_NTQQ
         {
             //生成 0 - 100 的图标
             int n = -1;
-            while (n < 102)
+            while (n < 103)
             {
                 if (n == -1)
                 {
                     sss.numicon[n + 1] = img("ZZZ");
+                }
+                else if (n == 102)
+                {
+                    sss.numicon[n + 1] = img(num: " ");
                 }
                 else if (n == 101)
                 {
@@ -135,6 +139,11 @@ namespace Auto_Click_Messsge_List_on_NTQQ
                     Application.Exit();
                 }
             }
+            
+            if(sss.manualpause == true)
+            {
+                textout("暂停计时");
+            }
         }
 
         [System.Runtime.InteropServices.DllImport("user32")]    //鼠标操作
@@ -176,13 +185,50 @@ namespace Auto_Click_Messsge_List_on_NTQQ
                         if (command.Length > 4)
                         {
                             await Task.Delay(int.Parse(command[4]));
-                            textout("完成鼠标输入动作, 坐标: （" + command[2] + "," + command[3] + ") 持续: " + command[4]);
+                            textout("完成鼠标输入动作, 鼠标点击, 坐标: （" + command[2] + "," + command[3] + ") 持续: " + command[4]);
                         }
                         else
                         {
-                            textout("完成鼠标输入动作, 坐标: （" + command[2] + "," + command[3] + ")");
+                            textout("完成鼠标输入动作, 鼠标点击, 坐标: （" + command[2] + "," + command[3] + ")");
                         }
                         mouse_event(0x0004, 0, 0, 0, 0);
+                    }
+                    else if (StringComparer.OrdinalIgnoreCase.Equals(command[1],"right-click") 
+                        || StringComparer.OrdinalIgnoreCase.Equals(command[1],"right_click") 
+                        || StringComparer.OrdinalIgnoreCase.Equals(command[1],"right click") 
+                        || StringComparer.OrdinalIgnoreCase.Equals(command[1],"Secondary Click") 
+                        || StringComparer.OrdinalIgnoreCase.Equals(command[1],"Secondary_Click") 
+                        || StringComparer.OrdinalIgnoreCase.Equals(command[1],"Secondary-Click") 
+                        || StringComparer.OrdinalIgnoreCase.Equals(command[1],"rc") )   //右键
+                    {
+                        mouse_event(0x0008, 0, 0, 0, 0);
+                        if (command.Length > 4)
+                        {
+                            await Task.Delay(int.Parse(command[4]));
+                            textout("完成鼠标输入动作, 鼠标右键, 坐标: （" + command[2] + "," + command[3] + ") 持续: " + command[4]);
+                        }
+                        else
+                        {
+                            textout("完成鼠标输入动作, 鼠标右键, 坐标: （" + command[2] + "," + command[3] + ")");
+                        }
+                        mouse_event(0x0010, 0, 0, 0, 0);
+                    }
+                    else if (StringComparer.OrdinalIgnoreCase.Equals(command[1], "middle-click") 
+                        || StringComparer.OrdinalIgnoreCase.Equals(command[1], "middle_click") 
+                        || StringComparer.OrdinalIgnoreCase.Equals(command[1], "middle click") 
+                        || StringComparer.OrdinalIgnoreCase.Equals(command[1],"mc") )   //中键
+                    {
+                        mouse_event(0x0020, 0, 0, 0, 0);
+                        if (command.Length > 4)
+                        {
+                            await Task.Delay(int.Parse(command[4]));
+                            textout("完成鼠标输入动作, 鼠标中键, 坐标: （" + command[2] + "," + command[3] + ") 持续: " + command[4]);
+                        }
+                        else
+                        {
+                            textout("完成鼠标输入动作, 鼠标中键, 坐标: （" + command[2] + "," + command[3] + ")");
+                        }
+                        mouse_event(0x0040, 0, 0, 0, 0);
                     }
                     SetCursorPos(xy[0], xy[1]);    //还原鼠标位置
                 }
@@ -351,7 +397,7 @@ namespace Auto_Click_Messsge_List_on_NTQQ
         //全局变量
         public static class sss
         {
-            public static Icon[] numicon = new Icon[103];
+            public static Icon[] numicon = new Icon[104];
             public static int mx = 0;
             public static int my = 0;
             public static int[] xy;
@@ -368,6 +414,8 @@ namespace Auto_Click_Messsge_List_on_NTQQ
             public static string port = "65533";
             public static bool runing = false;
             public static bool minwindows = false;
+            public static bool manualpause = false;
+            public static bool emptyicon233 = false;
             //创建个字典来键值衍射
             public static Dictionary<string, Keys> keys = new Dictionary<string, Keys>(StringComparer.OrdinalIgnoreCase) {
                 {"esc",Keys.Escape},
@@ -661,6 +709,10 @@ namespace Auto_Click_Messsge_List_on_NTQQ
                 {
                     sss.missmax = int.Parse(setting.Replace("missmax=", ""));
                 }
+                if (setting.IndexOf("manualpause=") != -1)  //手动暂停
+                {
+                    sss.manualpause = bool.Parse(setting.Replace("manualpause=", ""));
+                }
             }
             catch (Exception ex)
             {
@@ -700,10 +752,18 @@ namespace Auto_Click_Messsge_List_on_NTQQ
             {
                 this.测试ToolStripMenuItem.Visible = true;
             }
+            //刚打开要不要暂停计时
+            if(sss.manualpause == true)
+            {
+                this.trackBar3.Value = 0;
+                this.timer1.Enabled = false;
+                this.timer2.Enabled = true;
+                this.Icon = sss.numicon[0];
+                this.notifyIcon1.Icon = sss.numicon[0];
+            }
             sss.xy = cursor();
             sss.mx = sss.xy[0];
             sss.my = sss.xy[1];
-            this.timer1.Enabled = true;
             Task.Run(() => { websocket(); });
         }
 
@@ -718,7 +778,7 @@ namespace Auto_Click_Messsge_List_on_NTQQ
             }
         }
 
-        //拖动条变化
+        //拖动条变化 调整 Icon 生成尺寸
         private void trackBar1_Scroll(object sender, EventArgs e)
         {
             if (this.textBox1.Text != "")
@@ -734,6 +794,20 @@ namespace Auto_Click_Messsge_List_on_NTQQ
         {
             this.Icon = sss.numicon[this.trackBar3.Value];
             this.notifyIcon1.Icon = sss.numicon[this.trackBar3.Value];
+            if(this.trackBar3.Value == 0)
+            {
+                sss.manualpause = true;
+                this.timer1.Enabled = false;
+                this.timer2.Enabled = true;
+                textout("暂停计时");
+            }
+            else if(this.trackBar3.Value > 0 && sss.manualpause == true)
+            {
+                sss.manualpause = false;
+                this.timer1.Enabled = true;
+                this.timer2.Enabled = false;
+                textout("恢复计时");
+            }
         }
 
         // 计算空闲时间
@@ -804,9 +878,9 @@ namespace Auto_Click_Messsge_List_on_NTQQ
         [DllImport("user32.dll", SetLastError = true)]
         private static extern bool IsWindowVisible(IntPtr hWnd);    //获取窗口是否可视
         [DllImport("user32.dll")]
-        private static extern bool SetForegroundWindow(IntPtr hWnd);
+        private static extern bool SetForegroundWindow(IntPtr hWnd);    //指定窗口置于前台
         [DllImport("user32.dll")]
-        private static extern bool SetFocus(IntPtr hWnd);
+        private static extern bool SetFocus(IntPtr hWnd);   //指定窗口获取焦点
 
         public void run()
         {
@@ -949,10 +1023,12 @@ namespace Auto_Click_Messsge_List_on_NTQQ
         {
             string text = "指令: \r\n\r\nmouse,m,1920,1080\t鼠标移动到 (1920, 1080) 的地方";
             text = text + "\r\nmouse,c,1920,1080\t\t鼠标点击 (1920, 1080) 的地方";
+            text = text + "\r\nmouse,rc,1920,1080\t鼠标右键 (1920, 1080) 的地方";
+            text = text + "\r\nmouse,mc,1920,1080\t鼠标中键 (1920, 1080) 的地方";
             text = text + "\r\nmouse,w,1920,1080,120\t鼠标滚轮向上滚动120";
-            text = text + "\r\nmouse,c,1920,1080,1000\t鼠标点击 (1920, 1080) 的地方, 持续1秒";
-            text = text + "\r\nkeycode,123,1000\t\t键盘输入 F12 , 持续1秒";
-            text = text + "\r\nkey,F12,2000\t\t键盘输入 F12 , 持续2秒";
+            text = text + "\r\nmouse,c,1920,1080,1000\t鼠标点击 (1920, 1080) 的地方, 持续 1 秒";
+            text = text + "\r\nkeycode,123,1000\t\t键盘输入 F12 , 持续 1 秒";
+            text = text + "\r\nkey,F12,2000\t\t键盘输入 F12 , 持续 2 秒";
             text = text + "\r\napp,notepad\t\t打开记事本";
             text = text + "\r\napp,notepad,D:/text.txt\t用记事本打开 \"D:/text.txt\"";
             text = text + "\r\npost,run\t\t\t对方已接收";
@@ -965,6 +1041,7 @@ namespace Auto_Click_Messsge_List_on_NTQQ
             text = text + "\r\nappname=<string>\t目标进程名";
             text = text + "\r\ndelay=<int>\t\t定时器速度";
             text = text + "\r\nminwindows=<bool>\t启动时最小化窗口";
+            text = text + "\r\nmanualpause=<bool>\t启动时是否暂停计时";
             text = text + "\r\nip=<string>\t\t广播ip地址";
             text = text + "\r\nport=<int>\t\t指定端口";
             text = text + "\r\nmissmax=<int>\t\t允许重试的最大次数";
@@ -975,6 +1052,26 @@ namespace Auto_Click_Messsge_List_on_NTQQ
         private void 帮助ToolStripMenuItem_Click(object sender, EventArgs e)
         {
             help();
+        }
+
+        //这个用来闪烁图标，提醒你已经暂停
+        private void timer2_Tick(object sender, EventArgs e)
+        {
+            if(sss.manualpause == true)
+            {
+                if (sss.emptyicon233 == true)
+                {
+                    sss.emptyicon233 = false;
+                    this.Icon = sss.numicon[0];
+                    this.notifyIcon1.Icon = sss.numicon[0];
+                }
+                else if (sss.emptyicon233 == false && sss.manualpause == true)
+                {
+                    sss.emptyicon233 = true;
+                    this.Icon = sss.numicon[103];
+                    this.notifyIcon1.Icon = sss.numicon[103];
+                }
+            }
         }
     }
 }
