@@ -40,6 +40,7 @@ namespace Bili_favorites_list
             public static String 版本 = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString();
             public static DateTime 编译时间 = System.IO.File.GetLastWriteTime(typeof(全局变量).Assembly.Location);
             public static String[] 配置文档;
+            public static String 标题栏高度;
         }
 
         //开始
@@ -403,6 +404,8 @@ namespace Bili_favorites_list
                 }
             }
             全局变量.ML = long.Parse(this.textBox3.Text);
+            全局变量.标题栏高度 = (this.Height - this.ClientSize.Height).ToString();
+            //Console.WriteLine("当前标题栏高度: " + 全局变量.标题栏高度);
         }
 
         //复制状态栏链接
@@ -438,7 +441,7 @@ namespace Bili_favorites_list
                 MessageBox.Show("保存失败，内容是空滴。", "失败哩  ╥﹏╥...");
                 return;
             }
-            else if (全局变量.内容 == "" && close == true)
+            else if (全局变量.内容.Contains("\r\n\r\n") == false && close == true)
             {
                 保存配置文档();
                 return;
@@ -448,7 +451,8 @@ namespace Bili_favorites_list
                 this.button2.Enabled = false;
                 this.button3.Enabled = false;
                 全局变量.运行状态 = false;
-                toolStripStatusLabel1.Text = "暂停"; 保存配置文档();
+                toolStripStatusLabel1.Text = "暂停"; 
+                保存配置文档();
             }
             else if (close == true && bizui == true)
             {
@@ -458,13 +462,21 @@ namespace Bili_favorites_list
             //String date = DateTime.Now.ToString("yyyy-MM-dd") +"   "+ DateTime.Now.Hour.ToString() +"-"+
             //DateTime.Now.Minute.ToString() +"-"+ DateTime.Now.Second.ToString();
             String num;
-            if (全局变量.起始 == (全局变量.ML - 1).ToString())
+            if (全局变量.起始 == (全局变量.ML - 1).ToString() )
             {
                 num = (全局变量.ML - 1).ToString();
             }
             else
             {
-                num = 全局变量.起始 + " - " +(全局变量.ML - 1).ToString();
+                if (long.Parse(全局变量.起始) > (全局变量.ML - 1) )
+                {
+                    num = 全局变量.ML.ToString();
+                }
+                else
+                {
+                    num = 全局变量.起始 + " - " + (全局变量.ML - 1).ToString();
+                }
+                
             }
             String path = Application.StartupPath + @"\Output\" + num + ".txt";
             Console.WriteLine("尝试导出文件: " + path);
@@ -507,7 +519,8 @@ namespace Bili_favorites_list
         private void label6_Click(object sender, EventArgs e)
         {
             MessageBox.Show("Bili favorites list\nBy：yuhang0000\nBuild Time：" + 全局变量.编译时间 + "\n版本：" + 
-                全局变量.版本, "关于");
+                全局变量.版本 + "\n\n引用的第三方库: \n" + "# Newtonsoft.Json v13.0.3\n" + 
+                "   ( https://www.newtonsoft.com/json )", "关于");
         }
 
         //谁会在 "延时" 里写 "-1" 呀

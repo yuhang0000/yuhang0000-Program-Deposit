@@ -61,6 +61,10 @@ namespace Bili_favorites_list
             {
                 错误 = 错误.Replace("System.Security.Authentication.AuthenticationException: ", "");
             }
+            if (错误.Contains("System.UriFormatException: ") == true)
+            {
+                错误 = 错误.Replace("System.UriFormatException: ", "");
+            }
 
             //更新列表数据
             listView.BeginUpdate();
@@ -82,7 +86,7 @@ namespace Bili_favorites_list
         //窗口自适应
         private void 报错_Resize(object sender, EventArgs e)
         {
-            this.columnHeader3.Width = (this.Width - 1060) + 797;
+            this.columnHeader3.Width = (this.Width - 1060) + 787;
             //this.listView1.Width = (this.Width - 1000) + 1042;
         }
 

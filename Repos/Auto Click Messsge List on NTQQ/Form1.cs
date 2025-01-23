@@ -88,6 +88,12 @@ namespace Auto_Click_Messsge_List_on_NTQQ
                             catch (Exception ex)
                             {
                                 textout("出现异常: " + ex.Message);
+                                if(ex.Message.IndexOf("Data sent while closing or after close. Ignoring.") != -1)
+                                {
+                                    SocketWrapper.Close();
+                                    Console.WriteLine("尝试断开连接");
+                                    textout("尝试断开连接");
+                                }
                             }
                             await Task.Delay(1000);
                         }

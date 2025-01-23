@@ -8,3 +8,12 @@ C:\Users\13975\CPP\repos\Auto exit\obj\Debug\Auto exit.csproj.GenerateResource.c
 C:\Users\13975\CPP\repos\Auto exit\obj\Debug\Auto exit.csproj.CoreCompileInputs.cache
 C:\Users\13975\CPP\repos\Auto exit\obj\Debug\Auto exit.exe
 C:\Users\13975\CPP\repos\Auto exit\obj\Debug\Auto exit.pdb
+C:\Users\13975\CSharp\repos\Auto exit\bin\Debug\Auto exit.exe.config
+C:\Users\13975\CSharp\repos\Auto exit\bin\Debug\Auto exit.exe
+C:\Users\13975\CSharp\repos\Auto exit\bin\Debug\Auto exit.pdb
+C:\Users\13975\CSharp\repos\Auto exit\obj\Debug\Auto exit.csproj.AssemblyReference.cache
+C:\Users\13975\CSharp\repos\Auto exit\obj\Debug\Auto_exit.Properties.Resources.resources
+C:\Users\13975\CSharp\repos\Auto exit\obj\Debug\Auto exit.csproj.GenerateResource.cache
+C:\Users\13975\CSharp\repos\Auto exit\obj\Debug\Auto exit.csproj.CoreCompileInputs.cache
+C:\Users\13975\CSharp\repos\Auto exit\obj\Debug\Auto exit.exe
+C:\Users\13975\CSharp\repos\Auto exit\obj\Debug\Auto exit.pdb
