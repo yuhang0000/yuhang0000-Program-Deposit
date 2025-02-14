@@ -412,6 +412,7 @@ namespace Auto_Click_Messsge_List_on_NTQQ
             public static int 强度 = 3;
             public static int missnum = 0;
             public static int missmax = 5;
+            public static int timerdelaytime = 2000;
             public static WebSocketServer socket;
             public static string appname = "QQ";
             public static string senttext = "";
@@ -697,6 +698,7 @@ namespace Auto_Click_Messsge_List_on_NTQQ
                 }
                 if (setting.IndexOf("delay=") != -1)  //延时
                 {
+                    sss.timerdelaytime = int.Parse(setting.Replace("delay=", ""));
                     this.timer1.Interval = int.Parse(setting.Replace("delay=", ""));
                 }
                 if (setting.IndexOf("minwindows=") != -1)  //是否最小化
@@ -835,20 +837,20 @@ namespace Auto_Click_Messsge_List_on_NTQQ
             return count;
         }
 
-        //计时器
+        //计时器 我的天哪，居然不打注釋，後期邊改業務邏輯好痛苦。
         private void timer1_Tick(object sender, EventArgs e)
         {
-            if(sss.runing == true)
+            if(sss.runing == true)  //如果正在運行指定命令時，直接跳過不運行。
             {
                 return;
             }
             //Console.WriteLine(GetLastInputTime());
-            if(GetLastInputTime() < this.timer1.Interval)
+            if(GetLastInputTime() < this.timer1.Interval)   //如果操作間隔小於 2000 ms , 説明用戶動了鍵鼠。
             {
                 //Console.WriteLine(GetLastInputTime().ToString());
                 sss.press = 102;
             }
-            else
+            else   //正常倒計時
             {
                 if (sss.press > 0)
                 {
@@ -956,6 +958,16 @@ namespace Auto_Click_Messsge_List_on_NTQQ
                         this.WindowState = FormWindowState.Minimized;
                     }
                     sss.senttext = sss.posttext;
+                    //如果長時間未答復就終止運行
+                    Task.Run(() => {
+                        Task.Delay(100 * sss.timerdelaytime);
+                        if(sss.runing == true)
+                        {
+                            sss.runing = false;
+                            Console.WriteLine("出现异常: 对方超时未答复, 已终止运行");
+                            textout("出现异常: 对方超时未答复, 已终止运行");
+                        }
+                    });
                     //shot();
                 }
             }
