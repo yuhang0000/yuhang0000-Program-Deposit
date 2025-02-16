@@ -826,13 +826,15 @@ namespace Auto_Click_Messsge_List_on_NTQQ
             public uint dwTime; //抓获时间
         }
         [DllImport("user32.dll")]
-        private static extern bool GetLastInputInfo(ref LASTINOUTINFO Plii);
+        static extern bool GetLastInputInfo(ref LASTINOUTINFO Plii);
+        [DllImport("kernel32")]
+        static extern ulong GetTickCount64();
         public static long GetLastInputTime()
         {
             LASTINOUTINFO vLastInputinfo = new LASTINOUTINFO();
             vLastInputinfo.cbSize = Marshal.SizeOf(vLastInputinfo);
             GetLastInputInfo(ref vLastInputinfo);
-            long count = Environment.TickCount - (long)vLastInputinfo.dwTime;
+            long count = (long)GetTickCount64() - (long)vLastInputinfo.dwTime;
             count = count / 1;
             return count;
         }
