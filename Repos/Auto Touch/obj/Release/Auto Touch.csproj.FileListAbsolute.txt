@@ -9,3 +9,14 @@ C:\Users\13975\CSharp\repos\Auto Touch\obj\Release\Auto Touch.csproj.GenerateRes
 C:\Users\13975\CSharp\repos\Auto Touch\obj\Release\Auto Touch.csproj.CoreCompileInputs.cache
 C:\Users\13975\CSharp\repos\Auto Touch\obj\Release\Auto Touch.exe
 C:\Users\13975\CSharp\repos\Auto Touch\obj\Release\Auto Touch.pdb
+C:\Users\13975\CSharp\Repos\Repos\Auto Touch\bin\Release\Auto Touch.exe.config
+C:\Users\13975\CSharp\Repos\Repos\Auto Touch\bin\Release\Auto Touch.exe
+C:\Users\13975\CSharp\Repos\Repos\Auto Touch\bin\Release\Auto Touch.pdb
+C:\Users\13975\CSharp\Repos\Repos\Auto Touch\obj\Release\Auto Touch.csproj.AssemblyReference.cache
+C:\Users\13975\CSharp\Repos\Repos\Auto Touch\obj\Release\Auto_Touch.Form1.resources
+C:\Users\13975\CSharp\Repos\Repos\Auto Touch\obj\Release\Auto_Touch.Properties.Resources.resources
+C:\Users\13975\CSharp\Repos\Repos\Auto Touch\obj\Release\Auto_Touch.捕捉.resources
+C:\Users\13975\CSharp\Repos\Repos\Auto Touch\obj\Release\Auto Touch.csproj.GenerateResource.cache
+C:\Users\13975\CSharp\Repos\Repos\Auto Touch\obj\Release\Auto Touch.csproj.CoreCompileInputs.cache
+C:\Users\13975\CSharp\Repos\Repos\Auto Touch\obj\Release\Auto Touch.exe
+C:\Users\13975\CSharp\Repos\Repos\Auto Touch\obj\Release\Auto Touch.pdb

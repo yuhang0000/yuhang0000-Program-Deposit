@@ -262,18 +262,26 @@ namespace Auto_Touch
 
         async public void run(int time = 0)
         {
-            time = (int)timeGetTime() + time;
+            //我服了, 为甚么这里也会溢出
+            int 纠正 = 0;
+            if((int)timeGetTime() < 0)
+            {
+                纠正 = (int)timeGetTime();
+            }
+            time = ( (int)timeGetTime() - 纠正) + time;
+            //MessageBox.Show(time.ToString() + "\n" + (int)timeGetTime());
+            
             //如果 time 為负数
             if(time < 0)
             {
                 oops("你数值调太大了", this.textBox2);
                 return;
             }
-            while (time > (int)timeGetTime()) {
+            while (time > ((int)timeGetTime() - 纠正) ) {
                 //time = time - 1000;
                 if (全局变量.状态 == 2)
                 {
-                    this.toolStripStatusLabel5.Text = (time - (int)timeGetTime()).ToString() + "ms";
+                    this.toolStripStatusLabel5.Text = (time - ( (int)timeGetTime() - 纠正) ).ToString() + "ms";
                     await Task.Delay(10);
                 }
                 else if (全局变量.状态 == 1)
