@@ -12,11 +12,18 @@ namespace Auto_Click_Messsge_List_on_NTQQ
         /// 应用程序的主入口点。
         /// </summary>
         [STAThread]
-        static void Main()
+        static void Main(string[] aegs)
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Form1());
+            if (aegs.Length == 0)
+            {
+                Application.Run(new Form1());
+            }
+            else
+            {
+                Application.Run(new Form1(aegs));
+            }
         }
     }
 }

@@ -20,7 +20,7 @@ namespace Auto_Click_Messsge_List_on_NTQQ
 {
     public partial class Form1 : Form
     {
-        public Form1()
+        public Form1(string[] aegs = null)
         {
             //生成 0 - 100 的图标
             int n = -1;
@@ -45,6 +45,20 @@ namespace Auto_Click_Messsge_List_on_NTQQ
                 n++;
             }
             InitializeComponent();
+            if (aegs != null)
+            {
+                if(aegs.Length > 3)
+                {
+                    this.textBox1.Text = aegs[0];
+                    this.trackBar1.Value = int.Parse(aegs[1]);
+                    this.trackBar2.Value = int.Parse(aegs[2]);
+                    this.trackBar3.Value = int.Parse(aegs[3]);
+                }
+                else if (aegs.Length > 0)
+                {
+                    this.textBox1.Text = aegs[0];
+                }
+            }
         }
 
         //网络通讯
@@ -734,6 +748,7 @@ namespace Auto_Click_Messsge_List_on_NTQQ
         {
             //img();
             if(File.Exists(@"./Setting.ini") == true){
+                this.配置ToolStripMenuItem.Visible = true;
                 string[] settings = File.ReadAllLines(@"./Setting.ini");
                 /*sss.posttext = settings[0];
                 sss.appname = settings[1];
@@ -1092,6 +1107,32 @@ namespace Auto_Click_Messsge_List_on_NTQQ
                     this.notifyIcon1.Icon = sss.numicon[103];
                 }
             }
+        }
+
+        //按 F1 索取帮助
+        private void Form1_KeyUp(object sender, KeyEventArgs e)
+        {
+            if(e.KeyCode == Keys.F1)
+            {
+                help();
+            }
+        }
+
+        private void 配置ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            //Console.WriteLine(Process.Start("notepad", @"./Setting.ini"));
+            ProcessStartInfo exe = new ProcessStartInfo();
+            exe.FileName = "notepad";
+            exe.Arguments = @"./Setting.ini";
+            exe.UseShellExecute = false;
+            exe.RedirectStandardOutput = true;
+            Process exe1 = Process.Start(exe);
+            exe1.WaitForExit();
+            Console.WriteLine(exe1.ExitCode);   //这边重启
+            String aaa = this.textBox1.Text + " " + this.trackBar1.Value.ToString() + " " + this.trackBar2.Value.ToString()
+             + " " + this.trackBar3.Value.ToString();
+            Process.Start(Application.ExecutablePath, aaa);
+            Application.Exit();
         }
     }
 }
