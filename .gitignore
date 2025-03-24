@@ -6,3 +6,9 @@
 /Repos/标题栏高度/
 /Repos/Auto Click Messsge List on NTQQ/bin/Debug/tessdata/
 /Repos/Auto Click Messsge List on NTQQ/bin/Release/tessdata/
+
+/*/*/obj/
+/*/*/packages/
+/*/*/.vs/
+*.vsidx
+*.user
