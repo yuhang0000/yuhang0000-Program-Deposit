@@ -12,9 +12,11 @@ namespace Auto_Connect_WLAN
 {
     public partial class Form1 : Form
     {
+        public static Form1 让我看看 { get; private set; }
         public Form1()
         {
             InitializeComponent();
+            让我看看 = this;
         }
 
     }

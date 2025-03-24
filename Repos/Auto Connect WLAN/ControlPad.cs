@@ -22,5 +22,16 @@ namespace Auto_Connect_WLAN
             Form connect = new Connect();
             connect.ShowDialog();
         }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+            Form about = new About();
+            about.ShowDialog();
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            Auto_Connect_WLAN.Form1.让我看看.Close();
+        }
     }
 }
