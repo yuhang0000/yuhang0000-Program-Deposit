@@ -33,5 +33,15 @@ namespace Auto_Connect_WLAN
         {
             Auto_Connect_WLAN.Form1.让我看看.Close();
         }
+
+        private void button7_Click(object sender, EventArgs e)
+        {
+            //ListViewItem list = new ListViewItem();
+            //list.Text = "111";
+            //list.SubItems.Add("222");
+            //list.SubItems.Add("333");
+            //Auto_Connect_WLAN.Form1.让我看看.listView1.Items.Add;
+            Auto_Connect_WLAN.Form1.让我看看.sreach();
+        }
     }
 }

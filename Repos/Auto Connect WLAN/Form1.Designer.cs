@@ -30,13 +30,13 @@
         {
             this.components = new System.ComponentModel.Container();
             this.listView1 = new System.Windows.Forms.ListView();
+            this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.listView2 = new System.Windows.Forms.ListView();
             this.notifyIcon1 = new System.Windows.Forms.NotifyIcon(this.components);
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
-            this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeader3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.controlPad1 = new Auto_Connect_WLAN.ControlPad();
             this.SuspendLayout();
             // 
@@ -46,6 +46,8 @@
             this.columnHeader1,
             this.columnHeader2,
             this.columnHeader3});
+            this.listView1.FullRowSelect = true;
+            this.listView1.GridLines = true;
             this.listView1.HideSelection = false;
             this.listView1.Location = new System.Drawing.Point(12, 34);
             this.listView1.Name = "listView1";
@@ -54,8 +56,24 @@
             this.listView1.UseCompatibleStateImageBehavior = false;
             this.listView1.View = System.Windows.Forms.View.Details;
             // 
+            // columnHeader1
+            // 
+            this.columnHeader1.Text = "#";
+            this.columnHeader1.Width = 38;
+            // 
+            // columnHeader2
+            // 
+            this.columnHeader2.Text = "强度";
+            this.columnHeader2.Width = 48;
+            // 
+            // columnHeader3
+            // 
+            this.columnHeader3.Text = "SSID";
+            this.columnHeader3.Width = 150;
+            // 
             // listView2
             // 
+            this.listView2.CheckBoxes = true;
             this.listView2.HideSelection = false;
             this.listView2.Location = new System.Drawing.Point(411, 34);
             this.listView2.Name = "listView2";
@@ -80,29 +98,17 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(408, 13);
+            this.label2.Location = new System.Drawing.Point(412, 13);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(83, 15);
             this.label2.TabIndex = 3;
             this.label2.Text = "连接列表: ";
             // 
-            // columnHeader1
-            // 
-            this.columnHeader1.Text = "#";
-            // 
-            // columnHeader2
-            // 
-            this.columnHeader2.Text = "强度";
-            // 
-            // columnHeader3
-            // 
-            this.columnHeader3.Text = "SSID";
-            // 
             // controlPad1
             // 
-            this.controlPad1.Location = new System.Drawing.Point(296, 79);
+            this.controlPad1.Location = new System.Drawing.Point(296, 80);
             this.controlPad1.Name = "controlPad1";
-            this.controlPad1.Size = new System.Drawing.Size(93, 239);
+            this.controlPad1.Size = new System.Drawing.Size(93, 260);
             this.controlPad1.TabIndex = 4;
             // 
             // Form1
@@ -115,17 +121,17 @@
             this.Controls.Add(this.label1);
             this.Controls.Add(this.listView2);
             this.Controls.Add(this.listView1);
+            this.MinimumSize = new System.Drawing.Size(512, 47);
             this.Name = "Form1";
+            this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Show;
             this.Text = "Auto Connect WLAN";
+            this.Resize += new System.EventHandler(this.Form1_Resize);
             this.ResumeLayout(false);
             this.PerformLayout();
 
         }
 
         #endregion
-
-        private System.Windows.Forms.ListView listView1;
-        private System.Windows.Forms.ListView listView2;
         private System.Windows.Forms.NotifyIcon notifyIcon1;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
@@ -133,6 +139,8 @@
         private System.Windows.Forms.ColumnHeader columnHeader2;
         private System.Windows.Forms.ColumnHeader columnHeader3;
         private ControlPad controlPad1;
+        public System.Windows.Forms.ListView listView1;
+        public System.Windows.Forms.ListView listView2;
     }
 }
 
