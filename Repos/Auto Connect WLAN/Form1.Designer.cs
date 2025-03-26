@@ -38,6 +38,10 @@
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.controlPad1 = new Auto_Connect_WLAN.ControlPad();
+            this.statusStrip1 = new System.Windows.Forms.StatusStrip();
+            this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
+            this.toolStripStatusLabel2 = new System.Windows.Forms.ToolStripStatusLabel();
+            this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // listView1
@@ -59,12 +63,12 @@
             // columnHeader1
             // 
             this.columnHeader1.Text = "#";
-            this.columnHeader1.Width = 38;
+            this.columnHeader1.Width = 42;
             // 
             // columnHeader2
             // 
             this.columnHeader2.Text = "强度";
-            this.columnHeader2.Width = 48;
+            this.columnHeader2.Width = 44;
             // 
             // columnHeader3
             // 
@@ -106,26 +110,58 @@
             // 
             // controlPad1
             // 
-            this.controlPad1.Location = new System.Drawing.Point(296, 80);
+            this.controlPad1.Location = new System.Drawing.Point(296, 79);
             this.controlPad1.Name = "controlPad1";
             this.controlPad1.Size = new System.Drawing.Size(93, 260);
             this.controlPad1.TabIndex = 4;
+            // 
+            // statusStrip1
+            // 
+            this.statusStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
+            this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripStatusLabel1,
+            this.toolStripStatusLabel2});
+            this.statusStrip1.Location = new System.Drawing.Point(0, 393);
+            this.statusStrip1.Name = "statusStrip1";
+            this.statusStrip1.Size = new System.Drawing.Size(687, 30);
+            this.statusStrip1.TabIndex = 5;
+            this.statusStrip1.Text = "statusStrip1";
+            // 
+            // toolStripStatusLabel1
+            // 
+            this.toolStripStatusLabel1.BorderSides = System.Windows.Forms.ToolStripStatusLabelBorderSides.Right;
+            this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
+            this.toolStripStatusLabel1.Size = new System.Drawing.Size(69, 24);
+            this.toolStripStatusLabel1.Text = "v1.0.0.0";
+            this.toolStripStatusLabel1.Click += new System.EventHandler(this.toolStripStatusLabel1_Click);
+            // 
+            // toolStripStatusLabel2
+            // 
+            this.toolStripStatusLabel2.BorderSides = System.Windows.Forms.ToolStripStatusLabelBorderSides.Right;
+            this.toolStripStatusLabel2.Name = "toolStripStatusLabel2";
+            this.toolStripStatusLabel2.Size = new System.Drawing.Size(43, 24);
+            this.toolStripStatusLabel2.Text = "就绪";
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(687, 394);
+            this.ClientSize = new System.Drawing.Size(687, 423);
+            this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.controlPad1);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.listView2);
             this.Controls.Add(this.listView1);
+            this.KeyPreview = true;
             this.MinimumSize = new System.Drawing.Size(512, 47);
             this.Name = "Form1";
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Show;
             this.Text = "Auto Connect WLAN";
+            this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.Form1_KeyUp);
             this.Resize += new System.EventHandler(this.Form1_Resize);
+            this.statusStrip1.ResumeLayout(false);
+            this.statusStrip1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -141,6 +177,9 @@
         private ControlPad controlPad1;
         public System.Windows.Forms.ListView listView1;
         public System.Windows.Forms.ListView listView2;
+        private System.Windows.Forms.StatusStrip statusStrip1;
+        private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel1;
+        private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel2;
     }
 }
 

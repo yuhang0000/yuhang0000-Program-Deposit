@@ -65,7 +65,7 @@
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(87, 23);
             this.button3.TabIndex = 6;
-            this.button3.Text = "排除";
+            this.button3.Text = "移除";
             this.button3.UseVisualStyleBackColor = true;
             // 
             // button2

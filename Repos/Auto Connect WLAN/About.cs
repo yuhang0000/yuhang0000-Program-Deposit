@@ -22,10 +22,10 @@ namespace Auto_Connect_WLAN
                 this.Text = "";
                 this.label1.Text = content;
             }
-            else if(content != "\0")    //其实是要反着来的
+            else if(content != "\0") 
             {
-                this.Text = content;
-                this.label1.Text = title;
+                this.Text = title;
+                this.label1.Text = content;
             }
             else    //这里写版本号
             {
