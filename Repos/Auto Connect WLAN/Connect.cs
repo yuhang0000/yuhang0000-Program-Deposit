@@ -31,5 +31,16 @@ namespace Auto_Connect_WLAN
         {
             this.Close();
         }
+
+        private void Connect_Load(object sender, EventArgs e)
+        {
+            this.label2.Text = Auto_Connect_WLAN.Form1.让我看看.listView1.SelectedItems[0].SubItems[3].Text;
+            
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

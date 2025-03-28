@@ -19,6 +19,7 @@ namespace Auto_Connect_WLAN
 
         private void button1_Click(object sender, EventArgs e)
         {
+            //Console.WriteLine(Auto_Connect_WLAN.Form1.让我看看.listView1.SelectedItems[0].SubItems[3].Text);
             Form connect = new Connect();
             connect.ShowDialog();
         }
