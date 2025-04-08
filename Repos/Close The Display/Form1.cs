@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Runtime.InteropServices;
 using System.Diagnostics;
+using System.Threading;
 
 namespace Close_The_Display
 {
@@ -103,6 +104,13 @@ namespace Close_The_Display
             }
             int a = GetWindowLong(this.Handle, -20);
             SetWindowLong(this.Handle, -20, a | 0x00000080); //在 alt + Tab 上颖仓
+            bool areuruning = false;
+            Mutex mutex = new Mutex(true,Process.GetCurrentProcess().ProcessName,out areuruning);
+            if(areuruning == false)
+            {
+                this.Close();
+            }
+            //MessageBox.Show(areuruning.ToString());
         }
 
         private void Form1_Load(object sender, EventArgs e)
