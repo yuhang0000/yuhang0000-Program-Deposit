@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using System.Runtime.InteropServices;
 using System.Diagnostics;
 using System.Threading;
+using System.Reflection;
 
 namespace Close_The_Display
 {
@@ -110,6 +111,7 @@ namespace Close_The_Display
             {
                 this.Close();
             }
+            this.toolStripMenuItem2.Font = new Font(this.toolStripMenuItem2.Font, FontStyle.Bold);
             //MessageBox.Show(areuruning.ToString());
         }
 
@@ -137,6 +139,15 @@ namespace Close_The_Display
         private void toolStripMenuItem1_Click(object sender, EventArgs e)
         {
             this.Close();
+        }
+
+        private void toolStripMenuItem2_Click(object sender, EventArgs e)
+        {
+            String text = Application.ProductName;
+            text = text + "\nBy: " + Application.CompanyName;
+            text = text + "\nBuild Time: " + System.IO.File.GetLastWriteTime(typeof(Form1).Assembly.Location);
+            text = text + "\n版本号: " + Assembly.GetExecutingAssembly().GetName().Version.ToString();
+            MessageBox.Show(text, "关于");
         }
     }
 }
