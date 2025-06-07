@@ -5,6 +5,7 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Net.Http;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -19,10 +20,12 @@ namespace TestHttpClient
         public string urlright = "";
         public bool retry = true;
         public List<double> list = new List<double>();
+        public string ver = Assembly.GetExecutingAssembly().GetName().Version.ToString();
 
         public Form1()
         {
             InitializeComponent();
+            this.Text = this.Text + " v" + ver;
         }
 
         async Task runs(string url)
@@ -116,13 +119,13 @@ namespace TestHttpClient
             int ttt = tt + 1;
             if (this.IsHandleCreated == false)
             {
-                this.Text = "TestHttpClient (" + ttt.ToString() + "\\" + max.ToString() + ")";
+                this.Text = "TestHttpClient v" + ver + " (" + ttt.ToString() + "\\" + max.ToString() + ")";
             }
             else
             {
                 this.Invoke(new MethodInvoker( () =>
                 {
-                    this.Text = "TestHttpClient (" + ttt.ToString() + "\\" + max.ToString() + ")";
+                    this.Text = "TestHttpClient v" + ver + " (" + ttt.ToString() + "\\" + max.ToString() + ")";
                 }));
             }
         }
@@ -164,13 +167,18 @@ namespace TestHttpClient
             this.textBox5.Visible = false;
             this.button1.Visible = false;
             this.checkBox1.Visible = false;
+            this.label1.Visible = false;
+            this.label2.Visible = false;
+            this.label3.Visible = false;
+            this.label4.Visible = false;
 
             retry = this.checkBox1.Checked;
             urlleft = this.textBox2.Text;
             urlright = this.textBox3.Text;
             num = int.Parse(this.textBox4.Text);
             max = int.Parse(this.textBox5.Text);
-            this.Text = "TextHttpClient " + "(0\\" + max + ")";
+            //this.Text = "TextHttpClient " + "(0\\" + max + ")";
+            title(-1);
             run();
         }
 
@@ -186,6 +194,10 @@ namespace TestHttpClient
             this.button1.Visible = true;
             this.button2.Visible = false;
             this.checkBox1.Visible = true;
+            this.label1.Visible = true;
+            this.label2.Visible = true;
+            this.label3.Visible = true;
+            this.label4.Visible = true;
         }
 
         private void textBox5_KeyDown(object sender, KeyEventArgs e)
