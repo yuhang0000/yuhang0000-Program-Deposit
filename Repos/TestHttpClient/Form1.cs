@@ -18,6 +18,7 @@ namespace TestHttpClient
         public string urlleft = "";
         public string urlright = "";
         public bool retry = true;
+        public List<double> list = new List<double>();
 
         public Form1()
         {
@@ -64,6 +65,7 @@ namespace TestHttpClient
                 DateTime ee = DateTime.Now;
                 TimeSpan ssee = ee - ss;
                 update(gettext() + "\t" + ssee.TotalSeconds + "s");
+                list.Add(ssee.TotalSeconds);
 
                 title(i);
             }
@@ -71,7 +73,11 @@ namespace TestHttpClient
             update(gettext() + "\r\n开始于: " + start.ToString() + "\t结束于: " + end.ToString());
 
             TimeSpan ts = end - start;
-            update(gettext() + "\t花费: " + ts.TotalSeconds + "s");
+            update(gettext() + "\t总花费: " + ts.TotalSeconds + "s");
+
+            update(gettext() + "\r\n平均: " + list.Average().ToString() + "s");
+
+            update(gettext() + "\t\t最大: " + list.Max().ToString() + "s\t\t\t最小: " + list.Min().ToString() + "s");
 
             if (this.IsHandleCreated == false)
             {
@@ -170,6 +176,7 @@ namespace TestHttpClient
 
         private void button2_Click(object sender, EventArgs e)
         {
+            list.Clear();
             this.textBox1.Text = "";
             this.textBox1.Visible = false;
             this.textBox2.Visible = true;
@@ -179,6 +186,16 @@ namespace TestHttpClient
             this.button1.Visible = true;
             this.button2.Visible = false;
             this.checkBox1.Visible = true;
+        }
+
+        private void textBox5_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                e.Handled = true;
+                this.textBox1.Focus();
+                button1_Click(null,null);
+            }
         }
     }
 }

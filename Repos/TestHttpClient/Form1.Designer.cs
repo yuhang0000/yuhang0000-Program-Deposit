@@ -67,6 +67,7 @@
             this.textBox2.Size = new System.Drawing.Size(1016, 25);
             this.textBox2.TabIndex = 2;
             this.textBox2.Text = "https://api.bilibili.com/x/v3/fav/resource/list?media_id=";
+            this.textBox2.KeyDown += new System.Windows.Forms.KeyEventHandler(this.textBox5_KeyDown);
             // 
             // textBox3
             // 
@@ -75,6 +76,7 @@
             this.textBox3.Size = new System.Drawing.Size(1016, 25);
             this.textBox3.TabIndex = 2;
             this.textBox3.Text = "&pn=1&ps=1";
+            this.textBox3.KeyDown += new System.Windows.Forms.KeyEventHandler(this.textBox5_KeyDown);
             // 
             // textBox4
             // 
@@ -83,6 +85,7 @@
             this.textBox4.Size = new System.Drawing.Size(400, 25);
             this.textBox4.TabIndex = 2;
             this.textBox4.Text = "10000";
+            this.textBox4.KeyDown += new System.Windows.Forms.KeyEventHandler(this.textBox5_KeyDown);
             // 
             // textBox5
             // 
@@ -91,6 +94,7 @@
             this.textBox5.Size = new System.Drawing.Size(400, 25);
             this.textBox5.TabIndex = 2;
             this.textBox5.Text = "100";
+            this.textBox5.KeyDown += new System.Windows.Forms.KeyEventHandler(this.textBox5_KeyDown);
             // 
             // checkBox1
             // 
