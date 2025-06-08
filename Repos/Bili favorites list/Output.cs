@@ -36,20 +36,35 @@ namespace Bili_favorites_list
             {
                 return;
             }
-            //更新列表数据
-            listView.BeginUpdate();
-            ListViewItem 列表 = new ListViewItem();
-            列表.Text = ML;
-            列表.SubItems.Add(UID);
-            列表.SubItems.Add(name);
-            列表.SubItems.Add(title);
-            列表.SubItems.Add(num);
-            列表.SubItems.Add(intro);
-            列表.SubItems.Add(ctime);
-            listView.Items.Add(列表);
-            //自动滚动到底部
-            listView.Items[listView.Items.Count - 1].EnsureVisible();
-            listView.EndUpdate();
+            void update() //单独封装一个方法
+            {
+                //更新列表数据
+                listView.BeginUpdate();
+                ListViewItem 列表 = new ListViewItem();
+                列表.Text = ML;
+                列表.SubItems.Add(UID);
+                列表.SubItems.Add(name);
+                列表.SubItems.Add(title);
+                列表.SubItems.Add(num);
+                列表.SubItems.Add(intro);
+                列表.SubItems.Add(ctime);
+                listView.Items.Add(列表);
+                //自动滚动到底部
+                listView.Items[listView.Items.Count - 1].EnsureVisible();
+                listView.EndUpdate();
+            }
+
+            if (让我看看.IsHandleCreated == false)
+            {
+                update();
+            }
+            else
+            {
+                让我看看.Invoke(new MethodInvoker( ()=>
+                {
+                    update();
+                }));
+            }
         }
 
         private void button1_Click(object sender, EventArgs e)
