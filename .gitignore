@@ -12,3 +12,5 @@
 /*/*/.vs/
 *.vsidx
 *.user
+/*/*/*/*/Output/*
+Setting.ini
