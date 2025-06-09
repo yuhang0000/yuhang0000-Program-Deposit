@@ -153,7 +153,7 @@
             this.textBox5.Name = "textBox5";
             this.textBox5.Size = new System.Drawing.Size(234, 25);
             this.textBox5.TabIndex = 8;
-            this.textBox5.Text = "&pn=1&ps=20";
+            this.textBox5.Text = "&pn=1&ps=1";
             // 
             // statusStrip1
             // 
