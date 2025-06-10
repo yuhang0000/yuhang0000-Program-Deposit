@@ -16,6 +16,8 @@ using System.IO;
 using System.IO.Compression;
 using System.Security.Cryptography;
 using System.Xml.Linq;
+using static Bili_favorites_list.Output;
+using static Bili_favorites_list.报错;
 
 
 namespace Bili_favorites_list
@@ -97,6 +99,7 @@ namespace Bili_favorites_list
             //焦点转至 "暂停"
             SelectNextControl(ActiveControl, false, true, true, true);
             //HTTPGET();
+            Output.让我看看.listView1.Items.Clear();
 
             run();
         }
@@ -125,6 +128,17 @@ namespace Bili_favorites_list
             System.DateTime startTime = TimeZone.CurrentTimeZone.ToLocalTime(new System.DateTime(1970, 1, 1));
             var output = startTime.AddSeconds(time);
             return output.ToString();
+        }
+
+        public void oops(string text)
+        {
+            if (全局变量.错误弹窗的状态 == false)
+            {
+                全局变量.错误弹窗的状态 = true;
+                报错 dig = new 报错();
+                dig.Show();
+            }
+            报错.列表更新(报错.让我看看.listView1, DateTime.Now.ToString(), text);
         }
 
         //废弃了
@@ -382,8 +396,23 @@ namespace Bili_favorites_list
         //真正运行的地方
         async public void run()
         {
+            int toover = 0; //0 正常; 1 步进; 2 截止
             List<Task<(bool, string[])>> list = new List<Task<(bool, string[])>>();
-            for(int i = 0; i < 全局变量.队列; i++)
+            int 队列 = 全局变量.队列;
+            if (全局变量.ML + 队列 > long.Parse(全局变量.终止) ) //是否戒指
+            {
+                队列 = (int)((全局变量.ML + 队列) - long.Parse(全局变量.终止));
+                队列 = 全局变量.队列 - 队列;
+                toover = 2;
+            }
+            if (全局变量.ML + 队列 > long.Parse(全局变量.起始) + (long)全局变量.步幅 ) //是否步进
+            {
+                队列 = (int)((全局变量.ML + 队列) - (long.Parse(全局变量.起始) + (long)全局变量.步幅) );
+                队列 = 全局变量.队列 - 队列;
+                toover = 1;
+            }
+
+            for(int i = 0; i < 队列; i++)
             {
                 string ml = (全局变量.ML + i).ToString();
                 /*int ii = i;
@@ -403,8 +432,7 @@ namespace Bili_favorites_list
                 list.Add(http(全局变量.编辑 + ml + 全局变量.后缀, ml));
             }
             await Task.WhenAll(list);
-            //提取
-
+            
             if (全局变量.运行状态 != true) //强制终止运行
             {
                 if (this.IsHandleCreated == false)
@@ -421,15 +449,82 @@ namespace Bili_favorites_list
                 return;
             }
 
+            //提取
             foreach (var task in list)
             {
                 var(status,output) = task.Result;
+                if(status == false) //返回错误就重试
+                {
+                    oops(output[0]);
+                    await Task.Delay(60000);
+                    if (全局变量.运行状态 != true) //强制终止运行
+                    {
+                        if (this.IsHandleCreated == false)
+                        {
+                            this.button3.Enabled = true;
+                        }
+                        else
+                        {
+                            this.Invoke(new MethodInvoker(() =>
+                            {
+                                this.button3.Enabled = true;
+                            }));
+                        }
+                        return;
+                    }
+                    run();
+                    return;
+                }
+                if(output == null)
+                {
+                    continue;
+                }
                 写进Output(output[0], output[1], output[2], output[3], output[4], output[5], output[6]);
                 Bili_favorites_list.Output.列表更新(Bili_favorites_list.Output.让我看看.listView1, 
                     output[0], output[1], output[2], output[3], output[4], output[5], output[6]);
             }
-            全局变量.ML = 全局变量.ML + 全局变量.队列;
-            run();
+
+            //到戒指上限了就停止 //0 正常; 1 步进; 2 截止
+            if (toover == 1)
+            {
+                全局变量.ML = long.Parse(全局变量.起始) + (long)全局变量.步幅;
+                输出内容(true,true);
+                全局变量.内容 = "#####  " + DateTime.Now.ToString() + "  #####\r\n";
+                全局变量.起始 = 全局变量.ML.ToString();
+                UIupdate(textBox3, 全局变量.起始 );
+                全局变量.ML = 全局变量.ML - 全局变量.队列;
+            }
+            if (toover == 2)
+            {
+                全局变量.运行状态 = false;
+                UIupdate(textBox3,UIget<string>(textBox4));
+                UIupdate(textBox4, (long.Parse(UIget<string>(textBox4)) + long.Parse(UIget<string>(textBox7)) ).ToString());
+                全局变量.ML = long.Parse(全局变量.终止);
+                输出内容(true);
+                全局变量.内容 = "";
+                if (this.IsHandleCreated == false)
+                {
+                    this.button1.Enabled = true;
+                    this.button2.Enabled = false;
+                    this.button3.Enabled = false;
+                    //全局变量.ML = Output.让我看看.listView1.Items[Output.让我看看.listView1.Items.Count - 1].SubItems[0].Text;
+                }
+                else
+                {
+                    this.Invoke(new MethodInvoker(() =>
+                    {
+                        this.button1.Enabled = true;
+                        this.button2.Enabled = false;
+                        this.button3.Enabled = false;
+                    }));
+                }
+                return;
+            }
+            else
+            {
+                全局变量.ML = 全局变量.ML + 全局变量.队列;
+                run();
+            }
         }
         
         //网络请求的地方
@@ -448,8 +543,16 @@ namespace Bili_favorites_list
                 {
                     res = await client.GetAsync(url);
                 }
-                catch
+                catch (Exception ex)
                 {
+                    oops(ex.Message);
+                    //await Task.Delay( (int)UIget<decimal>(numericUpDown2) );
+                    if (全局变量.运行状态 != true)
+                    {
+                        Console.WriteLine("检测到已暂停了诶");
+                        return;
+                    }
+                    await Task.Delay( 1000 );
                     await tryget();
                     return;
                 }
@@ -466,6 +569,16 @@ namespace Bili_favorites_list
             {
                 获取状态 = "成功";
             }
+            //风控检查
+            if ( ((int)CODE).ToString() == "412")
+            {
+                return (false, new string[] { "由于触发哔哩哔哩安全风控策略，该次访问请求被拒绝" });
+            }
+            else if( ((int)CODE).ToString() != "200")
+            {
+                return (false, new string[] { "我也不知道是啥问题, 反正报错哩" });
+            }
+
             UIupdate(this.toolStripStatusLabel2, 获取状态 + " (" + ((int)CODE).ToString() + ")");
             //String 输出 = await res.Content.ReadAsStringAsync();
             String 输出;
@@ -500,7 +613,8 @@ namespace Bili_favorites_list
                 GC.Collect();
                 Console.WriteLine("错误");
                 //HTTPGET();
-                return (false,null);
+                MessageBox.Show(null3.ToString(),输出); //### 这里Debug用
+                return (true,null);
             } //请求错误
             if (null1 != -1 || null2 != -1) //权限不够, 组织访问
             {
@@ -553,6 +667,9 @@ namespace Bili_favorites_list
             {
                 await Task.Delay(1);
             }*/
+            client.Dispose();
+            res.Dispose();
+            GC.Collect();
             await Task.Delay( (int)UIget<decimal>(numericUpDown2) );
             return (true, new string[] { ml, "UID" + uid, name, title, num, intro, 时间戳(ctime) });
         }
@@ -618,8 +735,18 @@ namespace Bili_favorites_list
             }
         }
 
-
-
+        public long mlgetinoutput()
+        {
+            long num;
+            if (Output.让我看看.listView1.Items.Count > 0){
+                num = long.Parse(Output.让我看看.listView1.Items[Output.让我看看.listView1.Items.Count - 1].SubItems[0].Text);
+            }
+            else
+            {
+                num = long.Parse(全局变量.起始);
+            }
+            return num;
+        }
 
         //调整窗口大小
         private void Form1_Resize(object sender, EventArgs e)
@@ -644,7 +771,7 @@ namespace Bili_favorites_list
         {
             this.button3.Enabled = false;
             this.button2.Enabled = true;
-            全局变量.ML = long.Parse(Bili_favorites_list.Output.让我看看.listView1.Items[Bili_favorites_list.Output.让我看看.listView1.Items.Count - 1].SubItems[0].Text) + 1;
+            全局变量.ML = mlgetinoutput() + 1;
             全局变量.运行状态 = true;
             SelectNextControl(ActiveControl, false, true, true, true);
             toolStripStatusLabel1.Text = "进行中";
