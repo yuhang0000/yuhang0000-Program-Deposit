@@ -67,15 +67,30 @@ namespace Bili_favorites_list
             }
 
             //更新列表数据
-            listView.BeginUpdate();
-            ListViewItem 列表 = new ListViewItem();
-            列表.Text = (Bili_favorites_list.Form1.全局变量.错误计数++).ToString();
-            列表.SubItems.Add(时间);
-            列表.SubItems.Add(错误);
-            listView.Items.Add(列表);
-            //自动滚动到底部
-            listView.Items[listView.Items.Count - 1].EnsureVisible();
-            listView.EndUpdate();
+            void update()
+            {
+                listView.BeginUpdate();
+                ListViewItem 列表 = new ListViewItem();
+                列表.Text = (Bili_favorites_list.Form1.全局变量.错误计数++).ToString();
+                列表.SubItems.Add(时间);
+                列表.SubItems.Add(错误);
+                listView.Items.Add(列表);
+                //自动滚动到底部
+                listView.Items[listView.Items.Count - 1].EnsureVisible();
+                listView.EndUpdate();
+            }
+
+            if (让我看看.IsHandleCreated == false)
+            {
+                update();
+            }
+            else
+            {
+                让我看看.Invoke( new MethodInvoker( () =>
+                {
+                    update() ;
+                }));
+            }
         }
 
         private void button1_Click(object sender, EventArgs e)

@@ -10,8 +10,8 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("yuhang0000")]
 [assembly: AssemblyProduct("Bili favorites list")]
-[assembly: AssemblyCopyright("Copyright ©  2024 yuhang0000")]
-[assembly: AssemblyTrademark("By:yuhang0000")]
+[assembly: AssemblyCopyright("Copyright ©  2025 yuhang0000")]
+[assembly: AssemblyTrademark("yuhang0000")]
 [assembly: AssemblyCulture("")]
 
 // 将 ComVisible 设置为 false 会使此程序集中的类型
@@ -32,5 +32,5 @@ using System.Runtime.InteropServices;
 //可以指定所有这些值，也可以使用“生成号”和“修订号”的默认值
 //通过使用 "*"，如下所示:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("0.0.10.0")]
-[assembly: AssemblyFileVersion("0.0.10.0608")]
+[assembly: AssemblyVersion("0.0.12.0")]
+[assembly: AssemblyFileVersion("0.0.12.0610")]
