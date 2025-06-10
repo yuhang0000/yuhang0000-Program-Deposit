@@ -127,6 +127,7 @@ namespace Bili_favorites_list
             return output.ToString();
         }
 
+        //废弃了
         private async void HTTPGET()
         {
             if(全局变量.运行状态 == false)
@@ -197,20 +198,22 @@ namespace Bili_favorites_list
                     Bili_favorites_list.Output.列表更新(Bili_favorites_list.Output.让我看看.listView1,全局变量.ML.ToString(),
                         "无", "无", "无", "0", "", "-");
 
-                    if (textBox6.Text != "")
+                    /*if (textBox6.Text != "")
                     {
                         await Task.Delay(int.Parse(textBox6.Text));
                     }
+                    */
+                    await Task.Delay( (int)numericUpDown2.Value );
                     /* 
                     else if (int.Parse(textBox6.Text) >= 10000)
                     {
                         await Task.Delay(9999);
                     }
                     */
-                    else
+                    /*else
                     {
                         await Task.Delay(1);
-                    }
+                    }*/
                     全局变量.ML++;
                     if (全局变量.ML - long.Parse(全局变量.起始) >= 全局变量.步幅)
                     {
@@ -264,20 +267,22 @@ namespace Bili_favorites_list
                         "UID" + uid, name, title, num, intro, 时间戳(ctime));
                 Bili_favorites_list.Output.列表更新(Bili_favorites_list.Output.让我看看.listView1, 全局变量.ML.ToString(),
                         "UID" + uid, name, title, num, intro, 时间戳(ctime));
-                if (textBox6.Text != "")
+                /*if (textBox6.Text != "")
                 {
                     await Task.Delay(int.Parse(textBox6.Text));
-                }
+                }*/
+                await Task.Delay( (int)numericUpDown2.Value );
                 /* 
                 else if (int.Parse(textBox6.Text) >= 10000)
                 {
                     await Task.Delay(9999);
                 }
                 */
-                else
+                /*else
                 {
                     await Task.Delay(1);
                 }
+                */
                 全局变量.ML++;
                 if (全局变量.ML - long.Parse(全局变量.起始) >= 全局变量.步幅)
                 {
@@ -352,20 +357,22 @@ namespace Bili_favorites_list
                 //报错了就重试喽...
                 if (全局变量.运行状态 != false)
                 {
-                    if (textBox6.Text != "")
+                    /*if (textBox6.Text != "")
                     {
                         await Task.Delay(int.Parse(textBox6.Text));
                     }
+                    */
+                    await Task.Delay( (int)numericUpDown2.Value );
                     /* 
                     else if (int.Parse(textBox6.Text) >= 10000)
                     {
                         await Task.Delay(9999);
                     }
                     */
-                    else
+                    /*else
                     {
                         await Task.Delay(1);
-                    }
+                    }*/
                     HTTPGET();
                     return;
                 }
@@ -373,14 +380,27 @@ namespace Bili_favorites_list
         }
 
         //真正运行的地方
-
         async public void run()
         {
             List<Task<(bool, string[])>> list = new List<Task<(bool, string[])>>();
             for(int i = 0; i < 全局变量.队列; i++)
             {
                 string ml = (全局变量.ML + i).ToString();
-                list.Add(http(全局变量.编辑 + ml + 全局变量.后缀,ml));
+                /*int ii = i;
+                //添加任务
+                list.Add( Task.Run<(bool, string[])> ( async () =>
+                {
+                    int delay = ( (int)(UIget<decimal>(numericUpDown2) ) / (全局变量.队列 + 0) );
+                    if(delay < 1)
+                    {
+                        delay = 1;
+                    }
+                    //Console.WriteLine( delay * (ii + 1) );
+                    await Task.Delay( delay * (ii + 1) );
+                    return await http(全局变量.编辑 + ml + 全局变量.后缀, ml);
+                }) );*/
+                //添加任务
+                list.Add(http(全局变量.编辑 + ml + 全局变量.后缀, ml));
             }
             await Task.WhenAll(list);
             //提取
@@ -412,13 +432,29 @@ namespace Bili_favorites_list
             run();
         }
         
-
+        //网络请求的地方
         async public Task<(bool,string[])> http(string url,string ml)
         {
+
             HttpClient client = new HttpClient();
             //我觉得压缩比较好
             client.DefaultRequestHeaders.Add("Accept-Encoding", "gzip");
-            var res = await client.GetAsync(url);
+            HttpResponseMessage res = null;
+            await tryget(); //麻烦，尝试自动重试
+
+            async Task tryget() //失败自动重试
+            {
+                try
+                {
+                    res = await client.GetAsync(url);
+                }
+                catch
+                {
+                    await tryget();
+                    return;
+                }
+            }
+
             if (全局变量.运行状态 != true)
             {
                 Console.WriteLine("检测到已暂停了诶");
@@ -476,19 +512,20 @@ namespace Bili_favorites_list
                 Bili_favorites_list.Output.列表更新(Bili_favorites_list.Output.让我看看.listView1, ml,
                     "无", "无", "无", "0", "", "-");*/
 
-                if (UIget(textBox6) != "")
+                /*if (UIget<decimal>(numericUpDown2) != "")
                 {
                     await Task.Delay(int.Parse( UIget(textBox6) ));
                 }
                 else
                 {
                     await Task.Delay(1);
-                }
+                }*/
+                await Task.Delay( (int)UIget<decimal>(numericUpDown2) );
                 //内存回收
                 client.Dispose();
                 res.Dispose();
                 GC.Collect();
-                HTTPGET();
+                //HTTPGET();
                 return (true, new string[] { ml, "无", "无", "无", "0", "", "-" } );
             }
 
@@ -508,20 +545,17 @@ namespace Bili_favorites_list
                     "UID" + uid, name, title, num, intro, 时间戳(ctime));
             Bili_favorites_list.Output.列表更新(Bili_favorites_list.Output.让我看看.listView1, ml,
                     "UID" + uid, name, title, num, intro, 时间戳(ctime));*/
-            if (UIget(textBox6) != "")
+            /*if (UIget(textBox6) != "")
             {
                 await Task.Delay(int.Parse( UIget(textBox6 ) ));
             }
             else
             {
                 await Task.Delay(1);
-            }
+            }*/
+            await Task.Delay( (int)UIget<decimal>(numericUpDown2) );
             return (true, new string[] { ml, "UID" + uid, name, title, num, intro, 时间戳(ctime) });
         }
-
-
-
-
 
         //修改UI文本
         public void UIupdate(object obj,string text)
@@ -554,20 +588,33 @@ namespace Bili_favorites_list
             }
         }
         //获取UI文本
-        public string UIget(Control control)
+        public T UIget<T>(Control control)
         {
             if(this.IsHandleCreated == false)
             {
-                return control.Text;
+                if(control is System.Windows.Forms.NumericUpDown numup) { 
+                    return (T)(object)numup.Value;
+                }
+                else
+                {
+                    return (T)(object)control.Text;
+                }
             }
             else
             {
-                string t = "";
+                object t = null;
                 this.Invoke(new MethodInvoker(() =>
                 {
-                    t = control.Text;
+                    if (control is System.Windows.Forms.NumericUpDown numup)
+                    {
+                        t = (T)(object)numup.Value;
+                    }
+                    else
+                    {
+                        t = control.Text;
+                    }
                 }));
-                return t;
+                return (T)(object)t;
             }
         }
 
@@ -620,7 +667,7 @@ namespace Bili_favorites_list
                     "起始=" + textBox3.Text,
                     "终止=" + textBox4.Text, 
                     "后缀=" + textBox5.Text, 
-                    "延时=" + textBox6.Text,
+                    "延时=" + numericUpDown2.Value.ToString(),
                     "步幅=" + textBox7.Text, 
                     "步幅=" + textBox7.Text, 
                     "队列=" + this.numericUpDown1.Value.ToString(), 
@@ -638,7 +685,7 @@ namespace Bili_favorites_list
                     this.textBox3.Text = 全局变量.配置文档[2].Replace("起始=", "");
                     this.textBox4.Text = 全局变量.配置文档[3].Replace("终止=", "");
                     this.textBox5.Text = 全局变量.配置文档[4].Replace("后缀=", "");
-                    this.textBox6.Text = 全局变量.配置文档[5].Replace("延时=", "");
+                    this.numericUpDown2.Value = decimal.Parse(全局变量.配置文档[5].Replace("延时=", ""));
                     this.textBox7.Text = 全局变量.配置文档[6].Replace("步幅=", "");
                     this.numericUpDown1.Value = decimal.Parse(全局变量.配置文档[7].Replace("队列=", ""));
                     this.textBox1.Text = "就绪。";
@@ -679,7 +726,7 @@ namespace Bili_favorites_list
                 "起始=" + 全局变量.ML,
                 "终止=" + textBox4.Text, 
                 "后缀=" + textBox5.Text, 
-                "延时=" + textBox6.Text,
+                "延时=" + numericUpDown2.Value.ToString(),
                 "步幅=" + textBox7.Text, 
                 "队列=" + this.numericUpDown1.Value.ToString(), 
                 "", 
@@ -779,7 +826,7 @@ namespace Bili_favorites_list
         }
 
         //谁会在 "延时" 里写 "-1" 呀
-        private void textBox6_TextChanged(object sender, EventArgs e)
+        /*private void textBox6_TextChanged(object sender, EventArgs e)
         {
             try
             {
@@ -803,9 +850,10 @@ namespace Bili_favorites_list
                 System.Media.SystemSounds.Beep.Play();
                 textBox6.Text = "1";
             }
-        }
+        }*/
 
         //9223372036854775807 + 1 = -9223372036854775807
+
         private void textBox3_TextChanged(object sender, EventArgs e)
         {
             try
