@@ -36,7 +36,7 @@ namespace Bili_favorites_list
             public static String 终止;
             public static String 后缀;
             public static String 链接;
-            public static String 内容 = "";
+            public static StringBuilder 内容 = new StringBuilder();
             public static int 队列 = 1;
             public static long ML;
             public static bool 错误弹窗的状态;
@@ -92,7 +92,7 @@ namespace Bili_favorites_list
             全局变量.后缀 = this.textBox5.Text;
             全局变量.队列 = (int)this.numericUpDown1.Value;
             全局变量.ML = long.Parse(this.textBox3.Text);
-            全局变量.内容 = "#####  " + DateTime.Now.ToString() + "  #####\r\n";
+            重置Output();
             全局变量.链接 = 全局变量.编辑 + 全局变量.起始 + 全局变量.后缀;
             this.toolStripStatusLabel1.Text = "进行中";
             全局变量.运行状态 = true;
@@ -124,9 +124,16 @@ namespace Bili_favorites_list
         {
             if (全局变量.运行状态 == true)
             {
-                全局变量.内容 = 全局变量.内容 + "\r\n#\tML" + ML + "\t" + UID + "\t"  + name + "\t"  + title + "\t"  +
-                    num + "\t" + intro + "\t"  + ctime;
+                //全局变量.内容 = 全局变量.内容 + "\r\n#\tML" + ML + "\t" + UID + "\t"  + name + "\t"  + title + "\t"  +
+                //    num + "\t" + intro + "\t"  + ctime;
+                全局变量.内容.Append("\r\n#\tML" + ML + "\t" + UID + "\t"  + name + "\t"  + title + "\t"  +
+                    num + "\t" + intro + "\t"  + ctime);
             }
+        }
+        public void 重置Output()
+        {
+            全局变量.内容.Clear();
+            全局变量.内容.Append("#####  " + DateTime.Now.ToString() + "  #####\r\n");
         }
         
         private String 时间戳(int time)
@@ -240,7 +247,8 @@ namespace Bili_favorites_list
                         this.textBox3.Text = 全局变量.ML.ToString();
                         输出内容(true,true);
                         全局变量.起始 = this.textBox3.Text;
-                        全局变量.内容 = "#####  " + DateTime.Now.ToString() + "  #####\r\n";
+                        //全局变量.内容 = "#####  " + DateTime.Now.ToString() + "  #####\r\n";
+                        重置Output();
                     }
                     else if (全局变量.ML < 0 || 全局变量.ML == long.MaxValue)
                     {
@@ -249,7 +257,8 @@ namespace Bili_favorites_list
                         this.button1.Enabled = true;
                         全局变量.起始 = this.textBox3.Text;
                         全局变量.终止 = "9223372036854775807";
-                        全局变量.内容 = "";
+                        //全局变量.内容 = "";
+                        全局变量.内容.Clear();
                         this.textBox4.Text = 全局变量.终止;
                         return;
                     }
@@ -260,7 +269,8 @@ namespace Bili_favorites_list
                         this.button1.Enabled = true;
                         全局变量.起始 = this.textBox3.Text;
                         全局变量.终止 = (long.Parse(this.textBox3.Text) + 全局变量.步幅).ToString();
-                        全局变量.内容 = "";
+                        //全局变量.内容 = "";
+                        全局变量.内容.Clear();
                         this.textBox4.Text = 全局变量.终止;
                     }
                     全局变量.链接 = 全局变量.编辑 + 全局变量.ML + 全局变量.后缀;
@@ -309,7 +319,8 @@ namespace Bili_favorites_list
                     this.textBox3.Text = 全局变量.ML.ToString();
                     输出内容(true, true);
                     全局变量.起始 = this.textBox3.Text;
-                    全局变量.内容 = "#####  " + DateTime.Now.ToString() + "  #####\r\n";
+                    //全局变量.内容 = "#####  " + DateTime.Now.ToString() + "  #####\r\n";
+                    重置Output();
                 }
                 else if (全局变量.ML < 0 || 全局变量.ML == long.MaxValue)
                 {
@@ -318,7 +329,8 @@ namespace Bili_favorites_list
                     this.button1.Enabled = true;
                     全局变量.起始 = this.textBox3.Text;
                     全局变量.终止 = "9223372036854775807";
-                    全局变量.内容 = "";
+                    //全局变量.内容 = "";
+                    全局变量.内容.Clear();
                     this.textBox4.Text = 全局变量.终止;
                     return;
                 }
@@ -329,7 +341,8 @@ namespace Bili_favorites_list
                     this.button1.Enabled = true;
                     全局变量.起始 = this.textBox3.Text;
                     全局变量.终止 = (long.Parse(this.textBox3.Text) + 全局变量.步幅).ToString();
-                    全局变量.内容 = "";
+                    //全局变量.内容 = "";
+                    全局变量.内容.Clear();
                     this.textBox4.Text = 全局变量.终止;
                 }
                 全局变量.链接 = 全局变量.编辑 + 全局变量.ML + 全局变量.后缀;
@@ -504,7 +517,8 @@ namespace Bili_favorites_list
             {
                 全局变量.ML = long.Parse(全局变量.起始) + (long)全局变量.步幅;
                 输出内容(true,true);
-                全局变量.内容 = "#####  " + DateTime.Now.ToString() + "  #####\r\n";
+                //全局变量.内容 = "#####  " + DateTime.Now.ToString() + "  #####\r\n";
+                重置Output();
                 全局变量.起始 = 全局变量.ML.ToString();
                 UIupdate(textBox3, 全局变量.起始 );
                 全局变量.ML = 全局变量.ML - 全局变量.队列;
@@ -517,7 +531,8 @@ namespace Bili_favorites_list
                 UIupdate(textBox4, (long.Parse(UIget<string>(textBox4)) + long.Parse(UIget<string>(textBox7)) ).ToString());
                 全局变量.ML = long.Parse(全局变量.终止);
                 输出内容(true);
-                全局变量.内容 = "";
+                //全局变量.内容 = "";
+                全局变量.内容.Clear();
                 if (this.IsHandleCreated == false)
                 {
                     this.button1.Enabled = true;
@@ -890,13 +905,13 @@ namespace Bili_favorites_list
         private void 输出内容(bool close = false, bool bizui = false)
         {
             //Console.WriteLine(全局变量.内容);
-            if (全局变量.内容 == "" && close == false)
+            if (全局变量.内容.Length == 0 && close == false)
             {
                 System.Media.SystemSounds.Hand.Play();
                 MessageBox.Show("保存失败，内容是空滴。", "失败哩  ╥﹏╥...");
                 return;
             }
-            else if (全局变量.内容.Contains("\r\n\r\n") == false && close == true)
+            else if (全局变量.内容.ToString().Contains("\r\n\r\n") == false && close == true)
             {
                 保存配置文档();
                 return;
@@ -937,7 +952,7 @@ namespace Bili_favorites_list
             Console.WriteLine("尝试导出文件: " + path);
             try
             {
-                System.IO.File.WriteAllText(path, 全局变量.内容);
+                System.IO.File.WriteAllText(path, 全局变量.内容.ToString());
             }
             catch
             {
