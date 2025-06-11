@@ -85,5 +85,13 @@ namespace Bili_favorites_list
             //一上来就显示在荧幕左下角
             this.Location = new Point(Screen.PrimaryScreen.WorkingArea.Width - this.Width, Screen.PrimaryScreen.WorkingArea.Height - this.Height);
         }
+
+        private void listView1_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            if (this.listView1.Items.Count > 0 && this.listView1.SelectedIndices.Count > 0)
+            {
+                Clipboard.SetText(this.listView1.SelectedItems[0].SubItems[0].Text);
+            }
+        }
     }
 }
