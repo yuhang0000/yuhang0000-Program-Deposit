@@ -35,8 +35,8 @@
             this.columnHeader4 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader5 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader6 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.button1 = new System.Windows.Forms.Button();
             this.columnHeader7 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.button1 = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // listView1
@@ -59,6 +59,7 @@
             this.listView1.TabIndex = 0;
             this.listView1.UseCompatibleStateImageBehavior = false;
             this.listView1.View = System.Windows.Forms.View.Details;
+            this.listView1.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.listView1_MouseDoubleClick);
             // 
             // columnHeader1
             // 
@@ -89,6 +90,11 @@
             this.columnHeader6.Text = "简介";
             this.columnHeader6.Width = 740;
             // 
+            // columnHeader7
+            // 
+            this.columnHeader7.Text = "创建时间";
+            this.columnHeader7.Width = 160;
+            // 
             // button1
             // 
             this.button1.Location = new System.Drawing.Point(12, 334);
@@ -99,11 +105,6 @@
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Visible = false;
             this.button1.Click += new System.EventHandler(this.button1_Click);
-            // 
-            // columnHeader7
-            // 
-            this.columnHeader7.Text = "创建时间";
-            this.columnHeader7.Width = 160;
             // 
             // Output
             // 
