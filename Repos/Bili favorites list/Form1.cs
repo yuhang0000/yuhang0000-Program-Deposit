@@ -47,11 +47,13 @@ namespace Bili_favorites_list
             public static DateTime 编译时间 = System.IO.File.GetLastWriteTime(typeof(全局变量).Assembly.Location);
             public static String[] 配置文档;
             public static String 标题栏高度;
+            public static HttpClient client;
         }
 
         //开始
         private void button1_Click(object sender, EventArgs e)
         {
+            GC.Collect();
             全局变量.编辑 = this.textBox2.Text;
             全局变量.起始 = this.textBox3.Text;
             全局变量.终止 = this.textBox4.Text;
@@ -101,7 +103,11 @@ namespace Bili_favorites_list
             //HTTPGET();
             Output.让我看看.listView1.Items.Clear();
 
-            run();
+            //尝试共用 HttpClient
+            全局变量.client = new HttpClient();
+            //我觉得压缩比较好
+            全局变量.client.DefaultRequestHeaders.Add("Accept-Encoding", "gzip");
+            run_loop();
         }
 
         /// <summary>
@@ -393,8 +399,17 @@ namespace Bili_favorites_list
             }
         }
 
+        //主循环运行的地方
+        async public void run_loop()
+        {
+            while (全局变量.运行状态 != false)
+            {
+                await run();
+            }
+        }
+
         //真正运行的地方
-        async public void run()
+        async public Task run()
         {
             int toover = 0; //0 正常; 1 步进; 2 截止
             List<Task<(bool, string[])>> list = new List<Task<(bool, string[])>>();
@@ -472,7 +487,7 @@ namespace Bili_favorites_list
                         }
                         return;
                     }
-                    run();
+                    //await run();
                     return;
                 }
                 if(output == null)
@@ -493,6 +508,7 @@ namespace Bili_favorites_list
                 全局变量.起始 = 全局变量.ML.ToString();
                 UIupdate(textBox3, 全局变量.起始 );
                 全局变量.ML = 全局变量.ML - 全局变量.队列;
+                GC.Collect();
             }
             if (toover == 2)
             {
@@ -523,17 +539,13 @@ namespace Bili_favorites_list
             else
             {
                 全局变量.ML = 全局变量.ML + 全局变量.队列;
-                run();
+                //run();
             }
         }
         
         //网络请求的地方
         async public Task<(bool,string[])> http(string url,string ml)
         {
-
-            HttpClient client = new HttpClient();
-            //我觉得压缩比较好
-            client.DefaultRequestHeaders.Add("Accept-Encoding", "gzip");
             HttpResponseMessage res = null;
             await tryget(); //麻烦，尝试自动重试
 
@@ -541,11 +553,11 @@ namespace Bili_favorites_list
             {
                 try
                 {
-                    res = await client.GetAsync(url);
+                    res = await 全局变量.client.GetAsync(url);
                 }
                 catch (Exception ex)
                 {
-                    oops(ex.Message);
+                    oops( ex.ToString().Split(new[] { Environment.NewLine } , StringSplitOptions.None)[0] );
                     //await Task.Delay( (int)UIget<decimal>(numericUpDown2) );
                     if (全局变量.运行状态 != true)
                     {
@@ -569,20 +581,14 @@ namespace Bili_favorites_list
             {
                 获取状态 = "成功";
             }
-            //风控检查
-            if ( ((int)CODE).ToString() == "412")
+            else
             {
-                return (false, new string[] { "由于触发哔哩哔哩安全风控策略，该次访问请求被拒绝" });
+                获取状态 = "失败";
             }
-            else if( ((int)CODE).ToString() != "200")
-            {
-                return (false, new string[] { "我也不知道是啥问题, 反正报错哩" });
-            }
-
             UIupdate(this.toolStripStatusLabel2, 获取状态 + " (" + ((int)CODE).ToString() + ")");
+            UIupdate(this.toolStripStatusLabel6, url);
             //String 输出 = await res.Content.ReadAsStringAsync();
             String 输出;
-
             //解压缩
             if (res.Content.Headers.ContentEncoding.FirstOrDefault() == "gzip")
             {
@@ -598,8 +604,17 @@ namespace Bili_favorites_list
             {
                 输出 = await res.Content.ReadAsStringAsync();
             }
-
             UIupdate(this.textBox1,输出);
+            //风控检查
+            if ( ((int)CODE).ToString() == "412")
+            {
+                return (false, new string[] { "由于触发哔哩哔哩安全风控策略，该次访问请求被拒绝" });
+            }
+            else if( ((int)CODE).ToString() != "200")
+            {
+                return (false, new string[] { "我也不知道是啥问题, 反正报错哩" });
+            }
+
             JObject jo = JObject.Parse(输出);
             //Console.WriteLine("jo: " + jo);
             var null1 = 输出.IndexOf("\"data\":null");
@@ -608,17 +623,17 @@ namespace Bili_favorites_list
             if (null3 != -1)
             {
                 //内存回收
-                client.Dispose();
+                //client.Dispose();
                 res.Dispose();
-                GC.Collect();
-                Console.WriteLine("错误");
+                //GC.Collect();
+                Console.WriteLine("错误: 我也不知道这是什么错误 " + url);
                 //HTTPGET();
                 MessageBox.Show(null3.ToString(),输出); //### 这里Debug用
                 return (true,null);
             } //请求错误
             if (null1 != -1 || null2 != -1) //权限不够, 组织访问
             {
-                Console.WriteLine("错误");
+                Console.WriteLine("错误: 权限不够, 阻止访问 " + url);
                 UIupdate(this.toolStripStatusLabel3,"ML" + ml);
                 UIupdate(this.toolStripStatusLabel4,"UID0");
                 UIupdate(this.toolStripStatusLabel5,"默认收藏夹");
@@ -636,9 +651,9 @@ namespace Bili_favorites_list
                 }*/
                 await Task.Delay( (int)UIget<decimal>(numericUpDown2) );
                 //内存回收
-                client.Dispose();
+                //client.Dispose();
                 res.Dispose();
-                GC.Collect();
+                //GC.Collect();
                 //HTTPGET();
                 return (true, new string[] { ml, "无", "无", "无", "0", "", "-" } );
             }
@@ -667,9 +682,9 @@ namespace Bili_favorites_list
             {
                 await Task.Delay(1);
             }*/
-            client.Dispose();
+            //client.Dispose();
             res.Dispose();
-            GC.Collect();
+            //GC.Collect();
             await Task.Delay( (int)UIget<decimal>(numericUpDown2) );
             return (true, new string[] { ml, "UID" + uid, name, title, num, intro, 时间戳(ctime) });
         }
@@ -739,7 +754,7 @@ namespace Bili_favorites_list
         {
             long num;
             if (Output.让我看看.listView1.Items.Count > 0){
-                num = long.Parse(Output.让我看看.listView1.Items[Output.让我看看.listView1.Items.Count - 1].SubItems[0].Text);
+                num = long.Parse(Output.让我看看.listView1.Items[Output.让我看看.listView1.Items.Count - 1].SubItems[0].Text) + 1;
             }
             else
             {
@@ -771,12 +786,12 @@ namespace Bili_favorites_list
         {
             this.button3.Enabled = false;
             this.button2.Enabled = true;
-            全局变量.ML = mlgetinoutput() + 1;
+            全局变量.ML = mlgetinoutput();
             全局变量.运行状态 = true;
             SelectNextControl(ActiveControl, false, true, true, true);
             toolStripStatusLabel1.Text = "进行中";
 
-            run();
+            run_loop();
             //HTTPGET();
         }
 
@@ -786,8 +801,9 @@ namespace Bili_favorites_list
             this.label6.Text = "v" + 全局变量.版本;
             Output output = new Output();
             output.Show();
+            string path = Application.StartupPath + "/Setting.ini";
             //检查配置文件在不在喽
-            if (System.IO.File.Exists(@"./Setting.ini") == false)
+            if (System.IO.File.Exists(path) == false)
             {
                 String[] 配置文档 = { "版本=" + 全局变量.版本, 
                     "编辑=" + textBox2.Text, 
@@ -799,7 +815,7 @@ namespace Bili_favorites_list
                     "步幅=" + textBox7.Text, 
                     "队列=" + this.numericUpDown1.Value.ToString(), 
                     "[By:yuhang0000]" };
-                System.IO.File.WriteAllLines(@"./Setting.ini", 配置文档);
+                System.IO.File.WriteAllLines(path, 配置文档);
                 全局变量.配置文档 = 配置文档;
                 this.textBox1.Text = "就绪。";
             }
@@ -807,7 +823,7 @@ namespace Bili_favorites_list
             {
                 try //我爱死 try 和 catch 这两个方法啦，爱用🤍
                 {
-                    全局变量.配置文档 = System.IO.File.ReadAllLines(@"./Setting.ini");
+                    全局变量.配置文档 = System.IO.File.ReadAllLines(path);
                     this.textBox2.Text = 全局变量.配置文档[1].Replace("编辑=", "");
                     this.textBox3.Text = 全局变量.配置文档[2].Replace("起始=", "");
                     this.textBox4.Text = 全局变量.配置文档[3].Replace("终止=", "");
@@ -847,10 +863,20 @@ namespace Bili_favorites_list
         private void 保存配置文档()
         {
             Console.WriteLine("保存配置文档");
+            string ml;
+            if (Output.让我看看.listView1.Items.Count > 0)
+            {
+                ml = (long.Parse(Output.让我看看.listView1.Items[Output.让我看看.listView1.Items.Count - 1].SubItems[0].Text)
+                    + 1).ToString();
+            }
+            else
+            {
+                ml = UIget<string>(textBox3);
+            }
             String[] 配置文档 = { 
                 "版本=" + 全局变量.版本, 
                 "编辑=" + textBox2.Text, 
-                "起始=" + 全局变量.ML,
+                "起始=" + ml,
                 "终止=" + textBox4.Text, 
                 "后缀=" + textBox5.Text, 
                 "延时=" + numericUpDown2.Value.ToString(),
@@ -858,7 +884,7 @@ namespace Bili_favorites_list
                 "队列=" + this.numericUpDown1.Value.ToString(), 
                 "", 
                 "[By:yuhang0000]" };
-            System.IO.File.WriteAllLines(@"./Setting.ini", 配置文档);
+            System.IO.File.WriteAllLines( Application.StartupPath + "/Setting.ini", 配置文档);
         }
 
         private void 输出内容(bool close = false, bool bizui = false)
@@ -874,7 +900,7 @@ namespace Bili_favorites_list
             {
                 保存配置文档();
                 return;
-            }
+            } //只保存配置文档, 不输出
             else if (close == true && bizui == false)
             {
                 this.button2.Enabled = false;
@@ -882,11 +908,11 @@ namespace Bili_favorites_list
                 全局变量.运行状态 = false;
                 toolStripStatusLabel1.Text = "暂停"; 
                 保存配置文档();
-            }
+            } //退出或者已经完成了
             else if (close == true && bizui == true)
             {
                 保存配置文档();
-            }
+            } //自动保存
             System.IO.Directory.CreateDirectory(Application.StartupPath + @"\Output\");
             //String date = DateTime.Now.ToString("yyyy-MM-dd") +"   "+ DateTime.Now.Hour.ToString() +"-"+
             //DateTime.Now.Minute.ToString() +"-"+ DateTime.Now.Second.ToString();
