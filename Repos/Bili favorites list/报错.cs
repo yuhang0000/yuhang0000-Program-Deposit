@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Xml.Linq;
+using static System.Net.WebRequestMethods;
 
 namespace Bili_favorites_list
 {
@@ -29,9 +30,23 @@ namespace Bili_favorites_list
             Bili_favorites_list.Form1.全局变量.错误计数 = 0;
         }
 
+        public static Dictionary<string, string> errlist = new Dictionary<string, string>()
+        {
+            {"System.ArgumentException", ""},
+            {"System.Net.Http.HttpRequestException", ""},
+            {"System.Net.WebException", ""},
+            {"System.Threading.Tasks.TaskCanceledException", "---> 大概是连接超时?"},
+            {"System.InvalidOperationException", ""},
+            {"System.Net.Sockets.SocketException", ""},
+            {"System.IO.IOException", ""},
+            {"System.Security.Authentication.AuthenticationException", ""},
+            {"System.UriFormatException", ""},
+        };
+
         public static void 列表更新(ListView listView, String 时间, String 错误)
         {
             //错误信息筛选
+            /*
             if(错误.Contains("System.Net.Http.HttpRequestException: ") == true)
             {
                 错误 = 错误.Replace("System.Net.Http.HttpRequestException: ","");
@@ -64,6 +79,15 @@ namespace Bili_favorites_list
             if (错误.Contains("System.UriFormatException: ") == true)
             {
                 错误 = 错误.Replace("System.UriFormatException: ", "");
+            }*/
+            
+            foreach (var list2 in errlist)
+            {
+                if (错误.Contains(list2.Key + ": ") == true)
+                {
+                    错误 = 错误.Replace(list2.Key + ": ", "");
+                    错误 = 错误 + list2.Value;
+                }
             }
 
             //更新列表数据
@@ -110,6 +134,17 @@ namespace Bili_favorites_list
         {
             //一上来就显示在荧幕左下角
             this.Location = new Point(0, Screen.PrimaryScreen.WorkingArea.Height - this.Height);
+        }
+
+        private void listView1_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            string text;
+            if(this.listView1.Items.Count > 0 && this.listView1.SelectedIndices.Count > 0)
+            {
+                text = this.listView1.SelectedItems[0].SubItems[2].Text;
+                //MessageBox.Show(text);
+                Clipboard.SetText(text);
+            }
         }
     }
 }
