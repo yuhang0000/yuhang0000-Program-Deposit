@@ -23,6 +23,8 @@ namespace Bili_favorites_list
             让我看看 = this;
         }
 
+        public static List<ListViewItem> lists = new List<ListViewItem>();
+
         //输出弹窗关闭后
         private void Output_FormClosing(object sender, FormClosingEventArgs e)
         {
@@ -30,7 +32,7 @@ namespace Bili_favorites_list
             this.WindowState = FormWindowState.Minimized;
         }
 
-        public static void 列表更新(ListView listView, String ML, String UID, String name, String title, String num, String intro,String ctime)
+        public static void 列表更新(String ML, String UID, String name, String title, String num, String intro,String ctime)
         {
             if (全局变量.运行状态 != true)
             {
@@ -39,7 +41,7 @@ namespace Bili_favorites_list
             void update() //单独封装一个方法
             {
                 //更新列表数据
-                listView.BeginUpdate();
+                //让我看看.listView1.BeginUpdate();
                 ListViewItem 列表 = new ListViewItem();
                 列表.Text = ML;
                 列表.SubItems.Add(UID);
@@ -48,10 +50,22 @@ namespace Bili_favorites_list
                 列表.SubItems.Add(num);
                 列表.SubItems.Add(intro);
                 列表.SubItems.Add(ctime);
-                listView.Items.Add(列表);
-                //自动滚动到底部
-                listView.Items[listView.Items.Count - 1].EnsureVisible();
-                listView.EndUpdate();
+                //让我看看.listView1.Items.Add(列表);
+                lists.Add(列表);
+
+                if (让我看看.WindowState != FormWindowState.Minimized)
+                {
+                    //让我看看.listView1.VirtualListSize = lists.Count;
+
+                    if (Form1.form1.checkBox1.Checked == true)
+                    {
+                        让我看看.listView1.VirtualListSize = lists.Count;
+                        //自动滚动到底部
+                        让我看看.listView1.Items[让我看看.listView1.Items.Count - 1].EnsureVisible();
+                    }
+                    //让我看看.listView1.EndUpdate();
+                }
+
             }
 
             if (让我看看.IsHandleCreated == false)
@@ -69,7 +83,7 @@ namespace Bili_favorites_list
 
         private void button1_Click(object sender, EventArgs e)
         {
-            列表更新(this.listView1,"0000","UID000","介素昵称","介素标题","0","介素简介",DateTime.Now.ToString());
+            列表更新("0000","UID000","介素昵称","介素标题","0","介素简介",DateTime.Now.ToString());
         }
 
         //窗口自适应
@@ -91,6 +105,22 @@ namespace Bili_favorites_list
             if (this.listView1.Items.Count > 0 && this.listView1.SelectedIndices.Count > 0)
             {
                 Clipboard.SetText(this.listView1.SelectedItems[0].SubItems[0].Text);
+            }
+        }
+
+        public void listView1_RetrieveVirtualItem(object sender, RetrieveVirtualItemEventArgs e)
+        {
+            if(lists.Count > 0)
+            {
+                e.Item = lists[e.ItemIndex];
+            }
+        }
+
+        private void Output_Activated(object sender, EventArgs e)
+        {
+            if(lists.Count > 0)
+            {
+                this.listView1.VirtualListSize = lists.Count;
             }
         }
     }

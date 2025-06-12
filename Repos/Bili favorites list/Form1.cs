@@ -24,9 +24,12 @@ namespace Bili_favorites_list
 {
     public partial class Form1 : Form
     {
+        public static Form1 form1 { get; private set; }
+
         public Form1()
         {
             InitializeComponent();
+            form1 = this;
         }
 
         public static class 全局变量
@@ -102,6 +105,7 @@ namespace Bili_favorites_list
             SelectNextControl(ActiveControl, false, true, true, true);
             //HTTPGET();
             Output.让我看看.listView1.Items.Clear();
+            Output.lists.Clear();
 
             //尝试共用 HttpClient
             全局变量.client = new HttpClient();
@@ -151,7 +155,7 @@ namespace Bili_favorites_list
                 报错 dig = new 报错();
                 dig.Show();
             }
-            报错.列表更新(报错.让我看看.listView1, DateTime.Now.ToString(), text);
+            报错.列表更新(DateTime.Now.ToString(), text);
         }
 
         //废弃了
@@ -222,8 +226,7 @@ namespace Bili_favorites_list
                     this.toolStripStatusLabel4.Text = "UID0";
                     this.toolStripStatusLabel5.Text = "默认收藏夹"; 
                     写进Output(全局变量.ML.ToString(), "无", "无", "无", "0", "", "-");
-                    Bili_favorites_list.Output.列表更新(Bili_favorites_list.Output.让我看看.listView1,全局变量.ML.ToString(),
-                        "无", "无", "无", "0", "", "-");
+                    Bili_favorites_list.Output.列表更新(全局变量.ML.ToString(), "无", "无", "无", "0", "", "-");
 
                     /*if (textBox6.Text != "")
                     {
@@ -295,8 +298,7 @@ namespace Bili_favorites_list
                 this.toolStripStatusLabel5.Text = title;
                 写进Output(全局变量.ML.ToString(),
                         "UID" + uid, name, title, num, intro, 时间戳(ctime));
-                Bili_favorites_list.Output.列表更新(Bili_favorites_list.Output.让我看看.listView1, 全局变量.ML.ToString(),
-                        "UID" + uid, name, title, num, intro, 时间戳(ctime));
+                Bili_favorites_list.Output.列表更新(全局变量.ML.ToString(), "UID" + uid, name, title, num, intro, 时间戳(ctime));
                 /*if (textBox6.Text != "")
                 {
                     await Task.Delay(int.Parse(textBox6.Text));
@@ -368,22 +370,22 @@ namespace Bili_favorites_list
 
                     if (错了呀.Length > 0)
                     {
-                        Bili_favorites_list.报错.列表更新(Bili_favorites_list.报错.让我看看.listView1, 报错时间, 错了呀[0]);
+                        Bili_favorites_list.报错.列表更新(报错时间, 错了呀[0]);
                     }
                     else
                     {
-                        Bili_favorites_list.报错.列表更新(Bili_favorites_list.报错.让我看看.listView1, 报错时间, "异常错误");
+                        Bili_favorites_list.报错.列表更新(报错时间, "异常错误");
                     }
                 }
                 else
                 {
                     if (错了呀.Length > 0)
                     {
-                        Bili_favorites_list.报错.列表更新(Bili_favorites_list.报错.让我看看.listView1, 报错时间, 错了呀[0]);
+                        Bili_favorites_list.报错.列表更新(报错时间, 错了呀[0]);
                     }
                     else
                     {
-                        Bili_favorites_list.报错.列表更新(Bili_favorites_list.报错.让我看看.listView1, 报错时间, "异常错误");
+                        Bili_favorites_list.报错.列表更新(报错时间, "异常错误");
                     }
                 }
 
@@ -508,8 +510,7 @@ namespace Bili_favorites_list
                     continue;
                 }
                 写进Output(output[0], output[1], output[2], output[3], output[4], output[5], output[6]);
-                Bili_favorites_list.Output.列表更新(Bili_favorites_list.Output.让我看看.listView1, 
-                    output[0], output[1], output[2], output[3], output[4], output[5], output[6]);
+                Bili_favorites_list.Output.列表更新(output[0], output[1], output[2], output[3], output[4], output[5], output[6]);
             }
 
             //到戒指上限了就停止 //0 正常; 1 步进; 2 截止
@@ -538,7 +539,7 @@ namespace Bili_favorites_list
                     this.button1.Enabled = true;
                     this.button2.Enabled = false;
                     this.button3.Enabled = false;
-                    //全局变量.ML = Output.让我看看.listView1.Items[Output.让我看看.listView1.Items.Count - 1].SubItems[0].Text;
+                    //全局变量.ML = Output.lists[Output.lists.Count - 1].SubItems[0].Text;
                 }
                 else
                 {
@@ -768,8 +769,8 @@ namespace Bili_favorites_list
         public long mlgetinoutput()
         {
             long num;
-            if (Output.让我看看.listView1.Items.Count > 0){
-                num = long.Parse(Output.让我看看.listView1.Items[Output.让我看看.listView1.Items.Count - 1].SubItems[0].Text) + 1;
+            if (Output.lists.Count > 0){
+                num = long.Parse(Output.lists[Output.lists.Count - 1].SubItems[0].Text) + 1;
             }
             else
             {
@@ -829,6 +830,7 @@ namespace Bili_favorites_list
                     "步幅=" + textBox7.Text, 
                     "步幅=" + textBox7.Text, 
                     "队列=" + this.numericUpDown1.Value.ToString(), 
+                    "列表自动更新=" + this.checkBox1.Checked.ToString(), 
                     "[By:yuhang0000]" };
                 System.IO.File.WriteAllLines(path, 配置文档);
                 全局变量.配置文档 = 配置文档;
@@ -846,6 +848,7 @@ namespace Bili_favorites_list
                     this.numericUpDown2.Value = decimal.Parse(全局变量.配置文档[5].Replace("延时=", ""));
                     this.textBox7.Text = 全局变量.配置文档[6].Replace("步幅=", "");
                     this.numericUpDown1.Value = decimal.Parse(全局变量.配置文档[7].Replace("队列=", ""));
+                    this.checkBox1.Checked = bool.Parse(全局变量.配置文档[8].Replace("列表自动更新=", ""));
                     this.textBox1.Text = "就绪。";
                 }
                 catch (Exception)
@@ -879,9 +882,9 @@ namespace Bili_favorites_list
         {
             Console.WriteLine("保存配置文档");
             string ml;
-            if (Output.让我看看.listView1.Items.Count > 0)
+            if (Output.lists.Count > 0)
             {
-                ml = (long.Parse(Output.让我看看.listView1.Items[Output.让我看看.listView1.Items.Count - 1].SubItems[0].Text)
+                ml = (long.Parse(Output.lists[Output.lists.Count - 1].SubItems[0].Text)
                     + 1).ToString();
             }
             else
@@ -897,6 +900,7 @@ namespace Bili_favorites_list
                 "延时=" + numericUpDown2.Value.ToString(),
                 "步幅=" + textBox7.Text, 
                 "队列=" + this.numericUpDown1.Value.ToString(), 
+                "列表自动更新=" + this.checkBox1.Checked.ToString(), 
                 "", 
                 "[By:yuhang0000]" };
             System.IO.File.WriteAllLines( Application.StartupPath + "/Setting.ini", 配置文档);
@@ -960,6 +964,7 @@ namespace Bili_favorites_list
                 MessageBox.Show("保存失败，无法写入文件，在:\r\n" + path, "失败哩  ╥﹏╥...");
                 return;
             }
+            GC.Collect();
             if (bizui == false)
             { 
                 System.Media.SystemSounds.Beep.Play();
@@ -1134,6 +1139,14 @@ namespace Bili_favorites_list
                 {
                     Console.WriteLine(fsinfo.FullName);
                 }
+            }
+        }
+
+        private void checkBox1_CheckedChanged(object sender, EventArgs e)
+        {
+            if(Output.lists.Count > 0 && this.checkBox1.Checked == true)
+            {
+                Output.让我看看.listView1.VirtualListSize = Output.lists.Count;
             }
         }
     }

@@ -17,6 +17,8 @@ namespace Bili_favorites_list
         //全局访问介个窗口的实例
         public static 报错 让我看看 { get; private set; }
 
+        public static List<ListViewItem> lists = new List<ListViewItem>();
+
         public 报错()
         {
             InitializeComponent();
@@ -28,6 +30,7 @@ namespace Bili_favorites_list
         {
             Bili_favorites_list.Form1.全局变量.错误弹窗的状态 = false;
             Bili_favorites_list.Form1.全局变量.错误计数 = 0;
+            lists.Clear();
         }
 
         public static Dictionary<string, string> errlist = new Dictionary<string, string>()
@@ -43,7 +46,7 @@ namespace Bili_favorites_list
             {"System.UriFormatException", ""},
         };
 
-        public static void 列表更新(ListView listView, String 时间, String 错误)
+        public static void 列表更新(String 时间, String 错误)
         {
             //错误信息筛选
             /*
@@ -93,15 +96,20 @@ namespace Bili_favorites_list
             //更新列表数据
             void update()
             {
-                listView.BeginUpdate();
+                //listView.BeginUpdate();
                 ListViewItem 列表 = new ListViewItem();
                 列表.Text = (Bili_favorites_list.Form1.全局变量.错误计数++).ToString();
                 列表.SubItems.Add(时间);
                 列表.SubItems.Add(错误);
-                listView.Items.Add(列表);
-                //自动滚动到底部
-                listView.Items[listView.Items.Count - 1].EnsureVisible();
-                listView.EndUpdate();
+                //listView.Items.Add(列表);
+                lists.Add(列表);
+                if (让我看看.WindowState != FormWindowState.Minimized)
+                {
+                    让我看看.listView1.VirtualListSize = lists.Count;
+                    //自动滚动到底部
+                    让我看看.listView1.Items[让我看看.listView1.Items.Count - 1].EnsureVisible();
+                }
+                //listView.EndUpdate();
             }
 
             if (让我看看.IsHandleCreated == false)
@@ -119,7 +127,7 @@ namespace Bili_favorites_list
 
         private void button1_Click(object sender, EventArgs e)
         {
-            列表更新(this.listView1, DateTime.Now.ToString(), "caooo");
+            列表更新(DateTime.Now.ToString(), "caooo");
         }
 
         //窗口自适应
@@ -144,6 +152,23 @@ namespace Bili_favorites_list
                 text = this.listView1.SelectedItems[0].SubItems[2].Text;
                 //MessageBox.Show(text);
                 Clipboard.SetText(text);
+            }
+        }
+
+        public void listView1_RetrieveVirtualItemEventHandler(object sender, RetrieveVirtualItemEventArgs e)
+        {
+            if (lists.Count > 0)
+            {
+                e.Item = lists[e.ItemIndex];
+            }
+        }
+
+        private void 报错_Activated(object sender, EventArgs e)
+        {
+            if(lists.Count > 0)
+            {
+                this.listView1.VirtualListSize = lists.Count;
+                this.listView1.Items[this.listView1.Items.Count - 1].EnsureVisible();
             }
         }
     }

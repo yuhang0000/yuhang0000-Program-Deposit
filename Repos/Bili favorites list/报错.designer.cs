@@ -51,6 +51,8 @@
             this.listView1.TabIndex = 0;
             this.listView1.UseCompatibleStateImageBehavior = false;
             this.listView1.View = System.Windows.Forms.View.Details;
+            this.listView1.VirtualMode = true;
+            this.listView1.RetrieveVirtualItem += new System.Windows.Forms.RetrieveVirtualItemEventHandler(this.listView1_RetrieveVirtualItemEventHandler);
             this.listView1.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.listView1_MouseDoubleClick);
             // 
             // columnHeader1
@@ -88,6 +90,7 @@
             this.DoubleBuffered = true;
             this.Name = "报错";
             this.Text = "错误";
+            this.Activated += new System.EventHandler(this.报错_Activated);
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.报错_FormClosing);
             this.Load += new System.EventHandler(this.报错_Load);
             this.Resize += new System.EventHandler(this.报错_Resize);
