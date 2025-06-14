@@ -102,9 +102,11 @@ namespace Bili_favorites_list
 
         private void listView1_MouseDoubleClick(object sender, MouseEventArgs e)
         {
-            if (this.listView1.Items.Count > 0 && this.listView1.SelectedIndices.Count > 0)
+            //if (this.listView1.Items.Count > 0 && this.listView1.SelectedIndices.Count > 0)
+            if (lists.Count > 0 && this.listView1.SelectedIndices.Count > 0)
             {
-                Clipboard.SetText(this.listView1.SelectedItems[0].SubItems[0].Text);
+                //Clipboard.SetText(this.listView1.SelectedItems[0].SubItems[0].Text);
+                Clipboard.SetText(lists[this.listView1.SelectedIndices[0]].SubItems[0].Text);
             }
         }
 
