@@ -18,6 +18,7 @@ using System.Security.Cryptography;
 using System.Xml.Linq;
 using static Bili_favorites_list.Output;
 using static Bili_favorites_list.报错;
+using System.Text.RegularExpressions;
 
 
 namespace Bili_favorites_list
@@ -89,7 +90,8 @@ namespace Bili_favorites_list
             catch
             {
                 System.Media.SystemSounds.Hand.Play();
-                this.textBox1.Text = "输入数据有误诶。";
+                //this.textBox1.Text = "输入数据有误诶。";
+                UIprint("输入数据有误诶。");
                 return;
             }
             全局变量.后缀 = this.textBox5.Text;
@@ -147,8 +149,12 @@ namespace Bili_favorites_list
             return output.ToString();
         }
 
-        public void oops(string text)
+        public void oops(string code,string text)
         {
+            if(code != null)
+            {
+                text = "错误 ("+ code + "): " + text;
+            }
             if (全局变量.错误弹窗的状态 == false)
             {
                 全局变量.错误弹窗的状态 = true;
@@ -202,7 +208,8 @@ namespace Bili_favorites_list
                     输出 = await httpbody.Content.ReadAsStringAsync();
                 }
 
-                this.textBox1.Text = 输出;
+                //this.textBox1.Text = 输出;
+                UIprint(输出);
 
                 JObject jo = JObject.Parse(输出);
                 //Console.WriteLine("jo: " + jo);
@@ -485,7 +492,7 @@ namespace Bili_favorites_list
                 var(status,output) = task.Result;
                 if(status == false) //返回错误就重试
                 {
-                    oops(output[0]);
+                    oops(output[0], output[1]);
                     await Task.Delay(60000);
                     if (全局变量.运行状态 != true) //强制终止运行
                     {
@@ -573,7 +580,7 @@ namespace Bili_favorites_list
                 }
                 catch (Exception ex)
                 {
-                    oops( ex.ToString().Split(new[] { Environment.NewLine } , StringSplitOptions.None)[0] );
+                    oops( null, ex.ToString().Split(new[] { Environment.NewLine } , StringSplitOptions.None)[0] );
                     //await Task.Delay( (int)UIget<decimal>(numericUpDown2) );
                     if (全局变量.运行状态 != true)
                     {
@@ -620,58 +627,65 @@ namespace Bili_favorites_list
             {
                 输出 = await res.Content.ReadAsStringAsync();
             }
-            UIupdate(this.textBox1,输出);
+            //UIupdate(this.textBox1,输出);
+            输出 = Regex.Replace(输出,@"[\u02b0-\u036f\u0900-\u10ff\u2700-\u27bf\u1200-\u1dff]","");
+            //过滤掉不需要的字符，因为 wine 不兼容
+
+            UIprint(输出);
             //风控检查
             if ( ((int)CODE).ToString() == "412")
             {
-                return (false, new string[] { "由于触发哔哩哔哩安全风控策略，该次访问请求被拒绝" });
+                return (false, new string[] { ((int)CODE).ToString(), "由于触发哔哩哔哩安全风控策略，该次访问请求被拒绝" });
             }
             else if( ((int)CODE).ToString() != "200")
             {
-                return (false, new string[] { "我也不知道是啥问题, 反正报错哩" });
-            }
+                string code1 = ((int)CODE).ToString();
+                string msg1 = "我也不知道是啥问题, 反正报错哩";
+                try
+                {
+                    JObject jo1 = JObject.Parse(输出);
+                    code1 = (string)jo1["code"];
+                    msg1 = (string)jo1["message"];
+                    jo1 = null;
+                }
+                catch { }
+                res.Dispose();
+                输出 = null;
+                return (false, new string[] { code1, msg1 });
+            } //传输层方面错误
 
             JObject jo = JObject.Parse(输出);
             //Console.WriteLine("jo: " + jo);
+            string code = (string)jo["code"];
+            string msg = (string)jo["message"];
+            switch (code)
+            {
+                case "0": //正常放行
+                    break;
+                case "-403": //权限不够
+                    await returnnull();
+                    return (true, new string[] { ml, "无", "无", "无", "0", "", "-" });
+                default: //既不是 0 又不是 403 说明是其他错误
+                    return (false, new string[] { code, msg });
+            } //业务层方面错误
             var null1 = 输出.IndexOf("\"data\":null");
             var null2 = 输出.IndexOf("\"info\":null,");
-            var null3 = 输出.IndexOf("\"code\":-400");
-            if (null3 != -1)
-            {
-                //内存回收
-                //client.Dispose();
-                res.Dispose();
-                //GC.Collect();
-                Console.WriteLine("错误: 我也不知道这是什么错误 " + url);
-                //HTTPGET();
-                MessageBox.Show(null3.ToString(),输出); //### 这里Debug用
-                return (true,null);
-            } //请求错误
             if (null1 != -1 || null2 != -1) //权限不够, 组织访问
             {
-                Console.WriteLine("错误: 权限不够, 阻止访问 " + url);
-                UIupdate(this.toolStripStatusLabel3,"ML" + ml);
-                UIupdate(this.toolStripStatusLabel4,"UID0");
-                UIupdate(this.toolStripStatusLabel5,"默认收藏夹");
-                /*写进Output(ml, "无", "无", "无", "0", "", "-");
-                Bili_favorites_list.Output.列表更新(Bili_favorites_list.Output.让我看看.listView1, ml,
-                    "无", "无", "无", "0", "", "-");*/
-
-                /*if (UIget<decimal>(numericUpDown2) != "")
-                {
-                    await Task.Delay(int.Parse( UIget(textBox6) ));
-                }
-                else
-                {
-                    await Task.Delay(1);
-                }*/
-                await Task.Delay( (int)UIget<decimal>(numericUpDown2) );
-                //内存回收
-                //client.Dispose();
-                res.Dispose();
-                //GC.Collect();
-                //HTTPGET();
+                await returnnull();
                 return (true, new string[] { ml, "无", "无", "无", "0", "", "-" } );
+            } //时不时返回个 null 我也是服了
+            async Task returnnull()
+            {
+                Console.WriteLine("错误: 权限不够, 阻止访问 " + url);
+                UIupdate(this.toolStripStatusLabel3, "ML" + ml);
+                UIupdate(this.toolStripStatusLabel4, "UID0");
+                UIupdate(this.toolStripStatusLabel5, "默认收藏夹");
+                await Task.Delay((int)UIget<decimal>(numericUpDown2));
+                //内存回收
+                res.Dispose();
+                jo = null;
+                输出 = null;
             }
 
             //能运行在这里说明正常
@@ -698,9 +712,15 @@ namespace Bili_favorites_list
             {
                 await Task.Delay(1);
             }*/
+            
+            //垃圾回收
             //client.Dispose();
             res.Dispose();
             //GC.Collect();
+            输出 = null;
+            jo = null;
+            info = null;
+            upper = null;
             await Task.Delay( (int)UIget<decimal>(numericUpDown2) );
             return (true, new string[] { ml, "UID" + uid, name, title, num, intro, 时间戳(ctime) });
         }
@@ -763,6 +783,17 @@ namespace Bili_favorites_list
                     }
                 }));
                 return (T)(object)t;
+            }
+        }
+
+        //修改textbox1
+        public static string print2textbox1 = "";
+        public void UIprint(string text)
+        {
+            print2textbox1 = text;
+            if (this.WindowState != FormWindowState.Minimized)
+            {
+                UIupdate(this.textBox1, print2textbox1);
             }
         }
 
@@ -834,7 +865,8 @@ namespace Bili_favorites_list
                     "[By:yuhang0000]" };
                 System.IO.File.WriteAllLines(path, 配置文档);
                 全局变量.配置文档 = 配置文档;
-                this.textBox1.Text = "就绪。";
+                //this.textBox1.Text = "就绪。";
+                UIprint("就绪。");
             }
             else
             {
@@ -849,13 +881,15 @@ namespace Bili_favorites_list
                     this.textBox7.Text = 全局变量.配置文档[6].Replace("步幅=", "");
                     this.numericUpDown1.Value = decimal.Parse(全局变量.配置文档[7].Replace("队列=", ""));
                     this.checkBox1.Checked = bool.Parse(全局变量.配置文档[8].Replace("列表自动更新=", ""));
-                    this.textBox1.Text = "就绪。";
+                    //this.textBox1.Text = "就绪。";
+                    UIprint("就绪。");
                 }
                 catch (Exception)
                 {
                     System.Media.SystemSounds.Beep.Play();
                     toolStripStatusLabel6.Text = "配置文档好像坏欸。";
-                    textBox1.Text = "就绪。\r\n额，配置文档好像坏欸。";
+                    //textBox1.Text = "就绪。\r\n额，配置文档好像坏欸。";
+                    UIprint("就绪。\r\n额，配置文档好像坏欸。");
                 }
             }
             全局变量.ML = long.Parse(this.textBox3.Text);
@@ -956,7 +990,9 @@ namespace Bili_favorites_list
             Console.WriteLine("尝试导出文件: " + path);
             try
             {
-                System.IO.File.WriteAllText(path, 全局变量.内容.ToString());
+                string text = 全局变量.内容.ToString();
+                System.IO.File.WriteAllText(path, text);
+                text = null; //释放掉
             }
             catch
             {
@@ -1148,6 +1184,12 @@ namespace Bili_favorites_list
             {
                 Output.让我看看.listView1.VirtualListSize = Output.lists.Count;
             }
+        }
+
+        //恢复焦点时
+        private void Form1_Activated(object sender, EventArgs e)
+        {
+            UIupdate(textBox1, print2textbox1);
         }
     }
 }

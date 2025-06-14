@@ -409,6 +409,7 @@
             this.MinimumSize = new System.Drawing.Size(1130, 495);
             this.Name = "Form1";
             this.Text = "Bili favorites list";
+            this.Activated += new System.EventHandler(this.Form1_Activated);
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
             this.Load += new System.EventHandler(this.Form1_Load);
             this.Resize += new System.EventHandler(this.Form1_Resize);
