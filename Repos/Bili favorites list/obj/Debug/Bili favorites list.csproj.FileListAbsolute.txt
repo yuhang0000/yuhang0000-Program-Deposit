@@ -58,3 +58,4 @@ C:\Users\13975\CSharp\Repos\Repos\Bili favorites list\obj\Debug\Bili favorites l
 C:\Users\13975\CSharp\Repos\Repos\Bili favorites list\obj\Debug\Bili favorites list.csproj.CopyComplete
 C:\Users\13975\CSharp\Repos\Repos\Bili favorites list\obj\Debug\Bili favorites list.exe
 C:\Users\13975\CSharp\Repos\Repos\Bili favorites list\obj\Debug\Bili favorites list.pdb
+C:\Users\13975\CSharp\Repos\Repos\Bili favorites list\obj\Debug\Bili_favorites_list.合并.resources

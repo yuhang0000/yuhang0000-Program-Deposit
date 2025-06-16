@@ -153,7 +153,7 @@ namespace Bili_favorites_list
         {
             if(code != null)
             {
-                text = "错误 ("+ code + "): " + text;
+                text = "错误("+ code + "): " + text;
             }
             if (全局变量.错误弹窗的状态 == false)
             {
@@ -797,6 +797,7 @@ namespace Bili_favorites_list
             }
         }
 
+        //恢复时, 从列表上获取最后一个序号
         public long mlgetinoutput()
         {
             long num;
@@ -990,9 +991,10 @@ namespace Bili_favorites_list
             Console.WriteLine("尝试导出文件: " + path);
             try
             {
-                string text = 全局变量.内容.ToString();
+                /*string text = 全局变量.内容.ToString();
                 System.IO.File.WriteAllText(path, text);
-                text = null; //释放掉
+                text = null; //释放掉 */
+                System.IO.File.WriteAllText(path, 全局变量.内容.ToString());
             }
             catch
             {
@@ -1151,7 +1153,7 @@ namespace Bili_favorites_list
         //合并文件
         private void button5_Click(object sender, EventArgs e)
         {
-            string path = Application.StartupPath + @"\Output\";
+            /*string path = Application.StartupPath + @"\Output\";
             if (Directory.Exists(path) == false)
             {
                 path = Application.StartupPath;
@@ -1176,6 +1178,10 @@ namespace Bili_favorites_list
                     Console.WriteLine(fsinfo.FullName);
                 }
             }
+            */
+            合并 dig = new 合并();
+            dig.Show();
+            this.button5.Enabled = false;
         }
 
         private void checkBox1_CheckedChanged(object sender, EventArgs e)
