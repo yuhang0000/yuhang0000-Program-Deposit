@@ -2,12 +2,14 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Media;
 using System.Text;
 using System.Threading.Tasks;
+using System.Timers;
 using System.Windows.Forms;
 using static Bili_favorites_list.Form1;
 using static System.Net.Mime.MediaTypeNames;
@@ -22,8 +24,6 @@ namespace Bili_favorites_list
             this.MaximumSize = this.Size;
         }
 
-        //public static StringBuilder output = new StringBuilder();
-        public static Dictionary<long, string[]> output = new Dictionary<long, string[]> { };
         public static Dictionary<string, string> ESC = new Dictionary<string, string> {
             { "\r",@"\r"},
             { "\n",@"\n"},
@@ -32,7 +32,7 @@ namespace Bili_favorites_list
         private void 合并_FormClosing(object sender, FormClosingEventArgs e)
         {
             form1.button5.Enabled = true;
-            GC.Collect();
+            //GC.Collect();
         }
 
         //打开
@@ -63,10 +63,7 @@ namespace Bili_favorites_list
                 }
                 this.textBox1.Text = this.textBox1.Text.Substring(1);
             }
-            else
-            {
-                return;
-            };
+            dig.Dispose();
         }
 
         //保存位置
@@ -81,159 +78,157 @@ namespace Bili_favorites_list
             {
                 this.textBox1.Text = dig.SelectedPath;
             };
+            dig.Dispose();
         }
 
         private async void button3_Click(object sender, EventArgs e)
         {
             this.button3.Enabled = false;
-            output.Clear();
             this.label3.Text = "进度: 0";
             this.label4.Text = "总计: 计算中...";
             this.label5.Text = "已用时间: 00:00:00";
             this.label6.Text = "剩余时间: 00:00:00";
-            await Task.Run(() => { run(this.textBox1.Text); });
+            await Task.Run(() => { run(this.textBox1.Text.Split(new char[] { ';' },StringSplitOptions.RemoveEmptyEntries)); });
         }
 
-        public void run(string files)
+        public void run(string[] files)
         {
-            processbar(-1);
-            List<string[]> list = new List<string[]>();
+            processbar(this.progressBar2, -1);
+
             long num = 0; //总数
             long num1 = 0; //当前数
             float num2 = 0; //历史数
+            long num3 = 0; //已处理文件数
             int time = 0;
+            StringBuilder sb = new StringBuilder(); //Dump
+            string[] text; //读取的文件放这里
+            string[] textsub; //单个条目
+            string texttemp; //零食用
+            List<long> textindex = new List<long> { }; //存放序号
+            //SortedSet<long> textinedx1 = new SortedSet<long>();
+
+            //计时器
+            System.Timers.Timer timer = new System.Timers.Timer();
+            timer.Interval = 50;
+            timer.AutoReset = true;
+            timer.Elapsed += new System.Timers.ElapsedEventHandler( (object obj, ElapsedEventArgs e) =>
+            {
+                time = time + 50;
+                UIupdate(this.label3,"进度: " + num1.ToString());
+                UIupdate(this.label5,"已用时间: " + totime(time));
+                processbar(this.progressBar1, (int)((1000 * num1) / num));
+            });
 
             try
             {
-                //计时器
-                System.Timers.Timer timer = new System.Timers.Timer();
-                timer.Interval = 100;
-                timer.AutoReset = true;
-                timer.Elapsed += new System.Timers.ElapsedEventHandler((object sender, System.Timers.ElapsedEventArgs e) =>
-                {
-                    time = time + 100;
-                    //Console.WriteLine(num1);
-                    UIupdate(this.label3, "进度: " + num1.ToString());
-                    UIupdate(this.label5, "已用时间: " + totime(time));
-                    if (num1 > 0)
-                    {
-                        processbar((int)((100 * num1) / num));
-                    }
-
-                    //求剩余时间
-                    num2 = (float)num / (float)num1;
-                    num2 = (float)time * num2;
-                    num2 = num2 - (float)time;
-                    UIupdate(this.label6, "剩余时间: " + totime((int)num2));
-                    num2 = num1;
-                });
-
-                //读取文档
-                string[] input = files.Split(';');
-                foreach (string file in input)
-                {
-                    string[] text = File.ReadAllText(file).Split(new string[] { "\r\n#\t" },StringSplitOptions.None);
-                    if (text.LongLength > 1)
-                    {
-                        list.Add(text);
-                        num = num + text.LongLength - 1;
-                    }
-                }
-                UIupdate(this.label4, "总计: " + num.ToString());
+                sb.Clear();
+                sb.Append("##### " + DateTime.Now.ToString() + " #####\r\n\r\n");
                 timer.Start();
 
-
-                //处理一拖拉库的文档
-                foreach (string[] file in list)
+                if(files.Length == 0)
                 {
-                    file[0] = "";
-                    foreach (string filelin in file) //处理单个文档
+                    throw new Exception("没有选择文件");
+                }
+
+                //读取文件
+                UIupdate(this.label7, "已处理文件: (" + num3 + "/" + files.LongLength + ")");
+                processbar(this.progressBar2,0);
+                foreach (string file in files)
+                {
+                    if (run(file) == false)
                     {
-                        string fileline = filelin;
-                        if(fileline.Length == 0)
-                        {
-                            continue;
-                        }
-                        //转义那些字符
-                        foreach (var esc1 in ESC)
-                        {
-                            if(fileline.IndexOf(esc1.Key) != -1)
-                            {
-                                fileline = fileline.Replace(esc1.Key, esc1.Value);
-                            }
-                        }
-                        string[] text = fileline.Split('\t');
-                        output.Add(long.Parse(text[0].Replace("ML","")),text);
-                        num1++;
+                        continue;
                     }
                 }
 
-                timer.Stop();
-                UIupdate(this.label3, "进度: " + num1.ToString());
-                processbar(-1);
-                output = output.OrderBy(x => x.ToString()).ToDictionary(o => o.Key,p => p.Value);
-                long max = output.Keys.Max();
-                long min = output.Keys.Min();
-
-                //到这里就完成了
+                //输出
                 SaveFileDialog dig = new SaveFileDialog();
-                dig.Filter = "文本文档(*.txt)|*.txt";
-                dig.Title = "保存文档";
-                dig.DefaultExt = "*.txt";
-                dig.FileName = max.ToString() + " - " + min.ToString() + ".txt";
-                dig.CheckPathExists = true;
                 dig.AddExtension = true;
                 dig.AutoUpgradeEnabled = true;
+                dig.CheckPathExists = true;
+                //dig.CreatePrompt = true;
+                dig.DefaultExt = "*.txt";
+                dig.FileName = textindex.Min().ToString() + " - " + textindex.Max().ToString() + ".txt";
+                dig.Filter = "文本文档(*.txt)|*.txt";
+                dig.InitialDirectory = System.Windows.Forms.Application.StartupPath;
                 dig.OverwritePrompt = true;
                 dig.RestoreDirectory = true;
-                dig.InitialDirectory = System.Windows.Forms.Application.StartupPath;
-
-                time = 0;
-                timer.Start();
-                num1 = 0;
-                string text1 = "";
-                foreach (string[] text2 in output.Values)
-                {
-                    num1++;
-                    string text3 = "";
-                    foreach (string text4 in text2)
-                    {
-                        text3 = text3 + "\t" + text4;
-                    }
-                    text3 = text3.Substring(1);
-                    text1 = text1 + "\r\n" + text3;
-                }
-                text1 = text1.Substring(1);
-
+                dig.Title = "选择文档保存位置";
                 this.Invoke(new MethodInvoker( () =>
                 {
-                    if (dig.ShowDialog() == DialogResult.OK)
+                    if(dig.ShowDialog() == DialogResult.OK)
                     {
-                        File.WriteAllText(dig.FileName, text1);
-                    };
+                        texttemp = sb.ToString();
+                        File.WriteAllText(dig.FileName, texttemp);
+                    }
                 }));
-
-                processbar(100);
-                output.Clear();
-                timer.Dispose();
-                enablebutton();
-
+                dig.Dispose();
             }
             catch (Exception ex)
             {
                 SystemSounds.Hand.Play();
-                MessageBox.Show(ex.ToString(), "Oops! ", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                enablebutton();
+                if(Debugger.IsAttached == true)
+                {
+                    MessageBox.Show(ex.ToString(),"Oops! ",MessageBoxButtons.OK,MessageBoxIcon.Error);
+                }
+                else
+                {
+                    MessageBox.Show(ex.Message,"Oops! ",MessageBoxButtons.OK,MessageBoxIcon.Error);
+                }
                 return;
             }
             finally
             {
-                list.Clear();
-                //GC.Collect();
+                processbar(this.progressBar1,1000);
+                processbar(this.progressBar2,1000);
+                enablebutton();
+            }
+
+            bool run(string file)
+            {
+                num1 = 0;
+                text = File.ReadAllText(file).Split(new string[] { "\r\n#\t" }, StringSplitOptions.RemoveEmptyEntries);
+                if (text[0].IndexOf("  #####\r\n") == -1)
+                {
+                    return false; //无效文件跳过
+                }
+                num = text.LongLength - 1;
+                UIupdate(this.label4, "总计: " + num);
+                while (num1 < num)
+                {
+                    texttemp = text[num1 + 1];
+                    num1++;
+                    textsub = texttemp.Split('\t');
+                    /*textinedx1 = new SortedSet<long>(textindex);
+                    //if (textindex.Contains(long.Parse(textsub[0].Substring(2))) == true) //如果条目里存在就跳过
+                    if (textinedx1.Contains(long.Parse(textsub[0].Substring(2))) == true) //如果条目里存在就跳过
+                    {
+                        continue;
+                    }*/
+                    foreach (var esc1 in ESC) //转义字符
+                    {
+                        texttemp = texttemp.Replace(esc1.Key, esc1.Value);
+                    }
+                    sb.AppendLine("#\t " + texttemp);
+                    textindex.Add(long.Parse(textsub[0].Substring(2)));
+
+                }
+                num3++;
+                UIupdate(this.label7, "已处理文件: (" + num3 + "/" + files.LongLength + ")");
+                processbar(this.progressBar2, (int)((1000 * num3) / files.LongLength));
+                return true;
             }
 
             void enablebutton()
             {
+                timer.Stop();
+                timer.Dispose();
+                sb.Clear();
+                sb = null;
+                textindex.Clear();
+                textindex = null;
+                texttemp = null;
+
                 if (this.IsHandleCreated == false)
                 {
                     this.button3.Enabled = true;
@@ -245,6 +240,8 @@ namespace Bili_favorites_list
                         this.button3.Enabled = true;
                     }));
                 }
+
+                GC.Collect();
             }
 
             string totime(long tttt)
@@ -257,15 +254,15 @@ namespace Bili_favorites_list
                 string hh = "0";
                 string mm = "0";
                 string ss = "0";
+                if(ttttt > 3600)
+                {
+                    hh = (ttttt / 3600).ToString();
+                }
                 if (ttttt > 60)
                 {
-                    mm = (ttttt / 60).ToString();
+                    mm = ((ttttt / 60) - long.Parse(hh) * 60).ToString();
                 }
-                if(long.Parse(mm) > 60)
-                {
-                    hh = (long.Parse(mm) / 60).ToString();
-                }
-                ss = (ttttt - (long.Parse(mm) * 60) + (long.Parse(hh) * 3600) ).ToString();
+                ss = (ttttt - (long.Parse(hh) * 3600) - (long.Parse(mm) * 60) ).ToString();
                 if(ss.Length < 2)
                 {
                     ss = "0" + ss;
@@ -297,18 +294,18 @@ namespace Bili_favorites_list
             }
         }
 
-        public void processbar(int num)
+        public void processbar(ProgressBar bar,int num)
         {
             if (this.IsHandleCreated == false)
             {
                 if (num == -1)
                 {
-                    this.progressBar1.Style = ProgressBarStyle.Marquee;
+                    bar.Style = ProgressBarStyle.Marquee;
                 }
                 else
                 {
-                    this.progressBar1.Style = ProgressBarStyle.Blocks;
-                    this.progressBar1.Value = num;
+                    bar.Style = ProgressBarStyle.Blocks;
+                    bar.Value = num;
                 }
             }
             else
@@ -317,12 +314,12 @@ namespace Bili_favorites_list
                 {
                     if (num == -1)
                     {
-                        this.progressBar1.Style = ProgressBarStyle.Marquee;
+                        bar.Style = ProgressBarStyle.Marquee;
                     }
                     else
                     {
-                        this.progressBar1.Style = ProgressBarStyle.Blocks;
-                        this.progressBar1.Value = num;
+                        bar.Style = ProgressBarStyle.Blocks;
+                        bar.Value = num;
                     }
                 }));
             }
