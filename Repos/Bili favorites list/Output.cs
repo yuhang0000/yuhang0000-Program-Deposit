@@ -120,7 +120,7 @@ namespace Bili_favorites_list
 
         private void Output_Activated(object sender, EventArgs e)
         {
-            if(lists.Count > 0)
+            if(lists.Count > 0 && this.listView1 != null)
             {
                 this.listView1.VirtualListSize = lists.Count;
             }

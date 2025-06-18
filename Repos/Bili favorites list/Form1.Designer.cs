@@ -58,6 +58,7 @@
             this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
             this.numericUpDown2 = new System.Windows.Forms.NumericUpDown();
             this.checkBox1 = new System.Windows.Forms.CheckBox();
+            this.checkBox2 = new System.Windows.Forms.CheckBox();
             this.groupBox1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
@@ -268,11 +269,12 @@
             // 
             // label6
             // 
+            this.label6.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label6.AutoSize = true;
             this.label6.Location = new System.Drawing.Point(8, 397);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(52, 15);
-            this.label6.TabIndex = 6;
+            this.label6.TabIndex = 15;
             this.label6.Text = "版本号";
             this.label6.Click += new System.EventHandler(this.label6_Click);
             // 
@@ -297,10 +299,10 @@
             // 
             // button5
             // 
-            this.button5.Location = new System.Drawing.Point(9, 252);
+            this.button5.Location = new System.Drawing.Point(137, 281);
             this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(122, 23);
-            this.button5.TabIndex = 100000000;
+            this.button5.Size = new System.Drawing.Size(156, 23);
+            this.button5.TabIndex = 14;
             this.button5.Text = "文件合并";
             this.button5.UseVisualStyleBackColor = true;
             this.button5.Click += new System.EventHandler(this.button5_Click);
@@ -371,16 +373,27 @@
             this.checkBox1.Location = new System.Drawing.Point(10, 226);
             this.checkBox1.Name = "checkBox1";
             this.checkBox1.Size = new System.Drawing.Size(119, 19);
-            this.checkBox1.TabIndex = 100000001;
+            this.checkBox1.TabIndex = 12;
             this.checkBox1.Text = "列表自动刷新";
             this.checkBox1.UseVisualStyleBackColor = true;
             this.checkBox1.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
+            // 
+            // checkBox2
+            // 
+            this.checkBox2.AutoSize = true;
+            this.checkBox2.Location = new System.Drawing.Point(10, 255);
+            this.checkBox2.Name = "checkBox2";
+            this.checkBox2.Size = new System.Drawing.Size(119, 19);
+            this.checkBox2.TabIndex = 13;
+            this.checkBox2.Text = "减少内存开销";
+            this.checkBox2.UseVisualStyleBackColor = true;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1112, 448);
+            this.Controls.Add(this.checkBox2);
             this.Controls.Add(this.checkBox1);
             this.Controls.Add(this.numericUpDown2);
             this.Controls.Add(this.numericUpDown1);
@@ -454,6 +467,7 @@
         private System.Windows.Forms.NumericUpDown numericUpDown2;
         public System.Windows.Forms.CheckBox checkBox1;
         public System.Windows.Forms.Button button5;
+        private System.Windows.Forms.CheckBox checkBox2;
     }
 }
 

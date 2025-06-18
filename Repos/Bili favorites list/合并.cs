@@ -99,30 +99,38 @@ namespace Bili_favorites_list
             long num1 = 0; //当前数
             float num2 = 0; //历史数
             long num3 = 0; //已处理文件数
-            int time = 0;
+            long time = new DateTimeOffset(DateTime.Now).ToUnixTimeSeconds(); //开始时间
+            long time1; //当前时间
             StringBuilder sb = new StringBuilder(); //Dump
             string[] text; //读取的文件放这里
             string[] textsub; //单个条目
             string texttemp; //零食用
             List<long> textindex = new List<long> { }; //存放序号
             //SortedSet<long> textinedx1 = new SortedSet<long>();
+            long no1 = 0; //上一行编号
+            long no2 = 0; //下一行编号
 
             //计时器
             System.Timers.Timer timer = new System.Timers.Timer();
-            timer.Interval = 50;
+            timer.Interval = 10;
             timer.AutoReset = true;
             timer.Elapsed += new System.Timers.ElapsedEventHandler( (object obj, ElapsedEventArgs e) =>
             {
-                time = time + 50;
+                time1 = new DateTimeOffset(DateTime.Now).ToUnixTimeSeconds();
+                time1 = time1 - time;
                 UIupdate(this.label3,"进度: " + num1.ToString());
-                UIupdate(this.label5,"已用时间: " + totime(time));
+                UIupdate(this.label5,"已用时间: " + totime(time1 * 1000));
                 processbar(this.progressBar1, (int)((1000 * num1) / num));
+
+                num2 = (float)num3 / (float)files.LongLength;
+                num2 = (float)(time1 * 1000) / num2;
+                UIupdate(this.label6,"剩余时间: " + totime( (int)(num2 - (float)(time1 * 1000) ) ));
             });
 
             try
             {
                 sb.Clear();
-                sb.Append("##### " + DateTime.Now.ToString() + " #####\r\n\r\n");
+                sb.Append("#####  " + DateTime.Now.ToString() + "  #####\r\n\r\n");
                 timer.Start();
 
                 if(files.Length == 0)
@@ -142,6 +150,13 @@ namespace Bili_favorites_list
                 }
 
                 //输出
+                timer.Stop();
+                processbar(this.progressBar1,1000);
+                processbar(this.progressBar2,1000);
+                if(textindex.Count == 0)
+                {
+                    throw new Exception("无效内容");
+                }
                 SaveFileDialog dig = new SaveFileDialog();
                 dig.AddExtension = true;
                 dig.AutoUpgradeEnabled = true;
@@ -209,8 +224,19 @@ namespace Bili_favorites_list
                     {
                         texttemp = texttemp.Replace(esc1.Key, esc1.Value);
                     }
+                    //排序
+                    no2 = long.Parse(textsub[0].Substring(2));
+                    /*if (no2 < no1)
+                    {
+                        Debugger.Break();
+                    }
+                    else
+                    {
+                        sb.AppendLine("#\t " + texttemp);
+                    }
+                    no1 = no2;*/
                     sb.AppendLine("#\t " + texttemp);
-                    textindex.Add(long.Parse(textsub[0].Substring(2)));
+                    textindex.Add(no2);
 
                 }
                 num3++;

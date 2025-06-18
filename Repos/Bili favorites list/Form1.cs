@@ -106,7 +106,8 @@ namespace Bili_favorites_list
             //焦点转至 "暂停"
             SelectNextControl(ActiveControl, false, true, true, true);
             //HTTPGET();
-            Output.让我看看.listView1.Items.Clear();
+            //Output.让我看看.listView1.Items.Clear();
+            Output.让我看看.listView1.VirtualListSize = 0;
             Output.lists.Clear();
 
             //尝试共用 HttpClient
@@ -530,6 +531,12 @@ namespace Bili_favorites_list
                 全局变量.起始 = 全局变量.ML.ToString();
                 UIupdate(textBox3, 全局变量.起始 );
                 全局变量.ML = 全局变量.ML - 全局变量.队列;
+                if (UIget<bool>(this.checkBox2) == true) //尽可能地减小内存开销
+                {
+                    Output.lists.Clear();
+                    //Output.让我看看.listView1.Clear();
+                    Output.让我看看.listView1.VirtualListSize = 0;
+                }
                 GC.Collect();
             }
             if (toover == 2)
@@ -712,7 +719,15 @@ namespace Bili_favorites_list
             {
                 await Task.Delay(1);
             }*/
-            
+
+            //转义字符
+            foreach (var esc in 合并.ESC)
+            {
+                title = title.Replace(esc.Key,esc.Value);
+                intro = intro.Replace(esc.Key,esc.Value);
+                name = name.Replace(esc.Key,esc.Value);
+            }
+
             //垃圾回收
             //client.Dispose();
             res.Dispose();
@@ -763,6 +778,10 @@ namespace Bili_favorites_list
                 if(control is System.Windows.Forms.NumericUpDown numup) { 
                     return (T)(object)numup.Value;
                 }
+                else if (control is System.Windows.Forms.CheckBox checkbox)
+                {
+                    return (T)(object)checkbox.Checked;
+                }
                 else
                 {
                     return (T)(object)control.Text;
@@ -776,6 +795,10 @@ namespace Bili_favorites_list
                     if (control is System.Windows.Forms.NumericUpDown numup)
                     {
                         t = (T)(object)numup.Value;
+                    }
+                    else if (control is System.Windows.Forms.CheckBox checkbox)
+                    {
+                        t = (T)(object)checkbox.Checked;
                     }
                     else
                     {
@@ -863,6 +886,7 @@ namespace Bili_favorites_list
                     "步幅=" + textBox7.Text, 
                     "队列=" + this.numericUpDown1.Value.ToString(), 
                     "列表自动更新=" + this.checkBox1.Checked.ToString(), 
+                    "减小内存开销=" + this.checkBox2.Checked.ToString(), 
                     "[By:yuhang0000]" };
                 System.IO.File.WriteAllLines(path, 配置文档);
                 全局变量.配置文档 = 配置文档;
@@ -882,6 +906,7 @@ namespace Bili_favorites_list
                     this.textBox7.Text = 全局变量.配置文档[6].Replace("步幅=", "");
                     this.numericUpDown1.Value = decimal.Parse(全局变量.配置文档[7].Replace("队列=", ""));
                     this.checkBox1.Checked = bool.Parse(全局变量.配置文档[8].Replace("列表自动更新=", ""));
+                    this.checkBox2.Checked = bool.Parse(全局变量.配置文档[9].Replace("减小内存开销=", ""));
                     //this.textBox1.Text = "就绪。";
                     UIprint("就绪。");
                 }
@@ -936,6 +961,7 @@ namespace Bili_favorites_list
                 "步幅=" + textBox7.Text, 
                 "队列=" + this.numericUpDown1.Value.ToString(), 
                 "列表自动更新=" + this.checkBox1.Checked.ToString(), 
+                "减小内存开销=" + this.checkBox2.Checked.ToString(), 
                 "", 
                 "[By:yuhang0000]" };
             System.IO.File.WriteAllLines( Application.StartupPath + "/Setting.ini", 配置文档);
