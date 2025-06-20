@@ -122,7 +122,8 @@ namespace Bili_favorites_list
                 UIupdate(this.label5,"已用时间: " + totime(time1 * 1000));
                 processbar(this.progressBar1, (int)((1000 * num1) / num));
 
-                num2 = (float)num3 / (float)files.LongLength;
+                //num2 = (float)num3 / (float)files.LongLength; //仅文件
+                num2 = (float)(num3 * num + num1) / (float)(files.LongLength * num);
                 num2 = (float)(time1 * 1000) / num2;
                 UIupdate(this.label6,"剩余时间: " + totime( (int)(num2 - (float)(time1 * 1000) ) ));
             });
@@ -151,8 +152,6 @@ namespace Bili_favorites_list
 
                 //输出
                 timer.Stop();
-                processbar(this.progressBar1,1000);
-                processbar(this.progressBar2,1000);
                 if(textindex.Count == 0)
                 {
                     throw new Exception("无效内容");
@@ -240,7 +239,9 @@ namespace Bili_favorites_list
 
                 }
                 num3++;
+                UIupdate(this.label3, "进度: " + num1);
                 UIupdate(this.label7, "已处理文件: (" + num3 + "/" + files.LongLength + ")");
+                processbar(this.progressBar1, 1000);
                 processbar(this.progressBar2, (int)((1000 * num3) / files.LongLength));
                 return true;
             }

@@ -19,6 +19,7 @@ using System.Xml.Linq;
 using static Bili_favorites_list.Output;
 using static Bili_favorites_list.报错;
 using System.Text.RegularExpressions;
+using System.Net;
 
 
 namespace Bili_favorites_list
@@ -112,9 +113,65 @@ namespace Bili_favorites_list
 
             //尝试共用 HttpClient
             全局变量.client = new HttpClient();
-            //我觉得压缩比较好
+            //我觉得压缩比较好 //定义爆头
             全局变量.client.DefaultRequestHeaders.Add("Accept-Encoding", "gzip");
+            全局变量.client.DefaultRequestHeaders.Add("Accept", "*/*");
+            全局变量.client.DefaultRequestHeaders.Add("Accept-Language", "zh,en-US;q=0.9,en;q=0.8,en-GB;q=0.7");
+            全局变量.client.DefaultRequestHeaders.Add("Cache-Control", "no-cache");
+            全局变量.client.DefaultRequestHeaders.Add("Pragma", "no-cache");
+            //全局变量.client.DefaultRequestHeaders.Add("User-Agent", "");
+            全局变量.client.DefaultRequestHeaders.Add("Sec-Ch-Ua-Mobile", "?0");
+            //全局变量.client.DefaultRequestHeaders.Add("Sec-Ch-Ua-Platform", "Windows");
+            全局变量.client.DefaultRequestHeaders.Add("Sec-Fetch-Dest", "empty");
+            全局变量.client.DefaultRequestHeaders.Add("Sec-Fetch-Mode", "cors");
+            全局变量.client.DefaultRequestHeaders.Add("Sec-Fetch-Site", "same-site");
+
             run_loop();
+        }
+
+        public static class httpheader
+        {
+            public static int t = 0;
+            public static string[] uas = {
+            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36 Edg/123.0.0.0",
+            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/536.31 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/536.31",
+            "Mozilla/5.0 (X11; Linux aarch64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.4928.34 OPR/103.0.4928.34",
+            "Mozilla/5.0 (Macintosh; Intel Mac OS X 14_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/118.0.5993.117",
+            "Mozilla/5.0 (Windows NT 11.0) AppleWebKit/537.36 (KHTML, like Gecko) Firefox/118.0.2",
+            "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/118.0.5993.117",
+            "Mozilla/5.0 (X11; Linux i686) AppleWebKit/537.36 (KHTML, like Gecko) Firefox/121.0",
+            "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/104.0.4944.36 OPR/104.0.4944.36",
+            "Mozilla/5.0 (Windows NT 6.2) AppleWebKit/537.36 (KHTML, like Gecko) Version/17.1 Safari/17.1",
+            "Mozilla/5.0 (X11; Linux armv8l) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/104.0.4944.36 OPR/104.0.4944.36",
+            "Mozilla/5.0 (X11; Linux i686) AppleWebKit/537.36 (KHTML, like Gecko) Firefox/119.0",
+            "Mozilla/5.0 (Windows NT 10.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.2151.97 Edg/119.0.2151.97",
+            "Mozilla/5.0 (Linux; Android 10.0; Pixel 8) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.6045.199 Mobile Safari/537.36",
+            "Mozilla/5.0 (iPad; CPU OS 17_0_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/15.7 Mobile/15E148 Safari/604.1",
+            "Mozilla/5.0 (iPad; CPU OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.7 Mobile/15E148 Safari/604.1",
+            "Mozilla/5.0 (Linux; Android 12.0; Samsung Galaxy S23) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.6045.199 Mobile Safari/537.36",
+            "Mozilla/5.0 (Linux; Android 12.0; Pixel 7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/117.0.5938.149 Mobile Safari/537.36",
+            "Mozilla/5.0 (iPad; CPU OS 17_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/15.7 Mobile/15E148 Safari/604.1",
+            "Mozilla/5.0 (iPhone; CPU iPhone OS 17_1_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.6 Mobile/15E148 Safari/604.1",
+            "Mozilla/5.0 (iPad; CPU OS 17_1_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.8 Mobile/15E148 Safari/604.1",
+            "Mozilla/5.0 (Linux; Android 12.0; OPPO Find X6 Pro) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.6045.199 Mobile Safari/537.36",
+            "Mozilla/5.0 (iPhone; CPU iPhone OS 17_1_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/15.1 Mobile/15E148 Safari/604.1",
+            "Mozilla/5.0 (Windows NT 6.3) AppleWebKit/537.36 (KHTML, like Gecko) Firefox/117.0",
+            "Mozilla/5.0 (Windows NT 6.3) AppleWebKit/537.36 (KHTML, like Gecko) Version/17.2 Safari/17.2",
+            "Mozilla/5.0 (Macintosh; Intel Mac OS X 14_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/105.0.4970.60 OPR/105.0.4970.60",
+            "Mozilla/5.0 (Macintosh; Intel Mac OS X 13_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/106.0.4998.70 OPR/106.0.4998.70",
+            "Mozilla/5.0 (Macintosh; Intel Mac OS X 13_5) AppleWebKit/537.36 (KHTML, like Gecko) Firefox/121.0",
+            "Mozilla/5.0 (X11; Linux i686) AppleWebKit/537.36 (KHTML, like Gecko) Version/17.1 Safari/17.1",
+            "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Firefox/119.0",
+            "Mozilla/5.0 (Windows NT 10.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.5845.187",
+            "Mozilla/5.0 (Macintosh; Intel Mac OS X 13_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/117.0.5938.149",
+            };
+            public static string[] Platform = {
+                "Macintosh",
+                "Windows",
+                "Android",
+                "Linux",
+            };
+            public static string ua = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36 Edg/122.0.0.0";
         }
 
         /// <summary>
@@ -577,6 +634,14 @@ namespace Bili_favorites_list
         async public Task<(bool,string[])> http(string url,string ml)
         {
             HttpResponseMessage res = null;
+
+            Random random = new Random();
+            全局变量.client.DefaultRequestHeaders.Remove("Sec-Ch-Ua-Platform");
+            全局变量.client.DefaultRequestHeaders.Remove("User-Agent");
+            全局变量.client.DefaultRequestHeaders.Add("Sec-Ch-Ua-Platform", httpheader.Platform[random.Next(httpheader.Platform.Length)]);
+            全局变量.client.DefaultRequestHeaders.Add("User-Agent", httpheader.uas[random.Next(httpheader.uas.Length)]);
+            random = null;
+
             await tryget(); //麻烦，尝试自动重试
 
             async Task tryget() //失败自动重试
