@@ -53,6 +53,7 @@ namespace Bili_favorites_list
             public static String[] 配置文档;
             public static String 标题栏高度;
             public static HttpClient client;
+
         }
 
         //开始
@@ -112,25 +113,17 @@ namespace Bili_favorites_list
             Output.lists.Clear();
 
             //尝试共用 HttpClient
-            全局变量.client = new HttpClient();
-            //我觉得压缩比较好 //定义爆头
-            全局变量.client.DefaultRequestHeaders.Add("Accept-Encoding", "gzip");
-            全局变量.client.DefaultRequestHeaders.Add("Accept", "*/*");
-            全局变量.client.DefaultRequestHeaders.Add("Accept-Language", "zh,en-US;q=0.9,en;q=0.8,en-GB;q=0.7");
-            全局变量.client.DefaultRequestHeaders.Add("Cache-Control", "no-cache");
-            全局变量.client.DefaultRequestHeaders.Add("Pragma", "no-cache");
-            //全局变量.client.DefaultRequestHeaders.Add("User-Agent", "");
-            全局变量.client.DefaultRequestHeaders.Add("Sec-Ch-Ua-Mobile", "?0");
-            //全局变量.client.DefaultRequestHeaders.Add("Sec-Ch-Ua-Platform", "Windows");
-            全局变量.client.DefaultRequestHeaders.Add("Sec-Fetch-Dest", "empty");
-            全局变量.client.DefaultRequestHeaders.Add("Sec-Fetch-Mode", "cors");
-            全局变量.client.DefaultRequestHeaders.Add("Sec-Fetch-Site", "same-site");
+            httpheader.reset();
 
             run_loop();
         }
 
         public static class httpheader
         {
+            public static bool useproxy = false;
+            public static string proxyurl = "";
+            public static string proxyuser = "";
+            public static string proxypass = "";
             public static int t = 0;
             public static string[] uas = {
             "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36 Edg/123.0.0.0",
@@ -171,7 +164,43 @@ namespace Bili_favorites_list
                 "Android",
                 "Linux",
             };
-            public static string ua = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36 Edg/122.0.0.0";
+            public static WebProxy webProxy;
+
+            public static void reset()
+            {
+                if(useproxy == true && proxyurl != "")
+                {
+                    webProxy = new WebProxy();
+                    webProxy.Address = new Uri(proxyurl);
+                    if ((proxyuser != "" && proxypass != "") ||
+                        (proxyuser != "" && proxypass == "") ||
+                        (proxyuser == "" && proxypass != ""))
+                    {
+                        webProxy.Credentials = new NetworkCredential(proxyuser, proxypass);
+                    }
+                    全局变量.client = new HttpClient(new HttpClientHandler() { 
+                        Proxy = webProxy,
+                        UseProxy = useproxy,
+                    } );
+                }
+                else
+                {
+                    全局变量.client = new HttpClient();
+                }
+
+                //我觉得压缩比较好 //定义爆头
+                全局变量.client.DefaultRequestHeaders.Add("Accept-Encoding", "gzip");
+                全局变量.client.DefaultRequestHeaders.Add("Accept", "*/*");
+                全局变量.client.DefaultRequestHeaders.Add("Accept-Language", "zh,en-US;q=0.9,en;q=0.8,en-GB;q=0.7");
+                全局变量.client.DefaultRequestHeaders.Add("Cache-Control", "no-cache");
+                全局变量.client.DefaultRequestHeaders.Add("Pragma", "no-cache");
+                //全局变量.client.DefaultRequestHeaders.Add("User-Agent", "");
+                //全局变量.client.DefaultRequestHeaders.Add("Sec-Ch-Ua-Mobile", "?0");
+                //全局变量.client.DefaultRequestHeaders.Add("Sec-Ch-Ua-Platform", "Windows");
+                全局变量.client.DefaultRequestHeaders.Add("Sec-Fetch-Dest", "empty");
+                全局变量.client.DefaultRequestHeaders.Add("Sec-Fetch-Mode", "cors");
+                全局变量.client.DefaultRequestHeaders.Add("Sec-Fetch-Site", "same-site");
+            }
         }
 
         /// <summary>
@@ -605,6 +634,7 @@ namespace Bili_favorites_list
                 输出内容(true);
                 //全局变量.内容 = "";
                 全局变量.内容.Clear();
+                全局变量.client.Dispose();
                 if (this.IsHandleCreated == false)
                 {
                     this.button1.Enabled = true;
@@ -638,8 +668,10 @@ namespace Bili_favorites_list
             Random random = new Random();
             全局变量.client.DefaultRequestHeaders.Remove("Sec-Ch-Ua-Platform");
             全局变量.client.DefaultRequestHeaders.Remove("User-Agent");
+            全局变量.client.DefaultRequestHeaders.Remove("Sec-Ch-Ua-Mobile");
             全局变量.client.DefaultRequestHeaders.Add("Sec-Ch-Ua-Platform", httpheader.Platform[random.Next(httpheader.Platform.Length)]);
             全局变量.client.DefaultRequestHeaders.Add("User-Agent", httpheader.uas[random.Next(httpheader.uas.Length)]);
+            全局变量.client.DefaultRequestHeaders.Add("Sec-Ch-Ua-Mobile", "?" + random.Next(0,2).ToString() );
             random = null;
 
             await tryget(); //麻烦，尝试自动重试
@@ -927,6 +959,8 @@ namespace Bili_favorites_list
             SelectNextControl(ActiveControl, false, true, true, true);
             toolStripStatusLabel1.Text = "进行中";
 
+            全局变量.client.Dispose();
+            httpheader.reset();
             run_loop();
             //HTTPGET();
         }
@@ -951,7 +985,13 @@ namespace Bili_favorites_list
                     "步幅=" + textBox7.Text, 
                     "队列=" + this.numericUpDown1.Value.ToString(), 
                     "列表自动更新=" + this.checkBox1.Checked.ToString(), 
-                    "减小内存开销=" + this.checkBox2.Checked.ToString(), 
+                    "减小内存开销=" + this.checkBox2.Checked.ToString(),
+                    "使用代理=" + httpheader.useproxy.ToString(),
+                    "代理地址=" + httpheader.proxyurl,
+                    "代理用户=" + httpheader.proxyuser,
+                    "代理密码=" + httpheader.proxypass,
+                    "UA=" + string.Join("||",httpheader.uas),
+                    "",
                     "[By:yuhang0000]" };
                 System.IO.File.WriteAllLines(path, 配置文档);
                 全局变量.配置文档 = 配置文档;
@@ -972,6 +1012,11 @@ namespace Bili_favorites_list
                     this.numericUpDown1.Value = decimal.Parse(全局变量.配置文档[7].Replace("队列=", ""));
                     this.checkBox1.Checked = bool.Parse(全局变量.配置文档[8].Replace("列表自动更新=", ""));
                     this.checkBox2.Checked = bool.Parse(全局变量.配置文档[9].Replace("减小内存开销=", ""));
+                    httpheader.useproxy = bool.Parse(全局变量.配置文档[10].Replace("使用代理=", ""));
+                    httpheader.proxyurl = 全局变量.配置文档[11].Replace("代理地址=", "");
+                    httpheader.proxyuser = 全局变量.配置文档[12].Replace("代理用户=", "");
+                    httpheader.proxypass = 全局变量.配置文档[13].Replace("代理密码=", "");
+                    httpheader.uas = 全局变量.配置文档[14].Replace("UA=", "").Split(new string[] { "||" }, StringSplitOptions.RemoveEmptyEntries);
                     //this.textBox1.Text = "就绪。";
                     UIprint("就绪。");
                 }
@@ -1027,6 +1072,11 @@ namespace Bili_favorites_list
                 "队列=" + this.numericUpDown1.Value.ToString(), 
                 "列表自动更新=" + this.checkBox1.Checked.ToString(), 
                 "减小内存开销=" + this.checkBox2.Checked.ToString(), 
+                "使用代理=" + httpheader.useproxy.ToString(), 
+                "代理地址=" + httpheader.proxyurl, 
+                "代理用户=" + httpheader.proxyuser, 
+                "代理密码=" + httpheader.proxypass, 
+                "UA=" + string.Join("||",httpheader.uas), 
                 "", 
                 "[By:yuhang0000]" };
             System.IO.File.WriteAllLines( Application.StartupPath + "/Setting.ini", 配置文档);
@@ -1287,6 +1337,12 @@ namespace Bili_favorites_list
         private void Form1_Activated(object sender, EventArgs e)
         {
             UIupdate(textBox1, print2textbox1);
+        }
+
+        private void button6_Click(object sender, EventArgs e)
+        {
+            Option dig = new Option();
+            dig.Show();
         }
     }
 }
