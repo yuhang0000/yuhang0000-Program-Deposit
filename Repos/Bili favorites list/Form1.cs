@@ -127,41 +127,22 @@ namespace Bili_favorites_list
             public static int t = 0;
             public static string[] uas = {
             "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36 Edg/123.0.0.0",
-            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/536.31 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/536.31",
-            "Mozilla/5.0 (X11; Linux aarch64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.4928.34 OPR/103.0.4928.34",
-            "Mozilla/5.0 (Macintosh; Intel Mac OS X 14_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/118.0.5993.117",
-            "Mozilla/5.0 (Windows NT 11.0) AppleWebKit/537.36 (KHTML, like Gecko) Firefox/118.0.2",
-            "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/118.0.5993.117",
-            "Mozilla/5.0 (X11; Linux i686) AppleWebKit/537.36 (KHTML, like Gecko) Firefox/121.0",
-            "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/104.0.4944.36 OPR/104.0.4944.36",
-            "Mozilla/5.0 (Windows NT 6.2) AppleWebKit/537.36 (KHTML, like Gecko) Version/17.1 Safari/17.1",
-            "Mozilla/5.0 (X11; Linux armv8l) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/104.0.4944.36 OPR/104.0.4944.36",
-            "Mozilla/5.0 (X11; Linux i686) AppleWebKit/537.36 (KHTML, like Gecko) Firefox/119.0",
-            "Mozilla/5.0 (Windows NT 10.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.2151.97 Edg/119.0.2151.97",
-            "Mozilla/5.0 (Linux; Android 10.0; Pixel 8) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.6045.199 Mobile Safari/537.36",
-            "Mozilla/5.0 (iPad; CPU OS 17_0_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/15.7 Mobile/15E148 Safari/604.1",
-            "Mozilla/5.0 (iPad; CPU OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.7 Mobile/15E148 Safari/604.1",
-            "Mozilla/5.0 (Linux; Android 12.0; Samsung Galaxy S23) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.6045.199 Mobile Safari/537.36",
-            "Mozilla/5.0 (Linux; Android 12.0; Pixel 7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/117.0.5938.149 Mobile Safari/537.36",
-            "Mozilla/5.0 (iPad; CPU OS 17_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/15.7 Mobile/15E148 Safari/604.1",
-            "Mozilla/5.0 (iPhone; CPU iPhone OS 17_1_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.6 Mobile/15E148 Safari/604.1",
-            "Mozilla/5.0 (iPad; CPU OS 17_1_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.8 Mobile/15E148 Safari/604.1",
-            "Mozilla/5.0 (Linux; Android 12.0; OPPO Find X6 Pro) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.6045.199 Mobile Safari/537.36",
-            "Mozilla/5.0 (iPhone; CPU iPhone OS 17_1_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/15.1 Mobile/15E148 Safari/604.1",
-            "Mozilla/5.0 (Windows NT 6.3) AppleWebKit/537.36 (KHTML, like Gecko) Firefox/117.0",
-            "Mozilla/5.0 (Windows NT 6.3) AppleWebKit/537.36 (KHTML, like Gecko) Version/17.2 Safari/17.2",
-            "Mozilla/5.0 (Macintosh; Intel Mac OS X 14_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/105.0.4970.60 OPR/105.0.4970.60",
-            "Mozilla/5.0 (Macintosh; Intel Mac OS X 13_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/106.0.4998.70 OPR/106.0.4998.70",
-            "Mozilla/5.0 (Macintosh; Intel Mac OS X 13_5) AppleWebKit/537.36 (KHTML, like Gecko) Firefox/121.0",
-            "Mozilla/5.0 (X11; Linux i686) AppleWebKit/537.36 (KHTML, like Gecko) Version/17.1 Safari/17.1",
-            "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Firefox/119.0",
-            "Mozilla/5.0 (Windows NT 10.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.5845.187",
-            "Mozilla/5.0 (Macintosh; Intel Mac OS X 13_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/117.0.5938.149",
+            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36",
+            "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:89.0) Gecko/20100101 Firefox/89.0",
+            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36 Edg/91.0.864.59",
+            "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36",
+            "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:89.0) Gecko/20100101 Firefox/89.0",
+            "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Ubuntu Chromium/90.0.4430.212 Chrome/90.0.4430.212 Safari/537.36",
+            "Mozilla/5.0 (iPhone; CPU iPhone OS 14_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0 Mobile/15E148 Safari/604.1",
+            "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0 Safari/604.1",
+            "Mozilla/5.0 (Linux; Android 11; Pixel 5) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/91.0.4472.124 Mobile Safari/537.36",
+            "Mozilla/5.0 (Android 10; Mobile; rv:89.0) Gecko/89.0 Firefox/89.0",
             };
             public static string[] Platform = {
-                "Macintosh",
+                "macOS",
                 "Windows",
                 "Android",
+                "iOS",
                 "Linux",
             };
             public static WebProxy webProxy;
@@ -665,14 +646,49 @@ namespace Bili_favorites_list
         {
             HttpResponseMessage res = null;
 
+            //设置UA
+            string ua;
+            string platform = "Windows";
+            string mobile = "?0";
             Random random = new Random();
             全局变量.client.DefaultRequestHeaders.Remove("Sec-Ch-Ua-Platform");
             全局变量.client.DefaultRequestHeaders.Remove("User-Agent");
             全局变量.client.DefaultRequestHeaders.Remove("Sec-Ch-Ua-Mobile");
-            全局变量.client.DefaultRequestHeaders.Add("Sec-Ch-Ua-Platform", httpheader.Platform[random.Next(httpheader.Platform.Length)]);
-            全局变量.client.DefaultRequestHeaders.Add("User-Agent", httpheader.uas[random.Next(httpheader.uas.Length)]);
-            全局变量.client.DefaultRequestHeaders.Add("Sec-Ch-Ua-Mobile", "?" + random.Next(0,2).ToString() );
+            ua = httpheader.uas[random.Next(httpheader.uas.Length)];
+            全局变量.client.DefaultRequestHeaders.Add("User-Agent", ua);
+            if (ua.IndexOf("Windows",StringComparison.OrdinalIgnoreCase) != -1)
+            {
+                platform = "Windows";
+                mobile = "?0";
+            }
+            else if (ua.IndexOf("Android", StringComparison.OrdinalIgnoreCase) != -1)
+            {
+                platform = "Android";
+                mobile = "?1";
+            }
+            else if (ua.IndexOf("Linux",StringComparison.OrdinalIgnoreCase) != -1)
+            {
+                platform = "Linux";
+                mobile = "?0";
+            }
+            else if (ua.IndexOf("Macintosh", StringComparison.OrdinalIgnoreCase) != -1)
+            {
+                platform = "macOS";
+                mobile = "?0";
+            }
+            else if (ua.IndexOf("iPhone", StringComparison.OrdinalIgnoreCase) != -1 || 
+                ua.IndexOf("iPad", StringComparison.OrdinalIgnoreCase) != -1 || 
+                ua.IndexOf("iPod", StringComparison.OrdinalIgnoreCase) != -1)
+            {
+                platform = "iOS";
+                mobile = "?1";
+            }
+            全局变量.client.DefaultRequestHeaders.Add("Sec-Ch-Ua-Platform", platform);
+            全局变量.client.DefaultRequestHeaders.Add("Sec-Ch-Ua-Mobile", mobile );
             random = null;
+            ua = null;
+            platform = null;
+            mobile = null;
 
             await tryget(); //麻烦，尝试自动重试
 
