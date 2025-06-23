@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
+using System.Media;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -11,13 +12,19 @@ namespace Auto_Select_To_Open_The_Program
 {
     internal class Program
     {
+        [DllImport("kernel32.dll")]
+        private static extern bool AllocConsole(); //打开命令提示单元
+        [DllImport("kernel32.dll")]
+        private static extern bool FreeConsole(); //关闭命令提示单元
+
         static void Main(string[] args)
         {
-            string path = Environment.CurrentDirectory + @"\rule.txt";
+            string path = AppDomain.CurrentDomain.BaseDirectory + @"rule.txt";
             List<(string,string,int)> list = new List<(string, string,int)>();
 
             if(Debugger.IsAttached == true)
             {
+                AllocConsole();
                 Console.WriteLine(string.Join(" ", args));
                 Console.WriteLine("");
                 //Console.ReadKey();
@@ -29,7 +36,13 @@ namespace Auto_Select_To_Open_The_Program
                 string[] files = File.ReadAllLines(path);
                 foreach (string file in files)
                 {
-                    string[] rules = file.Split(new string[] { "|||" }, StringSplitOptions.RemoveEmptyEntries);
+                    string file2 = file.Trim();
+                    if (file2.Length > 0 && file2.Substring(0,1).IndexOf("#") != -1) //主食跳过
+                    {
+                        continue;
+                    }
+
+                    string[] rules = file2.Split(new string[] { "|||" }, StringSplitOptions.RemoveEmptyEntries);
                     if (rules.Length == 2) //默认值
                     {
                         list.Add( ("", rules[0].Trim(), int.Parse(rules[1].Trim()) ) );
@@ -48,12 +61,14 @@ namespace Auto_Select_To_Open_The_Program
             }
 
             //这里获取帮助
-            if (string.Equals(args[0], "help", StringComparison.CurrentCulture) == true ||
+            if (args.Length == 0 ||
+                string.Equals(args[0], "help", StringComparison.CurrentCulture) == true ||
                 string.Equals(args[0], "/?", StringComparison.CurrentCulture) == true ||
                 string.Equals(args[0], "--help", StringComparison.CurrentCulture) == true ||
                 string.Equals(args[0], "-h", StringComparison.CurrentCulture) == true )
             {
-                Console.WriteLine(Assembly.GetExecutingAssembly().GetName().Name);
+                AllocConsole();
+                Console.WriteLine(Assembly.GetExecutingAssembly().GetName().Name + "\tv" + Assembly.GetExecutingAssembly().GetName().Version);
                 Console.WriteLine("一个小程式, 能根据启动参数自动选择正确的程式来启动. ");
                 Console.WriteLine("");
                 Console.WriteLine("##### 一些帮助 #####");
@@ -72,6 +87,7 @@ namespace Auto_Select_To_Open_The_Program
                 Console.WriteLine("");
                 Console.WriteLine("然后要关闭此帮助的话, 随便按下哪个键就可以关闭了...");
                 Console.ReadKey();
+                FreeConsole();
                 return;
             }
             else
@@ -156,9 +172,9 @@ namespace Auto_Select_To_Open_The_Program
                     }
 
                     //真正运行的地方起始是在这里
-                    if (args[rule.Item3].IndexOf(rule.Item1) != -1)
+                    if (args.Length > rule.Item3 && args[rule.Item3].IndexOf(rule.Item1) != -1)
                     {
-                        Process.Start( prog, comm );
+                        progrun(prog,comm);
                         return;
                     }
                 }
@@ -172,7 +188,35 @@ namespace Auto_Select_To_Open_The_Program
                 }
 
                 //都不匹配的话就用 explorer 打开吧
-                Process.Start( defprog, defcomm );
+                //Process.Start( defprog, defcomm );
+                progrun( defprog, defcomm );
+            }
+
+            void progrun(string prog, string comm)
+            {
+                try
+                {
+                    Process.Start( prog, comm );
+                }
+                catch (Exception ex)
+                {
+                    SystemSounds.Hand.Play();
+                    AllocConsole();
+                    Console.WriteLine("");
+                    Console.WriteLine("##### Oops! #####");
+                    Console.WriteLine("当前启动参数: \r\n" + prog + " " + comm);
+                    Console.WriteLine("");
+                    if (Debugger.IsAttached == true)
+                    {
+                        Console.WriteLine(ex.ToString());
+                    }
+                    else
+                    {
+                        Console.WriteLine(ex.Message);
+                    }
+                    Console.ReadKey();
+                    FreeConsole();
+                }
             }
 
         }
