@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.8.34511.84
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Auto Select To Open The Program", "Auto Select To Open The Program.csproj", "{B7462B39-90A8-458A-B2A0-8BA65DDE7A61}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B7462B39-90A8-458A-B2A0-8BA65DDE7A61}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B7462B39-90A8-458A-B2A0-8BA65DDE7A61}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B7462B39-90A8-458A-B2A0-8BA65DDE7A61}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B7462B39-90A8-458A-B2A0-8BA65DDE7A61}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {355C46F3-5823-4F54-A4FC-D72379FEDCB4}
+	EndGlobalSection
+EndGlobal
