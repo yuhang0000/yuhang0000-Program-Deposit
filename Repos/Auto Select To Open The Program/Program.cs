@@ -16,6 +16,24 @@ namespace Auto_Select_To_Open_The_Program
         private static extern bool AllocConsole(); //打开命令提示单元
         [DllImport("kernel32.dll")]
         private static extern bool FreeConsole(); //关闭命令提示单元
+        /*[DllImport("shell32.dll")]
+        private static extern bool SHOpenWithDialog(IntPtr intPtr,ref poainfo info); //默认打开方式
+
+        struct poainfo
+        {
+            public int cbSize; 
+            public string pcszFile;
+            public string pcszClass; 
+            public int oaifInFlags; 
+        }
+        static void openas(string path)
+        {
+            poainfo info = new poainfo();
+            info.pcszFile = path;
+            info.pcszClass = null;
+            info.oaifInFlags = 0x00000001 | 0x00000004;
+            SHOpenWithDialog(IntPtr.Zero ,ref info);
+        }*/
 
         static void Main(string[] args)
         {
@@ -43,11 +61,7 @@ namespace Auto_Select_To_Open_The_Program
                     }
 
                     string[] rules = file2.Split(new string[] { "|||" }, StringSplitOptions.RemoveEmptyEntries);
-                    if (rules.Length == 2) //默认值
-                    {
-                        list.Add( ("", rules[0].Trim(), int.Parse(rules[1].Trim()) ) );
-                    }
-                    else if(rules.Length > 2)
+                    if(rules.Length > 2)
                     {
                         list.Add( (rules[0].Trim() , rules[1].Trim(), int.Parse(rules[2].Trim()) ) );
                     }
@@ -57,7 +71,6 @@ namespace Auto_Select_To_Open_The_Program
             {
                 list.Add( ("http://","explorer %1", 0) );
                 list.Add( ("https://","explorer %1", 0) );
-                list.Add( ("",  "explorer %1", 0) );
             }
 
             //这里获取帮助
@@ -80,9 +93,6 @@ namespace Auto_Select_To_Open_The_Program
                 Console.WriteLine("  栗如: http://|||msedge --inprivate %1|||0 ");
                 Console.WriteLine("        (默认的超链接通过 Edge 浏览器打开并启动无痕模式)");
                 Console.WriteLine("");
-                Console.WriteLine("        explorer %1|||0");
-                Console.WriteLine("        (该规则作为默认值, 仅当所有规则均不匹配的时候生效)");
-                Console.WriteLine("");
                 Console.WriteLine("  完成规则配置后请写入到 \"" + path + "\"");
                 Console.WriteLine("");
                 Console.WriteLine("然后要关闭此帮助的话, 随便按下哪个键就可以关闭了...");
@@ -92,8 +102,8 @@ namespace Auto_Select_To_Open_The_Program
             }
             else
             {
-                string defprog = "explorer";
-                string defcomm = "%1";
+                //string defprog = "explorer";
+                //string defcomm = "%1";
 
                 //遍历规则
                 foreach (var rule in list)
@@ -155,12 +165,12 @@ namespace Auto_Select_To_Open_The_Program
                     }
 
                     //第一项为空值,说明是默认指令
-                    if (rule.Item1 == "")
+                    /*if (rule.Item1 == "")
                     {
                         defprog = prog;
                         defcomm = comm;
                         continue;
-                    }
+                    }*/
 
                     //追加指令
                     comm = comm.Replace("%1",string.Join(" ", args));
@@ -179,17 +189,20 @@ namespace Auto_Select_To_Open_The_Program
                     }
                 }
 
-                defcomm = defcomm.Replace("%1", string.Join(" ", args));
+                //defcomm = defcomm.Replace("%1", string.Join(" ", args));
                 if(Debugger.IsAttached == true)
                 {
+                    AllocConsole();
                     Console.WriteLine("##### 如果你能看到这条讯息, 说明匹配失败哩 #####");
-                    Console.WriteLine("按下任意键运行指定默认程式: \r\n" + defprog + " " + defcomm);
+                    //Console.WriteLine("按下任意键运行指定默认程式: \r\n" + defprog + " " + defcomm);
                     Console.ReadKey();
                 }
 
                 //都不匹配的话就用 explorer 打开吧
                 //Process.Start( defprog, defcomm );
-                progrun( defprog, defcomm );
+                //progrun( defprog, defcomm );
+                //openas(string.Join(" ", args));
+                Process.Start("rundll32.exe", "shell32.dll,OpenAs_RunDLL " + string.Join(" ", args));
             }
 
             void progrun(string prog, string comm)
