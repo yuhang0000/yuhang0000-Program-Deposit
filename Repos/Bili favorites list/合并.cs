@@ -107,11 +107,12 @@ namespace Bili_favorites_list
             string text; //读取的文件放这里
             string[] textsub; //单个条目
             string texttemp; //零食用
-            List<long> textindex = new List<long> { }; //存放序号
+            long[] textindex = new long[] { -1, -1, -1 }; //存放序号 //0: 最大值 1: 最小值 2:上一个数
             //SortedSet<long> textinedx1 = new SortedSet<long>();
             long no1 = 0; //上一行编号
             long no2 = 0; //下一行编号
             string savepath; //文档保存未知
+            string savepathtemp = AppDomain.CurrentDomain.BaseDirectory + @"Output.tmp"; //零食文档保存未知
 
             //计时器
             System.Timers.Timer timer = new System.Timers.Timer();
@@ -134,8 +135,13 @@ namespace Bili_favorites_list
             try
             {
                 //初始化
+                if (File.Exists(savepathtemp) == true)
+                {
+                    File.Delete( savepathtemp );
+                }
                 sb.Clear();
-                sb.Append("#####  " + DateTime.Now.ToString() + "  #####\r\n\r\n");
+                //sb.Append("#####  " + DateTime.Now.ToString() + "  #####\r\n\r\n");
+                File.WriteAllText(savepathtemp, "#####  " + DateTime.Now.ToString() + "  #####\r\n\r\n");
                 timer.Start();
                 if(files.Length == 0)
                 {
@@ -155,7 +161,7 @@ namespace Bili_favorites_list
 
                 //输出
                 timer.Stop();
-                if(textindex.Count == 0)
+                if(textindex[2] == -1)
                 {
                     throw new Exception("无效内容");
                 }
@@ -180,6 +186,18 @@ namespace Bili_favorites_list
                         savepath = dig.FileName;
                         //texttemp = sb.ToString();
                         //File.WriteAllText(dig.FileName, texttemp);
+                        if (File.Exists(savepath) == true) //善待哦旧的
+                        {
+                            File.Delete(savepath);
+                        }
+                        File.Move(savepathtemp, savepath);
+                    }
+                    else
+                    {
+                        if (File.Exists(savepathtemp) == true) //清楚残留文件
+                        {
+                            File.Delete(savepathtemp);
+                        }
                     }
                 }));
                 dig.Dispose();
@@ -207,7 +225,7 @@ namespace Bili_favorites_list
 
             bool run(string file)
             {
-                string readline2(StreamReader srr)
+                string readline2(StreamReader srr, string key = "\r\t#\t")
                 {
                     bool find = false;
                     sb.Clear();
@@ -216,13 +234,22 @@ namespace Bili_favorites_list
                         int t = srr.Read();
                         if(t == -1)
                         {
-                            return sb.ToString();
+                            if(sb.Length == 0)
+                            {
+                                return null;
+                            }
+                            else
+                            {
+                                return sb.ToString();
+                            }
                         }
                         sb.Append((char)t);
-                        if (sb.ToString().IndexOf("\r\t") != -1)
+                        //if (sb.ToString().IndexOf(key) != -1)
+                        if (sb.Length > 4 && sb[sb.Length - 1] == '\t' && sb[sb.Length - 2] == '#' && 
+                            sb[sb.Length - 3] == '\n' && sb[sb.Length - 4] == '\r' )
                         {
                             find = true; //虽说这里是多余的
-                            return sb.ToString();
+                            return sb.ToString().Substring(0, sb.Length - 4); //去掉后面 4 个
                         }
                     }
                     return null;
@@ -233,24 +260,87 @@ namespace Bili_favorites_list
                 {
                     return false;
                 }
-                using(FileStream fsw = new FileStream(file, FileMode.Open, FileAccess.Read))
+                using(FileStream fsr = new FileStream(file, FileMode.Open, FileAccess.Read))
                 {
-                    num = fsw.Length;
+                    num = fsr.Length;
                     UIupdate(this.label4, "总计: " + num);
-                    using (StreamReader sr = new StreamReader(fsw))
+                    using (StreamReader sr = new StreamReader(fsr))
                     {
-                        while ( (text = sr.ReadLine()) != null)
+
+                        using (FileStream fsw = new FileStream(savepathtemp, FileMode.Append, FileAccess.Write))
                         {
-                            if(num1 < 1 && text.IndexOf("  #####") == -1) //无效文件
+                            using (StreamWriter sw = new StreamWriter(fsw))
                             {
-                                return false;
+                                //真正循环在这里
+                                //while ( (text = sr.ReadLine()) != null)
+                                while ((text = readline2(sr)) != null)
+                                {
+                                    if (num1 < 1 && text.IndexOf("  #####") == -1) //无效文件
+                                    {
+                                        return false;
+                                    }
+                                    else if (num1 < 1)
+                                    {
+                                        num1 = fsr.Position;
+                                        continue;
+                                    }
+                                    //Debugger.Break();
+
+                                    textsub = text.Split('\t');
+                                    //textindex.Add(long.Parse(textsub[0].Substring(2))); //添加索引
+                                    //索引赋值
+                                    texttemp = textsub[0].Substring(2);
+                                    if (textindex[0] == -1 && textindex[1] == -1 && textindex[2] == -1) //初始化的值
+                                    {
+                                        textindex[0] = long.Parse(texttemp);
+                                        textindex[1] = long.Parse(texttemp);
+                                        textindex[2] = long.Parse(texttemp);
+                                    }
+                                    else
+                                    {
+                                        //存储最大校址
+                                        if ( textindex[0] < long.Parse(texttemp) ){
+                                            textindex[0] = long.Parse(texttemp);
+                                        }
+                                        else if ( textindex[1] > long.Parse(texttemp) ){
+                                            textindex[1] = long.Parse(texttemp);
+                                        }
+                                        //如果当前序号比上一个小, 就重新排序
+                                        if (textindex[2] > long.Parse(texttemp) )
+                                        {
+                                            no1 = fsw.Position;
+                                            using (FileStream fstemp = new FileStream(savepathtemp, FileMode.Open, FileAccess.Read))
+                                            {
+                                                using (StreamReader srtemp = new StreamReader(fstemp) )
+                                                {
+                                                    while (textindex[2] >= long.Parse(texttemp))
+                                                    {
+                                                        
+                                                    }
+                                                }
+                                            }
+
+                                            fsw.Position = no1;
+                                        }
+                                        else
+                                        {
+                                            textindex[2] = long.Parse(texttemp);
+                                        }
+                                    }
+
+                                    foreach(var t in ESC) //转义字符
+                                    {
+                                        textsub[2] = textsub[2].Replace(t.Key, t.Value);
+                                        textsub[3] = textsub[3].Replace(t.Key, t.Value);
+                                        textsub[5] = textsub[5].Replace(t.Key, t.Value);
+                                    }
+                                    sw.WriteLine("#\t" + string.Join("\t", textsub));
+                                    num1 = fsr.Position;
+                                }
+
                             }
-                            //Debugger.Break();
-
-                            textsub = text.Split('\t');
-
-                            num1 = fsw.Position;
                         }
+
                     }
                 }
 
@@ -268,7 +358,7 @@ namespace Bili_favorites_list
                 timer.Dispose();
                 sb.Clear();
                 sb = null;
-                textindex.Clear();
+                //textindex.Clear();
                 textindex = null;
                 texttemp = null;
 
