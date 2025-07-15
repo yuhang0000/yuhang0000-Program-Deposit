@@ -1357,6 +1357,7 @@ namespace Bili_favorites_list
 
         private void button6_Click(object sender, EventArgs e)
         {
+            this.button6.Enabled = false;
             Option dig = new Option();
             dig.Show();
         }

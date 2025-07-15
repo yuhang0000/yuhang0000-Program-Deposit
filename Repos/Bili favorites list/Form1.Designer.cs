@@ -480,7 +480,7 @@
         public System.Windows.Forms.CheckBox checkBox1;
         public System.Windows.Forms.Button button5;
         private System.Windows.Forms.CheckBox checkBox2;
-        private System.Windows.Forms.Button button6;
+        public System.Windows.Forms.Button button6;
     }
 }
 

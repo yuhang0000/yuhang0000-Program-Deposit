@@ -8,6 +8,7 @@ using System.Media;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static Bili_favorites_list.Form1;
 
 namespace Bili_favorites_list
 {
@@ -52,6 +53,7 @@ namespace Bili_favorites_list
             Form1.httpheader.proxyuser = this.textBox3.Text;
             Form1.httpheader.proxypass = this.textBox4.Text;
             Form1.httpheader.uas = this.textBox1.Text.Trim().Split(new string[] { "\r\n" } ,StringSplitOptions.RemoveEmptyEntries);
+            form1.button6.Enabled = true;
             this.Dispose();
         }
 

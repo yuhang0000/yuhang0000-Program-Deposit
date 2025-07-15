@@ -102,15 +102,16 @@ namespace Bili_favorites_list
             long time = new DateTimeOffset(DateTime.Now).ToUnixTimeSeconds(); //开始时间
             long time1; //当前时间
             StringBuilder sb = new StringBuilder(); //Dump //二改, 拿去手搓读取 流 去了
-            long readstreamlength = 1024 * 1024; //在字节流设定读取长度
-            byte[] buffer = new Byte[readstreamlength]; //Dump 但是以字节流的形式
+            //long readstreamlength = 1024 * 1024; //在字节流设定读取长度
+            //byte[] buffer = new Byte[readstreamlength]; //Dump 但是以字节流的形式
+            int cachesize = 4096; //文件读取缓冲区大小
             string text; //读取的文件放这里
             string[] textsub; //单个条目
             string texttemp; //零食用
             long[] textindex = new long[] { -1, -1, -1 }; //存放序号 //0: 最大值 1: 最小值 2:上一个数
             //SortedSet<long> textinedx1 = new SortedSet<long>();
-            long no1 = 0; //上一行编号
-            long no2 = 0; //下一行编号
+            //long no1 = 0; //上一行编号
+            //long no2 = 0; //下一行编号
             string savepath; //文档保存未知
             string savepathtemp = AppDomain.CurrentDomain.BaseDirectory + @"Output.tmp"; //零食文档保存未知
 
@@ -260,7 +261,7 @@ namespace Bili_favorites_list
                 {
                     return false;
                 }
-                using(FileStream fsr = new FileStream(file, FileMode.Open, FileAccess.Read))
+                using(FileStream fsr = new FileStream(file, FileMode.Open, FileAccess.Read, FileShare.ReadWrite, cachesize))
                 {
                     num = fsr.Length;
                     UIupdate(this.label4, "总计: " + num);
@@ -306,26 +307,23 @@ namespace Bili_favorites_list
                                             textindex[1] = long.Parse(texttemp);
                                         }
                                         //如果当前序号比上一个小, 就重新排序
-                                        if (textindex[2] > long.Parse(texttemp) )
+                                        /*if (textindex[2] > long.Parse(texttemp) )
                                         {
-                                            no1 = fsw.Position;
                                             using (FileStream fstemp = new FileStream(savepathtemp, FileMode.Open, FileAccess.Read))
                                             {
                                                 using (StreamReader srtemp = new StreamReader(fstemp) )
                                                 {
-                                                    while (textindex[2] >= long.Parse(texttemp))
-                                                    {
-                                                        
-                                                    }
+                                                    
+
                                                 }
                                             }
 
-                                            fsw.Position = no1;
                                         }
                                         else
                                         {
                                             textindex[2] = long.Parse(texttemp);
-                                        }
+                                        }*/
+                                        textindex[2] = long.Parse(texttemp);
                                     }
 
                                     foreach(var t in ESC) //转义字符
@@ -338,6 +336,7 @@ namespace Bili_favorites_list
                                     num1 = fsr.Position;
                                 }
 
+                                sw.Flush();
                             }
                         }
 
