@@ -201,7 +201,7 @@
             this.Controls.Add(this.label1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Name = "合并";
-            this.Text = "合并数据";
+            this.Text = "合并数据: 就绪";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.合并_FormClosing);
             this.ResumeLayout(false);
             this.PerformLayout();

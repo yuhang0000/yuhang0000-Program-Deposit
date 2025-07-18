@@ -1355,7 +1355,7 @@ namespace Bili_favorites_list
             UIupdate(textBox1, print2textbox1);
         }
 
-        private void button6_Click(object sender, EventArgs e)
+        private void button6_Click(object sender, EventArgs e)  
         {
             this.button6.Enabled = false;
             Option dig = new Option();
