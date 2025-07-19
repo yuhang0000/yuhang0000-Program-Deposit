@@ -92,6 +92,12 @@ namespace Bili_favorites_list
             await Task.Run(() => { run(this.textBox1.Text.Split(new char[] { ';' },StringSplitOptions.RemoveEmptyEntries)); });
         }
 
+        public class splititem
+        {
+            public long start { get; set; }
+            public long end { get; set; }
+        }
+
         public void run(string[] files)
         {
             processbar(this.progressBar2, -1);
@@ -102,7 +108,9 @@ namespace Bili_favorites_list
             long num3 = 0; //已处理文件数
             long num4 = 0; //总文件数
             long time = new DateTimeOffset(DateTime.Now).ToUnixTimeSeconds(); //开始时间
-            long time1; //当前时间
+            long time1 = 0; //当前时间
+            long time2 = 0; //上一流程已使用的时间
+            bool formfilenum = true; //按文件数计时
             StringBuilder sb = new StringBuilder(); //Dump //二改, 拿去手搓读取 流 去了
             //long readstreamlength = 1024 * 1024; //在字节流设定读取长度
             //byte[] buffer = new Byte[readstreamlength]; //Dump 但是以字节流的形式
@@ -116,11 +124,13 @@ namespace Bili_favorites_list
             //long no2 = 0; //下一行编号
             string savepath; //文档保存未知
             string savepathtemp = AppDomain.CurrentDomain.BaseDirectory + @"Output.tmp"; //零食文档保存未知
+            string savepathsplittemp = AppDomain.CurrentDomain.BaseDirectory + @"Output.tmp"; //零食的零食文档保存未知
             bool canisort = false; //是否要求排序
-            List<long> sorttempfilelist = new List<long>()
+            List<splititem> sorttempfilelist = new List<splititem>()
             {
-                -1,
+                new splititem { start = -1,end = -1 }
             }; //零食存放排序文件序号
+            long num2split = 0; //排序 > 拆分 > 内部循环计数器
 
             //计时器
             System.Timers.Timer timer = new System.Timers.Timer();
@@ -135,23 +145,32 @@ namespace Bili_favorites_list
                 processbar(this.progressBar1, (int)((1000 * num1) / num));
 
                 //num2 = (float)num3 / (float)files.LongLength; //仅文件
-                num2 = (float)(num3 * num + num1) / (float)(files.LongLength * num);
-                num2 = (float)(time1 * 1000) / num2;
-                UIupdate(this.label6,"剩余时间: " + totime( (int)(num2 - (float)(time1 * 1000) ) ));
+                //完成进度百分比
+                if (formfilenum == true) //按完成文件数
+                {
+                    num2 = (float)(num3 * num + num1) / (float)(num4 * num);
+                }
+                else //按完成数目量
+                {
+                    num2 = (float)num1 / (float)num;
+                }
+                num2 = (float)( (time1 - time2) * 1000) / num2; //预估总花费时间
+                UIupdate(this.label6,"剩余时间: " + totime( (int)(num2 - (float)( (time1 - time2) * 1000) ) ));
             });
 
             try
             {
                 //初始化
                 num4 = files.LongLength;
-                if (File.Exists(savepathtemp) == true)
+                /*if (File.Exists(savepathtemp) == true)
                 {
                     File.Delete( savepathtemp );
                 }
                 if (Directory.Exists(System.Windows.Forms.Application.StartupPath + "/Temp") == true)
                 {
                     Directory.Delete(System.Windows.Forms.Application.StartupPath + "/Temp", true);
-                }
+                }*/
+                cleartemp();
                 sb.Clear();
                 if(num4 == 0)
                 {
@@ -196,7 +215,7 @@ namespace Bili_favorites_list
                 dig.CheckPathExists = true;
                 //dig.CreatePrompt = true;
                 dig.DefaultExt = "*.txt";
-                dig.FileName = textindex.Min().ToString() + " - " + textindex.Max().ToString() + ".txt";
+                dig.FileName = textindex[1].ToString() + " - " + textindex[0].ToString() + ".txt";
                 dig.Filter = "文本文档(*.txt)|*.txt";
                 dig.InitialDirectory = System.Windows.Forms.Application.StartupPath;
                 dig.OverwritePrompt = true;
@@ -213,22 +232,12 @@ namespace Bili_favorites_list
                         {
                             File.Delete(savepath);
                         }
-                        if(Directory.Exists(System.Windows.Forms.Application.StartupPath + "/Temp") == true)
-                        {
-                            Directory.Delete(System.Windows.Forms.Application.StartupPath + "/Temp", true);
-                        }
+                        //cleartemp(true);
                         File.Move(savepathtemp, savepath);
                     }
                     else
                     {
-                        if (File.Exists(savepathtemp) == true) //清楚残留文件
-                        {
-                            File.Delete(savepathtemp);
-                        }
-                        if(Directory.Exists(System.Windows.Forms.Application.StartupPath + "/Temp") == true)
-                        {
-                            Directory.Delete(System.Windows.Forms.Application.StartupPath + "/Temp", true);
-                        }
+                        //cleartemp();
                     }
                 }));
                 dig.Dispose();
@@ -380,16 +389,19 @@ namespace Bili_favorites_list
             bool sort()
             {
                 this.Invoke(new MethodInvoker( () => { this.Text = "合并数据: 排序中 > 拆分"; }));
+                time2 = time1;
+                num1 = 0;
+                num = textindex[3];
+                formfilenum = false; //切换倒计时模式
+                UIupdate(this.label7, "已拆分片段: 1");
+                UIupdate(this.label4, "总计: " + num.ToString());
+                UIupdate(this.label3, "进度: 0");
+                processbar (this.progressBar1, 0);
+                textindex[2] = -1;
+
                 using (FileStream fsr = new FileStream(savepathtemp, FileMode.Open, FileAccess.Read, FileShare.ReadWrite, cachesize))
                 {
-                    num1 = 0;
-                    num = textindex[3];
-                    num3 = 0;
-                    UIupdate(this.label4, "总计: " + num.ToString());
-                    UIupdate(this.label3, "当前: 0");
-                    processbar (this.progressBar2, 0);
                     Directory.CreateDirectory( System.Windows.Forms.Application.StartupPath + "\\Temp");
-                    textindex[2] = -1;
                     using (StreamReader sr = new StreamReader(fsr))
                     {
                         bool sortstatus = false;
@@ -397,6 +409,7 @@ namespace Bili_favorites_list
                         while (sortstatus != true)
                         {
                             (sortstatus,sorttemptext) = sortspilt(sr,sorttemptext);
+                            UIupdate(this.label7, "已拆分片段: " + sorttempfilelist.Count.ToString());
                         }
                         fsr.Dispose();
                         sr.Dispose();
@@ -418,7 +431,7 @@ namespace Bili_favorites_list
                         {
                             using (StreamWriter sw = new StreamWriter(fsw))
                             {
-                                long num2split = 0;
+                                num2split = 0;
                                 while ((text = readline2(sr)) != null)
                                 {
                                     if (num2split < 1 && text.IndexOf("  #####\r\n") != -1)
@@ -428,19 +441,28 @@ namespace Bili_favorites_list
                                     else if(num2split < 1) //去掉开头的 "#\t"
                                     {
                                         text = text.TrimStart('#', '\t');
+                                        textsub = text.Substring(2).Split('\t');
+                                        sorttempfilelist[sorttempfilelist.Count - 1].start = long.Parse(textsub[0]);
+                                    }
+                                    else
+                                    {
+                                        textsub = text.Substring(2).Split('\t');
                                     }
                                     num1++;
                                     num2split++;
-                                    textsub = text.Substring(2).Split('\t');
                                     if (num1 == 1)
                                     {
-                                        sorttempfilelist[sorttempfilelist.Count - 1] = long.Parse(textsub[0]);
+                                        sorttempfilelist[sorttempfilelist.Count - 1].start = long.Parse(textsub[0]);
                                         textindex[2] = int.Parse(textsub[0]) - 1;
                                     }
                                     //if (textindex[2] > int.Parse(textsub[0])) //如果小了
                                     if (textindex[2] + 1 != int.Parse(textsub[0])) //如果小了
                                     {
-                                        //sorttempfilelist[sorttempfilelist.Count - 1] = sorttempfilelist[sorttempfilelist.Count - 1] + " - " + textindex[2];
+                                        if (num2split == 1) //单个条目的情况下, start == end
+                                        {
+                                            sorttempfilelist[sorttempfilelist.Count - 1].start = textindex[2];
+                                        }
+                                        sorttempfilelist[sorttempfilelist.Count - 1].end = textindex[2];
                                         sw.Flush();
                                         sw.Dispose();
                                         fsw.Dispose();
@@ -452,18 +474,30 @@ namespace Bili_favorites_list
                                     text = text.TrimEnd('\r', '\n');
                                     sw.WriteLine("#\t" + text);
                                 }
-                                /*if (text == null)
+                                if(text == null) //我服了, 读到文档流末尾还得在这里设置 end 值.
                                 {
-                                    return (true, null);
-                                }*/
+                                    if (num2split == 0) //单个条目的情况下, start == end
+                                    {
+                                        sorttempfilelist[sorttempfilelist.Count - 1].start = textindex[2];
+                                    }
+                                    sorttempfilelist[sorttempfilelist.Count - 1].end = textindex[2];
+                                }
                             }
                         }
 
                         //跳出文档流, 然后移动文件
-                        File.Move(System.Windows.Forms.Application.StartupPath + "\\Temp\\Temp.tmp",
-                            System.Windows.Forms.Application.StartupPath + "\\Temp\\" +
-                            sorttempfilelist[sorttempfilelist.Count - 1] + ".txt");
-                        sorttempfilelist.Add( long.Parse(textsub[0]) );
+                        savepathsplittemp = System.Windows.Forms.Application.StartupPath + "\\Temp\\" +
+                            sorttempfilelist[sorttempfilelist.Count - 1].start.ToString() + " - " + 
+                            sorttempfilelist[sorttempfilelist.Count - 1].end.ToString() + ".txt";
+                        if (File.Exists(savepathsplittemp) == false)
+                        {
+                            File.Move(System.Windows.Forms.Application.StartupPath + "\\Temp\\Temp.tmp", savepathsplittemp);
+                            //sorttempfilelist.Add( long.Parse(textsub[0]) );
+                        }
+                        else
+                        {
+                            File.Delete(System.Windows.Forms.Application.StartupPath + "\\Temp\\Temp.tmp");
+                        }
                         //File.Create(System.Windows.Forms.Application.StartupPath + "/Temp/Temp.tmp");
                         textindex[2] = int.Parse(textsub[0]);
 
@@ -473,21 +507,67 @@ namespace Bili_favorites_list
                         }
                         else
                         {
+                            sorttempfilelist.Add(new splititem { start = -1, end = -1 });
                             return (false, text);
                         }
                     }
                 }
                 //num1 = num;
                 //给已存储的零食序号排序, 偷懒, 直接用 .sort()
-                sorttempfilelist.Sort();
+                //sorttempfilelist.Sort();
+                //Debugger.Break();
+                sorttempfilelist = sorttempfilelist.OrderBy(x => x.start).ThenBy(y => y.end).ToList();
+
+                //给列表去重
+                this.Invoke(new MethodInvoker( () => { this.Text = "合并数据: 排序中 > 去重"; }));
+                /*if (sorttempfilelist.Count > 1)
+                {
+                    for (int i = sorttempfilelist.Count - 1; i > 0 ; i--)
+                    {
+                        if (sorttempfilelist[i - 1] == sorttempfilelist[i])
+                        {
+                            sorttempfilelist.RemoveAt(i);
+                        }
+                    }
+                }*/
+                //sorttempfilelist = sorttempfilelist.Distinct().ToList();
+                long[] listindextemp = { -1, -1 };
+                for(int i = sorttempfilelist.Count - 1; i >= 0; i--)
+                {
+                    if (sorttempfilelist[i].start == listindextemp[0] && sorttempfilelist[i].end == listindextemp[1])
+                    {
+                        sorttempfilelist.RemoveAt(i);
+                    }
+                    else
+                    {
+                        listindextemp[0] = sorttempfilelist[i].start;
+                        listindextemp[1] = sorttempfilelist[i].end;
+                    }
+                }
+
+                //合并
                 this.Invoke(new MethodInvoker( () => { this.Text = "合并数据: 排序中 > 合并"; }));
                 File.Delete(savepathtemp);
-                UIupdate(this.label7,"已处理文件: (0/" + sorttempfilelist.Count + ")");
+                num4 = sorttempfilelist.Count;
+                UIupdate(this.label7,"已处理文件: (0/" + num4 + ")");
                 num1 = 0;
+                num3 = 0;
+                time2 = time1;
+                processbar(this.progressBar1, 0);
+                processbar(this.progressBar2, 0);
+                UIupdate(this.label4, "总计: " + num.ToString());
+                UIupdate(this.label3, "进度: 0");
+                textindex[0] = sorttempfilelist[sorttempfilelist.Count - 1].end;
+                textindex[1] = sorttempfilelist[0].start; //前面已经排过序了, 所以第一项是最小值
+                textindex[2] = -1; //重置计数器
                 File.WriteAllText(savepathtemp, "#####  " + DateTime.Now.ToString() + "  #####\r\n\r\n");
-                foreach (long tempfileindex in sorttempfilelist)
+                foreach (var tempfileitem in sorttempfilelist)
                 {
-                    using (FileStream fsr = new FileStream(System.Windows.Forms.Application.StartupPath + "\\Temp\\" + tempfileindex.ToString() + ".txt",
+                    if (tempfileitem.end <= textindex[2]) //重复的不要
+                    {
+                        continue;
+                    }
+                    using (FileStream fsr = new FileStream(System.Windows.Forms.Application.StartupPath + "\\Temp\\" + tempfileitem.start.ToString() + " - "  + tempfileitem.end.ToString() + ".txt",
                          FileMode.Open, FileAccess.Read, FileShare.ReadWrite, cachesize))
                     {
                         using (StreamReader sr = new StreamReader(fsr))
@@ -509,8 +589,15 @@ namespace Bili_favorites_list
                                         {
                                             text = text.TrimStart('#','\t');
                                         }
-                                        num1++;
                                         num2hebing++;
+                                        textsub = text.Split('\t');
+                                        if (long.Parse(textsub[0].Substring(2)) <= textindex[2]) //如果获取的序号比上一个小, 就直接不要了
+                                        {
+                                            continue;
+                                        }
+
+                                        textindex[2] = long.Parse(textsub[0].Substring(2));
+                                        num1++;
                                         //sw.Write("#\t" + text + "\r\n");
                                         text = text.TrimEnd('\r','\n');
                                         sw.WriteLine("#\t" + text);
@@ -522,9 +609,17 @@ namespace Bili_favorites_list
                             }
                         }
                     }
-                    num2++;
-                    UIupdate(this.label7,"已处理文件: (" + num2 + "/" + sorttempfilelist.Count + ")");
+                    
+                    num3++;
+                    UIupdate(this.label7,"已处理文件: (" + num3 + "/" + num4 + ")");
+                    processbar(this.progressBar1, 1000);
+                    processbar(this.progressBar2, (int)((1000 * num3) / num4));
                 }
+
+                num = num1; //最后总数应该为已处理数量
+                UIupdate(this.label3, "进度: " + num1);
+                UIupdate(this.label4, "总计: " + num1.ToString());
+                UIupdate(this.label7, "已处理文件: (" + num4 + "/" + num4 + ")");
 
                 this.Invoke(new MethodInvoker( () => { this.Text = "合并数据: 排序中 > 完成"; }));
                 return true;
@@ -540,6 +635,7 @@ namespace Bili_favorites_list
                 //textindex.Clear();
                 textindex = null;
                 texttemp = null;
+                cleartemp();
 
                 if (this.IsHandleCreated == false)
                 {
@@ -554,6 +650,23 @@ namespace Bili_favorites_list
                 }
 
                 GC.Collect();
+            }
+
+            //清理缓存
+            void cleartemp(bool onlytempfolder = false)
+            {
+                try
+                {
+                    if (onlytempfolder == false && File.Exists(savepathtemp) == true) //清楚残留文件
+                    {
+                        File.Delete(savepathtemp);
+                    }
+                    if (Directory.Exists(System.Windows.Forms.Application.StartupPath + "/Temp") == true)
+                    {
+                        Directory.Delete(System.Windows.Forms.Application.StartupPath + "/Temp", true);
+                    }
+                }
+                catch { }
             }
 
             string totime(long tttt)
