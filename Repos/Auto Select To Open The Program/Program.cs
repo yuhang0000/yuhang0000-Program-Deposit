@@ -65,6 +65,10 @@ namespace Auto_Select_To_Open_The_Program
                     {
                         list.Add( (rules[0].Trim() , rules[1].Trim(), int.Parse(rules[2].Trim()) ) );
                     }
+                    else if (rules.Length == 2) //单项, 第三值不存在, 缺省为 0
+                    {
+                        list.Add( (rules[0].Trim() , rules[1].Trim(), 0 ) );
+                    }
                 }
             }
             else //默认地
