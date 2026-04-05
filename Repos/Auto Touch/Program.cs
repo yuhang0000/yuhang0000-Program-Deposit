@@ -4,6 +4,7 @@ using System.Linq;
 using System.Security.Policy;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Commands;
 
 namespace Auto_Touch
 {
@@ -15,15 +16,20 @@ namespace Auto_Touch
         [STAThread]
         static void Main(string[] args)
         {
+            //先处理全局变数
+            GlobalStatus.Version = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString();
+            GlobalStatus.BuildTime = System.IO.File.GetLastWriteTime(typeof(GlobalStatus).Assembly.Location);
+
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
+
             if (args == null)
             {
-                Application.Run(new Form1());
+                Application.Run(GlobalStatus.main = new Main());
             }
             else
             {
-                Application.Run(new Form1(args));
+                Application.Run(GlobalStatus.main = new Main());
             }
         }
     }

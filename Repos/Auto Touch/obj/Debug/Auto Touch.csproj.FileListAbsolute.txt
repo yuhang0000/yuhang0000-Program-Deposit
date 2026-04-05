@@ -20,3 +20,4 @@ C:\Users\13975\CSharp\Repos\Repos\Auto Touch\obj\Debug\Auto Touch.csproj.Generat
 C:\Users\13975\CSharp\Repos\Repos\Auto Touch\obj\Debug\Auto Touch.csproj.CoreCompileInputs.cache
 C:\Users\13975\CSharp\Repos\Repos\Auto Touch\obj\Debug\Auto Touch.exe
 C:\Users\13975\CSharp\Repos\Repos\Auto Touch\obj\Debug\Auto Touch.pdb
+C:\Users\13975\CSharp\Repos\Repos\Auto Touch\obj\Debug\Auto_Touch.Main.resources
