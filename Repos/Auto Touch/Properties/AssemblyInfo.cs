@@ -6,11 +6,11 @@ using System.Runtime.InteropServices;
 // 控制。更改这些特性值可修改
 // 与程序集关联的信息。
 [assembly: AssemblyTitle("Auto Touch")]
-[assembly: AssemblyDescription("自动点击荧幕上的指定位置")]
+[assembly: AssemblyDescription("自动点击荧幕上的指定位置.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("yuhang0000")]
 [assembly: AssemblyProduct("Auto Touch")]
-[assembly: AssemblyCopyright("Copyright ©  2024 yuhang0000")]
+[assembly: AssemblyCopyright("Copyright ©  2026 yuhang0000")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -32,5 +32,5 @@ using System.Runtime.InteropServices;
 //可以指定所有这些值，也可以使用“生成号”和“修订号”的默认值
 //通过使用 "*"，如下所示:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.0.5.8")]
-[assembly: AssemblyFileVersion("1.0.5.0218")]
+[assembly: AssemblyVersion("1.1.0.0")]
+[assembly: AssemblyFileVersion("1.1.0.0406")]

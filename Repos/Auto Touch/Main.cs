@@ -111,6 +111,27 @@ namespace Auto_Touch
             this.NumDelay.Enabled = enable;
             this.ComboBoxAction.Enabled = enable;
         }
+        /// <summary>
+        /// 控件闪烁
+        /// </summary>
+        async public void Blinking(Control control)
+        {
+            if (control == null)
+            {
+                return;
+            }
+            control.Visible = false;
+            await Task.Delay(100);
+            control.Visible = true;
+            await Task.Delay(100);
+            control.Visible = false;
+            await Task.Delay(100);
+            control.Visible = true;
+            await Task.Delay(100);
+            control.Visible = false;
+            await Task.Delay(100);
+            control.Visible = true;
+        }
 
         private void BtnListNew_Click(object sender, EventArgs e)
         {
@@ -166,7 +187,7 @@ namespace Auto_Touch
                 EnableEditor(false);
             }
         }
-
+        //"动作" 下拉框
         private void ComboBoxAction_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (this.listView1.SelectedItems.Count == 1)
@@ -175,7 +196,7 @@ namespace Auto_Touch
                 list.SubItems[3].Text = this.ComboBoxAction.Text;
             }
         }
-
+        //"延时" 数值选择器
         private void NumDelay_ValueChanged(object sender, EventArgs e)
         {
             if (this.listView1.SelectedItems.Count == 1)
@@ -184,14 +205,16 @@ namespace Auto_Touch
                 list.SubItems[2].Text = this.NumDelay.Value.ToString() + "ms";
             }
         }
-
+        //"坐标" 文本框离开焦点事件
         private void TextBoxPosition_Leave(object sender, EventArgs e)
         {
             //检查格式是否正确
             string[] array = this.TextBoxPosition.Text.Split(',');
             if(array.Length != 2)
             {
+                this.StatusBarText.Text = "这不是一个有效的坐标值. ";
                 SystemSounds.Hand.Play();
+                Blinking(this.TextBoxPosition);
                 return;
             }
             int test;
@@ -200,7 +223,9 @@ namespace Auto_Touch
                 string str = array[i].Trim();
                 if(int.TryParse(str, out test) == false)
                 {
+                    this.StatusBarText.Text = "这不是一个有效的坐标值. ";
                     SystemSounds.Hand.Play();
+                    Blinking(this.TextBoxPosition);
                     return;
                 };
                 //这里是把 001 转成 1;
@@ -215,13 +240,18 @@ namespace Auto_Touch
                 list.SubItems[1].Text = this.TextBoxPosition.Text;
             }
         }
-
+        //"坐标" 文本框键盘监听事件
         private void TextBoxPosition_KeyUp(object sender, KeyEventArgs e)
         {
             if(e.KeyCode == Keys.Enter)
             {
                 TextBoxPosition_Leave(null, null);
             }
+        }
+        //列表框监听事件
+        private void listView1_KeyPress(object sender, KeyPressEventArgs e)
+        {
+
         }
     }
 }
