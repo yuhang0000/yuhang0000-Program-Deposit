@@ -1,4 +1,4 @@
-﻿namespace FolderIconFIx
+﻿namespace FolderIconFix
 {
     partial class Form1
     {

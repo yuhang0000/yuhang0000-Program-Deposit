@@ -11,7 +11,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace FolderIconFIx
+namespace FolderIconFix
 {
     public partial class Form1 : Form
     {
@@ -110,7 +110,7 @@ namespace FolderIconFIx
             //终止
             else
             {
-                this.StatusCode = false;
+                //this.StatusCode = false;
             }
         }
 
@@ -121,17 +121,25 @@ namespace FolderIconFIx
         {
             if(this.textBox1.Text.Length == 0)
             {
+                //文本框为空就浏览文件夹
+                button1_Click(null, null);
                 this.StatusCode = false;
                 this.BtnStart.Enabled = true;
-                SystemSounds.Hand.Play();
+                //SystemSounds.Hand.Play();
                 return;
             }
             string[] Folders;
             try
             {
+                //末尾补上 \
+                if (this.textBox1.Text[this.textBox1.Text.Length - 1] != '\\')
+                {
+                    this.textBox1.AppendText("\\");
+                }
+
                 long starttime = GetTimeStamp();
                 Folders = Directory.GetDirectories(this.textBox1.Text);
-                this.textBox2.Clear();
+                this.textBox2.Text = "";
                 this.DesktopPaths.Clear();
                 foreach(string folder in Folders)
                 {
@@ -152,11 +160,14 @@ namespace FolderIconFIx
                 this.BtnStart.Enabled = true;
                 SystemSounds.Hand.Play();
             }
+
+            SystemSounds.Beep.Play();
             this.StatusCode = false;
             this.ModeCode = true;
             this.BtnStart.Text = "开始";
             this.BtnStart.Enabled = true;
         }
+
         /// <summary>
         /// 开始
         /// </summary>
@@ -164,79 +175,104 @@ namespace FolderIconFIx
         {
             this.StatusCode = true;
             this.BtnStart.Enabled = false;
+            this.textBox2.Text = "";
 
-            int finishnum = 0;
-            foreach(string folder in this.DesktopPaths)
+            int finishnum = 0; //完成项计数
+            long starttime = GetTimeStamp();
+            foreach (string folder in this.DesktopPaths)
             {
                 try
                 {
-                    string[] texts = File.ReadAllLines(folder);
+                    string[] texts = File.ReadAllLines(folder, Encoding.GetEncoding("GBK"));
                     //遍历每行文本
                     string iconpath = ""; //图标路径
                     string tmp1 = "IconResource=";
-                    int index = 0; //暂存索引
-                    for(int i = 0; i < texts.Length; i++)
+                    int index = 0; //暂存索引, "IconResource" 的位置
+                    string iconindexnum = ""; //就是在路径之后的 ", 0" 指示图标组的指定索引号
+                    //定位 "IconResource=" 位置
+                    for (int i = 0; i < texts.Length; i++)
                     {
                         string text = texts[i];
-                        if(text.IndexOf(tmp1)  != -1)
+                        if (text.IndexOf(tmp1)  != -1)
                         {
-                            iconpath = text.Substring(tmp1.Length, text.IndexOf(","));
+                            iconpath = text.Substring(tmp1.Length, text.IndexOf(",") - tmp1.Length);
+                            iconindexnum = text.Substring(text.IndexOf(","));
                             index = i;
+                            break;
                         }
                     }
-                    if(iconpath != "")
+                    //开始修改
+                    if (iconpath != "")
                     {
                         string[] tmp2; //吧路径切成腻子, 图标路径
                         string[] tmp3; //吧路径切成腻子, 当前文件夹路径
+                        string[] tmp4; //截取之后保留的路径, 就是 ".\icon.ico" 的 "icon.ico" 这一段
                         tmp2 = iconpath.Split('\\');
                         tmp3 = folder.Split('\\');
-                        if (tmp2[0] !=  tmp3[0] || tmp2[1] == "." || tmp2[1] == "..") //不在同个盘符或者已经设置了相对路径, 就跳过
+                        if (tmp2[0] !=  tmp3[0] || tmp2[0] == "." || tmp2[0] == "..") //不在同个盘符或者已经设置了相对路径, 就跳过
                         {
+                            this.textBox2.AppendText("跳过: " + folder + "\r\n");
                             //跳过
                             //continue;
                         }
                         else
                         {
                             int lastindex = tmp3.Length - 2; //遍历每个腻子, 这个记录, 当遇到比较不同文件夹名称时, 最后的索引, 默认是文件夹所在路径, 去除 Desktop.ini 和盘符的数组长度
-                            for(int i = 1; i < tmp3.Length - 1;i++) //跳过第一个和最后一个
+                            for (int i = 0; i < tmp3.Length - 1; i++) //跳过第一个和最后一个
                             {
                                 if (tmp2[i] == tmp3[i])
                                 {
+                                    lastindex = i + 1;
                                     continue;
                                 }
                                 else
                                 {
-                                    lastindex = i - 1;
+                                    break;
                                 }
                             }
                             string newiconpath = "";
+                            tmp4 = new string[tmp2.Length - lastindex];
+                            Array.Copy(tmp2, lastindex, tmp4, 0, tmp2.Length - lastindex);
                             //往前
-                            if(lastindex < tmp2.Length - 2)
+                            if (lastindex < tmp3.Length - 1)
                             {
-                                for(int i = lastindex; i < tmp2.Length - 1; i++)
+                                for (int i = 0; i < lastindex; i++)
                                 {
-                                    newiconpath = "..\\" +  newiconpath + tmp2[i];
+                                    newiconpath = "..\\" +  newiconpath;
                                 }
+                                newiconpath = newiconpath + string.Join("\\", tmp4);
                             }
                             //往后
                             else
                             {
-                                newiconpath = ".\\";
+                                newiconpath = ".\\" + string.Join("\\", tmp4);
                             }
+                            texts[index] = tmp1 + newiconpath + iconindexnum;
+
+                            //写入属性文件
+                            File.SetAttributes(folder, FileAttributes.Normal);
+                            File.WriteAllLines(folder, texts, Encoding.GetEncoding("GBK"));
+                            File.SetAttributes(folder, FileAttributes.Hidden | FileAttributes.Archive | FileAttributes.System);
+                            this.textBox2.AppendText("已修补: " + folder + "\r\n");
                         }
                     }
 
-                    finishnum++;
-                    this.StatusTextNum.Text = finishnum.ToString() +" /" + this.DesktopPaths.Count.ToString();
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
+                    this.textBox2.AppendText("失败: " + folder + "\r\n");
                     MessageBox.Show("修补文件时出现了问题, 原因是: \r\n" + ex.ToString(), "Oops", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     this.StatusCode = false;
                     this.BtnStart.Enabled = true;
-                    SystemSounds.Hand.Play();
+                    //SystemSounds.Hand.Play();
                 }
+                finishnum++;
+                this.StatusTextNum.Text = finishnum.ToString() +"/" + this.DesktopPaths.Count.ToString();
             }
+
+            SystemSounds.Beep.Play();
+            long lasttime = GetTimeStamp();
+            this.textBox2.AppendText("修补用时: " + (lasttime - starttime).ToString() + "s");
             this.StatusCode = false;
             this.BtnStart.Enabled = true;
         }
@@ -247,5 +283,6 @@ namespace FolderIconFIx
             this.ModeCode = false;
             this.BtnStart.Text = "搜索";
         }
+
     }
 }
