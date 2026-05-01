@@ -284,5 +284,25 @@ namespace FolderIconFix
             this.BtnStart.Text = "搜索";
         }
 
+        //拖放
+        private void Form1_DragEnter(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(DataFormats.FileDrop) == true)
+            {
+                e.Effect = DragDropEffects.Copy;
+            }
+            else
+            {
+                e.Effect = DragDropEffects.None;
+            }
+        }
+        private void Form1_DragDrop(object sender, DragEventArgs e)
+        {
+            string[] paths = (string[])e.Data.GetData(DataFormats.FileDrop);
+            if(paths.Length > 0)
+            {
+                this.textBox1.Text = paths[0];
+            }
+        }
     }
 }
